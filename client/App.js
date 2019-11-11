@@ -6,9 +6,8 @@ import { Provider } from "react-redux";
 import store from "./store/store";
 
 // Page imports
-import SignUpPage from "./components/SignUpPage";
-import SignInPage from "./components/SignInPage";
-import AuthNavigator from "./components/AuthNavigator";
+import BottomTabNavigator from "./components/BottomTabNavigator";
+import Bridge from "./components/AuthComponents/Bridge";
 
 export default class App extends Component {
   constructor() {
@@ -32,7 +31,7 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        {this.state.fontLoaded ? (<AuthNavigator />) : null}
+        {this.state.fontLoaded ? (<BottomTabNavigator />) : null}
       </Provider>
     );
   }
