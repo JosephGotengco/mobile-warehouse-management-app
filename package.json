@@ -2,9 +2,9 @@
   "name": "warehouse-management-app",
   "version": "1.0.0",
   "description": "A warehouse management app",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "client-install": "npm install --prefix client",
+    "client-install": "cd client && npm i",
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
