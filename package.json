@@ -1,12 +1,17 @@
 {
-  "main": "node_modules/expo/AppEntry.js",
+  "name": "warehouse-management-app",
+  "version": "1.0.0",
+  "description": "A warehouse management app",
+  "main": "server.js",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
-    "eject": "expo eject"
+    "client-install": "cd client && npm i",
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run client\" \"npm run server\""
   },
+  "author": "Joseph Gotengco, Justin Tran, Shahzaib Shaikh",
+  "license": "MIT",
   "dependencies": {
     "expo": "^35.0.0",
     "react": "16.8.3",
@@ -29,9 +34,20 @@
     "react-router-native": "^5.1.2",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0"
+    "axios": "^0.19.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "concurrently": "^5.0.0",
+    "config": "^3.2.4",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "mongoose": "^5.7.9",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^5.0.1"
   },
   "devDependencies": {
-    "babel-preset-expo": "^7.1.0"
-  },
-  "private": true
+    "nodemon": "^1.19.4"
+  }
 }
