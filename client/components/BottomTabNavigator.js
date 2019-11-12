@@ -25,7 +25,7 @@ const bottomTabNavigator = createBottomTabNavigator(
             screen: WarehousePage,
             navigationOptions: {
                 tabBarIcon: ({ tintColor }) => (
-                    <Feather name="truck" size={25} color={tintColor}
+                    <MaterialCommunityIcons name="truck" size={25} color={tintColor}
                     />),
             }
         },
@@ -41,7 +41,7 @@ const bottomTabNavigator = createBottomTabNavigator(
             screen: SchedulePage,
             navigationOptions: {
                 tabBarIcon: ({ tintColor }) => (
-                    <FontAwesome name="calendar-o" size={20} color={tintColor}
+                    <MaterialCommunityIcons name="calendar" size={25} color={tintColor}
                     />),
             }
         },
@@ -49,7 +49,7 @@ const bottomTabNavigator = createBottomTabNavigator(
             screen: AccountPage,
             navigationOptions: {
                 tabBarIcon: ({ tintColor }) => (
-                    <MaterialCommunityIcons name="account-outline" size={27} color={tintColor ? tintColor : "#333333"}
+                    <MaterialCommunityIcons name="account-outline" size={25} color={tintColor ? tintColor : "#333333"}
                     />),
             }
         }
