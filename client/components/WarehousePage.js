@@ -47,7 +47,15 @@ class WarehousePage extends Component {
                 animationType="slide" 
                 visible={this.state.QRModalVisble}>
                 <View style={{flex: 1, flexDirection: 'column', justifyContent: 'flex-end', backgroundColor: 'black'}}>
-                    <BarCodeScanner onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned} style={StyleSheet.absoluteFillObject}/>
+                    <BarCodeScanner onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned} style={StyleSheet.absoluteFillObject}>
+                    <View style={styles.layerTop} />
+                        <View style={styles.layerCenter}>
+                            <View style={styles.layerLeft} />
+                            <View style={styles.focused} />
+                            <View style={styles.layerRight} />
+                        </View>
+                    <View style={styles.layerBottom} />
+                    </BarCodeScanner>
                     {scanned && (<Button title={'Tap to Scan Again'} onPress={() => this.setState({ scanned: false })}/>)}
                 </View>
                 <Button title="Hide Modal" onPress={()=> {this.setQRModalVisible(!this.state.QRModalVisble)}}></Button>
@@ -92,15 +100,17 @@ class WarehousePage extends Component {
       };
 }
 
+const opacity = 'rgba(0, 0, 0, .6)';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        flexDirection: "column"
     },
     box: {
-        width: 100,
-        height: 100,
+        width: 122,
+        height: 117,
         alignItems: 'center',
         justifyContent: 'center',
         margin: 30,
@@ -118,7 +128,30 @@ const styles = StyleSheet.create({
         shadowRadius: 6.27,
 
         elevation: 10,
-    }
+    },
+    layerTop: {
+        flex: 0.5,
+        backgroundColor: opacity
+    },
+    layerCenter: {
+        flex: 1,
+        flexDirection: 'row'
+      },
+      layerLeft: {
+        flex: 1,
+        backgroundColor: opacity
+      },
+      focused: {
+        flex: 10
+      },
+      layerRight: {
+        flex: 1,
+        backgroundColor: opacity
+      },
+      layerBottom: {
+        flex: 0.5,
+        backgroundColor: opacity
+      }
 });
 
 export default WarehousePage;
