@@ -8,6 +8,7 @@ import HomePage from "./HomePage";
 import WarehousePage from "./WarehousePage";
 import SchedulePage from "./SchedulePage";
 import AccountPage from "./AccountPage";
+import QRScanner from './QRScanner';
 
 
 const bottomTabNavigator = createBottomTabNavigator(
@@ -26,6 +27,14 @@ const bottomTabNavigator = createBottomTabNavigator(
                 tabBarIcon: ({ tintColor }) => (
                     <Feather name="truck" size={25} color={tintColor}
                     />),
+            }
+        },
+        Camera: {
+            screen: QRScanner,
+            navigationOptions: {
+                tabBarIcon:({ tintColor }) => (
+                    <MaterialCommunityIcons name="camera" size={25} color={tintColor ? tintColor : '#333333'}
+                />),
             }
         },
         Schedule: {
