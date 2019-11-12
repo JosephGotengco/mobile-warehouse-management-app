@@ -8,6 +8,7 @@ import HomePage from "./HomePage";
 import WarehousePage from "./WarehousePage";
 import SchedulePage from "./SchedulePage";
 import AccountPage from "./AccountPage";
+import QRScanner from './QRScanner';
 
 
 const bottomTabNavigator = createBottomTabNavigator(
@@ -24,15 +25,23 @@ const bottomTabNavigator = createBottomTabNavigator(
             screen: WarehousePage,
             navigationOptions: {
                 tabBarIcon: ({ tintColor }) => (
-                    <Feather name="truck" size={25} color={tintColor}
+                    <MaterialCommunityIcons name="truck" size={25} color={tintColor}
                     />),
+            }
+        },
+        Camera: {
+            screen: QRScanner,
+            navigationOptions: {
+                tabBarIcon:({ tintColor }) => (
+                    <MaterialCommunityIcons name="camera" size={25} color={tintColor ? tintColor : '#333333'}
+                />),
             }
         },
         Schedule: {
             screen: SchedulePage,
             navigationOptions: {
                 tabBarIcon: ({ tintColor }) => (
-                    <FontAwesome name="calendar-o" size={20} color={tintColor}
+                    <MaterialCommunityIcons name="calendar" size={25} color={tintColor}
                     />),
             }
         },
@@ -40,7 +49,7 @@ const bottomTabNavigator = createBottomTabNavigator(
             screen: AccountPage,
             navigationOptions: {
                 tabBarIcon: ({ tintColor }) => (
-                    <MaterialCommunityIcons name="account-outline" size={27} color={tintColor ? tintColor : "#333333"}
+                    <MaterialCommunityIcons name="account-outline" size={25} color={tintColor ? tintColor : "#333333"}
                     />),
             }
         }
