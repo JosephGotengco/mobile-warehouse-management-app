@@ -4,7 +4,7 @@
   "description": "A warehouse management app",
   "main": "server.js",
   "scripts": {
-    "client-install": "cd client && npm i",
+    "client-install": "cd client && npm install",
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
