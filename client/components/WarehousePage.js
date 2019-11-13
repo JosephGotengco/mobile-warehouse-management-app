@@ -47,36 +47,57 @@ class WarehousePage extends Component {
                 animationType="slide" 
                 visible={this.state.QRModalVisble}>
                 <View style={{flex: 1, flexDirection: 'column', justifyContent: 'flex-end', backgroundColor: 'black'}}>
-                    <BarCodeScanner onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned} style={StyleSheet.absoluteFillObject}/>
-                    {scanned && (<Button title={'Tap to Scan Again'} onPress={() => this.setState({ scanned: false })}/>)}
+                    <BarCodeScanner 
+                        onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned}
+                        style={StyleSheet.absoluteFillObject}/>
+                    {scanned && (<Button title={'Tap to Scan Again'}
+                    onPress={() => this.setState({ scanned: false })}/>)}
                 </View>
-                <Button title="Hide Modal" onPress={()=> {this.setQRModalVisible(!this.state.QRModalVisble)}}></Button>
+                <Button
+                    title="Hide Modal"
+                    onPress={()=> {this.setQRModalVisible(!this.state.QRModalVisble)}}/>
             </Modal>
-                <View style={{ flexDirection: "row" }}>
-	                <TouchableOpacity style={styles.box} onPress={() => this.setQRModalVisible(true)}>
-	                <MaterialCommunityIcons name="ballot-outline" size={45} color="#000000" />
-	                    <Text>In</Text>
+                <View 
+                    style={{ flexDirection: "row" }}>
+	                <TouchableOpacity
+                        style={styles.box}
+                        onPress={() => this.setQRModalVisible(true)}>
+	                    <MaterialCommunityIcons
+                            name="ballot-outline"
+                            size={45}
+                            color="#000000" />
+	                            <Text>In</Text>
 	                </TouchableOpacity>
-	                <TouchableOpacity style={styles.box} onPress={() => this.setQRModalVisible(true)}>
-	                	<MaterialCommunityIcons name="ballot" size={45} color="#000000" />
-	                	<Text>Out</Text>
+
+	                <TouchableOpacity
+                        style={styles.box}
+                        onPress={() => this.setQRModalVisible(true)}>
+	                	    <MaterialCommunityIcons name="ballot" size={45} color="#000000" />
+	                	        <Text>Out</Text>
 	                </TouchableOpacity>
+
                 </View>
+
                 <View style={{flexDirection: "row"}}>
+
 	                <TouchableOpacity style={styles.box}>
 	                	<MaterialCommunityIcons name="image-filter-none" size={45} color="#000000" />
 	                	<Text>Stocks</Text>
 	                </TouchableOpacity>
+
 	                <TouchableOpacity style={styles.box}>
 	                	<MaterialIcons name="rotate-left" size={45} color="#000000" />
 	                	<Text>History</Text>
 	                </TouchableOpacity>
                 </View>
+
                 <View style={{ flexDirection: "row"}}>
+
 	                <TouchableOpacity style={styles.box}>
 	                	<Feather name="map" size={45} color="#000000" />
 	                	<Text>Map</Text>
 	                </TouchableOpacity>
+
 	                <TouchableOpacity style={styles.box}>
 	                	<MaterialIcons name="add" size={45} color="#000000" />
 	                	<Text>Add</Text>
