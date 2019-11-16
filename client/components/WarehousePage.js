@@ -59,9 +59,7 @@ class WarehousePage extends Component {
                 </Modal>
                 <View
                     style={{ flexDirection: "row" }}>
-                    <TouchableOpacity
-                        style={styles.box}
-                        onPress={() => this.setQRModalVisible(true)}>
+                    <TouchableOpacity style={styles.box}>
                         <MaterialCommunityIcons
                             name="ballot-outline"
                             size={45}
@@ -69,9 +67,7 @@ class WarehousePage extends Component {
                         <Text>In</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity
-                        style={styles.box}
-                        onPress={() => this.setQRModalVisible(true)}>
+                    <TouchableOpacity style={styles.box}>
                         <MaterialCommunityIcons name="ballot" size={45} color="#000000" />
                         <Text>Out</Text>
                     </TouchableOpacity>
@@ -98,7 +94,8 @@ class WarehousePage extends Component {
                         <Text>Map</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.box}>
+                    <TouchableOpacity style={styles.box}
+                        onPress={() => this.setQRModalVisible(true)}>
                         <MaterialIcons name="add" size={45} color="#000000" />
                         <Text>Add</Text>
                     </TouchableOpacity>
