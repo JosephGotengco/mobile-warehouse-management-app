@@ -3,7 +3,9 @@ import { View, Text, StyleSheet, TouchableOpacity, Modal, TouchableHighlight, Bu
 import { MaterialIcons, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import * as Permissions from 'expo-permissions';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-
+import axios from 'axios';
+import { connect } from 'react-redux'
+import { addItem } from '../actions/inventoryActions';
 //react native built in icons: 1 = ballot-outline, 2 = ballot-outline, 3 = image-filter-none, 4 = rotate-left, 5 = map, 6 = icon
 
 class WarehousePage extends Component {
@@ -82,7 +84,7 @@ class WarehousePage extends Component {
 
                     <TouchableOpacity style={styles.box}>
                         <MaterialCommunityIcons name="image-filter-none" size={45} color="#000000" />
-                        <Text>Stocks</Text>
+                        <Text>Inventory</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.box}>
@@ -110,6 +112,7 @@ class WarehousePage extends Component {
     handleBarCodeScanned = ({ type, data }) => {
         this.setState({ scanned: true });
         alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+        this.props.addItem(data)
     };
 }
 
@@ -167,4 +170,15 @@ const styles = StyleSheet.create({
     }
 });
 
-export default WarehousePage;
+const mapStateToProps = (state) => ({
+})
+
+const mapDispatchToProps = {
+    
+}
+
+export default connect(mapStateToProps, {addItem})(WarehousePage)
+
+
+
+
