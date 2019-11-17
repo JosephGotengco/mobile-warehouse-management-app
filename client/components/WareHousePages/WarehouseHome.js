@@ -115,6 +115,8 @@ class WarehousePage extends Component {
 
     handleBarCodeScanned = ({ type, data }) => {
         this.setState({ scanned: true });
+        let jsonData = JSON.parse(data);
+        console.log(jsonData);
         alert(`Bar code with type ${type} and data ${data} has been scanned!`);
     };
 }

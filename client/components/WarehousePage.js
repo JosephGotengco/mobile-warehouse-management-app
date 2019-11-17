@@ -19,16 +19,28 @@ const WarehouseStack = createStackNavigator(
             }
         },
         InPage: {
-            screen: InPage
+            screen: InPage,
+            navigationOptions: {
+                title: "In"
+            }
         },
         OutPage: {
-            screen: OutPage
+            screen: OutPage,
+            navigationOptions: {
+                title: "Out"
+            }
         },
         StocksPage: {
-            screen: StocksPage
+            screen: StocksPage,
+            navigationOptions: {
+                title: "Stocks"
+            }
         },
         HistoryPage: {
-            screen: HistoryPage
+            screen: HistoryPage,
+            navigationOptions: {
+                title: "History"
+            }
         }
     },
     {
