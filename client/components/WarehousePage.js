@@ -1,82 +1,57 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { MaterialIcons, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 
-//react native built in icons: 1 = ballot-outline, 2 = ballot-outline, 3 = image-filter-none, 4 = rotate-left, 5 = map, 6 = icon
+// Warehouse Page Imports
+import WarehouseHome from './WareHousePages/WarehouseHome';
+import InPage from './WareHousePages/InPage';
+import OutPage from './WareHousePages/OutPage';
+import StocksPage from './WareHousePages/StocksPage';
+import HistoryPage from './WareHousePages/HistoryPage';
 
-class WarehousePage extends Component {
-    state = {}
+
+const WarehouseStack = createStackNavigator(
+    {
+        WarehouseHome: {
+            screen: WarehouseHome,
+            navigationOptions: {
+                header: null,
+            }
+        },
+        InPage: {
+            screen: InPage,
+            navigationOptions: {
+                title: "In"
+            }
+        },
+        OutPage: {
+            screen: OutPage,
+            navigationOptions: {
+                title: "Out"
+            }
+        },
+        StocksPage: {
+            screen: StocksPage,
+            navigationOptions: {
+                title: "Stocks"
+            }
+        },
+        HistoryPage: {
+            screen: HistoryPage,
+            navigationOptions: {
+                title: "History"
+            }
+        }
+    },
+    {
+        initialRouteName: 'WarehouseHome'
+    }
+);
+
+const WarehouseContainer = createAppContainer(WarehouseStack);
+
+export default class WarehousePage extends Component {
     render() {
-        return (
-            <View style={styles.container}>
-                <View style={{
-                flexDirection: "row"
-            }}>
-	                <TouchableOpacity style={styles.box1}>
-	                	<MaterialCommunityIcons name="ballot-outline" size={45} color="#000000" />
-	                	<Text>In</Text>
-	                </TouchableOpacity>
-	                <TouchableOpacity style={styles.box1}>
-	                	<MaterialCommunityIcons name="ballot" size={45} color="#000000" />
-	                	<Text>Out</Text>
-	                </TouchableOpacity>
-                </View>
-                <View style={{
-                flexDirection: "row"
-            }}>
-	                <TouchableOpacity style={styles.box1}>
-	                	<MaterialCommunityIcons name="image-filter-none" size={45} color="#000000" />
-	                	<Text>Stocks</Text>
-	                </TouchableOpacity>
-	                <TouchableOpacity style={styles.box1}>
-	                	<MaterialIcons name="rotate-left" size={45} color="#000000" />
-	                	<Text>History</Text>
-	                </TouchableOpacity>
-                </View>
-                <View style={{
-                flexDirection: "row"
-            }}>
-	                <TouchableOpacity style={styles.box1}>
-	                	<Feather name="map" size={45} color="#000000" />
-	                	<Text>Map</Text>
-	                </TouchableOpacity>
-	                <TouchableOpacity style={styles.box1}>
-	                	<MaterialIcons name="add" size={45} color="#000000" />
-	                	<Text>Add</Text>
-	                </TouchableOpacity>
-	            </View>
-            </View>
-        );
+        return <WarehouseContainer />
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    box1: {
-        width: 100,
-        height: 100,
-        alignItems: 'center',
-        justifyContent: 'center',
-        margin: 30,
-        backgroundColor: "#f7f7f7",
-        borderRadius: 20,
-        borderColor: '#ffffff',
-        borderWidth: 1,
-
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 5,
-        },
-        shadowOpacity: 0.34,
-        shadowRadius: 6.27,
-
-        elevation: 10,
-    }
-});
-
-export default WarehousePage;
