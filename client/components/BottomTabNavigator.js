@@ -1,6 +1,6 @@
 import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
-import { MaterialCommunityIcons, Feather, FontAwesome } from '@expo/vector-icons'; // 6.2.2
+import { MaterialCommunityIcons } from '@expo/vector-icons'; // 6.2.2
 import React from 'react';
 
 // Page imports
@@ -46,7 +46,7 @@ const bottomTabNavigator = createBottomTabNavigator(
         }
     },
     {
-        initialRouteName: 'Home',
+        initialRouteName: 'Warehouse',
         tabBarOptions: {
             activeTintColor: "#46CDCD"
         }
