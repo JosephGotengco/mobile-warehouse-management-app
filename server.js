@@ -50,6 +50,7 @@ mongoose
 app.use("/api/users", require("./routes/api/users"));
 app.use("/api/auth", require("./routes/api/auth"));
 app.use("/api/shifts", require("./routes/api/shifts"));
+app.use("/api/inventory", require("./routes/api/inventory"))
 
 const port = process.env.PORT || 5000;
 
