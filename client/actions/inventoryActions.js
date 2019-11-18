@@ -1,8 +1,7 @@
-import Axios from "axios";
+import axios from "axios";
 import { UPDATE_INVENTORY, UPDATE_INVENOTRY_ERR } from "./types";
 
 export const addItem = (data) => {
-    console.log("Here at inventoryActions.js")
     // ASYNC action creator
     return (dispatch, getState) => {
         // Headers
@@ -11,16 +10,15 @@ export const addItem = (data) => {
                 "Content-type": "application/json"
             }
         };
-        const body = data
-        console.log(typeof(body))
+        const body = JSON.parse(data)
 
-        // return Axios
-        // .post(`http://10.0.2.2:5000/api/inventory/add`, body, config)
-        // .then(res => {
-        //     console.log(res.data)
-        // }).catch(res => {
-        //     console.log(res)
-        // })
+        return axios
+        .post(`http://10.0.2.2:5000/api/inventory/add`, body, config)
+        .then(res => {
+            console.log(res)
+        }).catch(res => {
+            console.log(res)
+        })
     }
 
     

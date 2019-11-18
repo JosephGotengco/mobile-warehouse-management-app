@@ -6,7 +6,7 @@ import {
 } from "./../actions/types";
 
 const initialState = {
-    loggedIn: false,
+    loggedIn: true,
     user: {
         "_id": "5dc79195a986f50b2cc61a1e",
         "email": "1",

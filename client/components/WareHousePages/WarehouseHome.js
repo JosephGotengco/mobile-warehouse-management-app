@@ -3,11 +3,12 @@ import { View, Text, StyleSheet, TouchableOpacity, Modal, TouchableHighlight, Bu
 import { MaterialIcons, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import * as Permissions from 'expo-permissions';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import { withNavigation } from 'react-navigation';
+import { connect } from 'react-redux'
+import { addItem } from '../../actions/inventoryActions'
 
 //react native built in icons: 1 = ballot-outline, 2 = ballot-outline, 3 = image-filter-none, 4 = rotate-left, 5 = map, 6 = icon
 
-class WarehousePage extends Component {
+class WarehouseHome extends Component {
 
     constructor(props) {
         super(props);
@@ -46,7 +47,8 @@ class WarehousePage extends Component {
             <View style={styles.container}>
                 <Modal
                     animationType="slide"
-                    visible={this.state.QRModalVisble}>
+                    visible={this.state.QRModalVisble}
+                    onRequestClose={()=> {this.setQRModalVisible(!this.state.QRModalVisble)}}>
                     <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-end', backgroundColor: 'black' }}>
                         <BarCodeScanner
                             onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned}
@@ -116,7 +118,7 @@ class WarehousePage extends Component {
     handleBarCodeScanned = ({ type, data }) => {
         this.setState({ scanned: true });
         let jsonData = JSON.parse(data);
-        console.log(jsonData);
+        this.props.addItem(data)
         alert(`Bar code with type ${type} and data ${data} has been scanned!`);
     };
 }
@@ -175,4 +177,8 @@ const styles = StyleSheet.create({
     }
 });
 
-export default withNavigation(WarehousePage);
+const mapStateToProps = (state) => ({
+    inventoryErr: state.inventory.inventoryErr
+})
+
+export default connect(mapStateToProps, { addItem })(WarehouseHome)
