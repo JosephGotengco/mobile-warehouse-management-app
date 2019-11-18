@@ -5,7 +5,7 @@ import React from 'react';
 
 // Page imports
 import HomePage from "./HomePage";
-import WarehousePage from "./WarehousePage";
+import WarehousePage from "./WarehouseNavigator";
 import SchedulePage from "./SchedulePage";
 import AccountPage from "./AccountPage";
 
