@@ -1,5 +1,6 @@
 const LocalStrategy = require("passport-local");
 const User = require("./models/User");
+const Inventory = require("./models/Inventory")
 const bcrypt = require("bcryptjs");
 module.exports = passport => {
   passport.serializeUser((user, done) => {
