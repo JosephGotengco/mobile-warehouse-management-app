@@ -16,7 +16,7 @@ const bottomTabNavigator = createBottomTabNavigator(
             screen: HomePage,
             navigationOptions: {
                 tabBarIcon: ({ tintColor }) => (
-                    <MaterialCommunityIcons name="home-outline" size={25} color={tintColor}
+                    <MaterialCommunityIcons name="home-outline" size={35} color={tintColor}
                     />),
             }
         },
@@ -24,7 +24,7 @@ const bottomTabNavigator = createBottomTabNavigator(
             screen: WarehousePage,
             navigationOptions: {
                 tabBarIcon: ({ tintColor }) => (
-                    <MaterialCommunityIcons name="truck" size={25} color={tintColor}
+                    <MaterialCommunityIcons name="truck" size={35} color={tintColor}
                     />),
             }
         },
@@ -32,7 +32,7 @@ const bottomTabNavigator = createBottomTabNavigator(
             screen: SchedulePage,
             navigationOptions: {
                 tabBarIcon: ({ tintColor }) => (
-                    <MaterialCommunityIcons name="calendar" size={25} color={tintColor}
+                    <MaterialCommunityIcons name="calendar" size={35} color={tintColor}
                     />),
             }
         },
@@ -40,7 +40,7 @@ const bottomTabNavigator = createBottomTabNavigator(
             screen: AccountPage,
             navigationOptions: {
                 tabBarIcon: ({ tintColor }) => (
-                    <MaterialCommunityIcons name="account-outline" size={25} color={tintColor ? tintColor : "#333333"}
+                    <MaterialCommunityIcons name="account-outline" size={35} color={tintColor ? tintColor : "#333333"}
                     />),
             }
         }
@@ -48,7 +48,11 @@ const bottomTabNavigator = createBottomTabNavigator(
     {
         initialRouteName: 'Warehouse',
         tabBarOptions: {
-            activeTintColor: "#46CDCD"
+            activeTintColor: "#46CDCD",
+            style: {
+                height: 55,
+                paddingTop: 8
+            }
         }
     }
 );

@@ -14,6 +14,10 @@ const ItemSchema = new Schema({
     quantity: {
         type: Number,
         required: true
+    },
+    tags: {
+        type: Array,
+        required: true
     }
 })
 

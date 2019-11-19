@@ -1,8 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Inventory = require("../../models/Inventory");
 const Item = require("../../models/Item")
-const User = require("../../models/User")
 
 const isLoggedIn = (req, res, next) => {
     // checks if user is logged in
@@ -16,18 +14,23 @@ const isLoggedIn = (req, res, next) => {
 router.post('/add', (req, res, next) => {
     try {
         // res.status(200).send({...req.body})
-        const { id, name, quantity } = req.body;
+        const { id, name, quantity, tags } = req.body;
+        console.log(typeof(id), typeof(name), typeof(quantity))
         if (!id || !name || !quantity ) {return res.status(400).send("Invalid QR Code")}
         Item.findOne({id: id})
             .then(item => {
                 if (item) {
-                    return res.status(200).send("Item found in database")
+                    res.send("Item found. Trying to update quantity...")
+                    Item.updateOne({id: id}, {$inc: {quantity: quantity}}, function(err, response ){
+                        if (err) return res.send(err)
+                    })
                 } else {
                     res.send("Trying to create object in collection...")
                     Item.create({
                         id: id,
                         name: name,
-                        quantity: quantity
+                        quantity: quantity,
+                        tags: tags
                     })
                 }
             })
