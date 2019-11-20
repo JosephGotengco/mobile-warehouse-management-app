@@ -3,13 +3,13 @@ import { View, Text, StyleSheet, TouchableOpacity, Modal, TouchableHighlight, Bu
 import { MaterialIcons, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import * as Permissions from 'expo-permissions';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { connect } from 'react-redux'
+import { addItem } from '../../actions/inventoryActions'
 import { withNavigation } from 'react-navigation';
-import { connect } from "react-redux";
-import { addItem } from './../../actions/inventoryActions';
 
 //react native built in icons: 1 = ballot-outline, 2 = ballot-outline, 3 = image-filter-none, 4 = rotate-left, 5 = map, 6 = icon
 
-class WarehousePage extends Component {
+class WarehouseHome extends Component {
 
     constructor(props) {
         super(props);
@@ -48,7 +48,8 @@ class WarehousePage extends Component {
             <View style={styles.container}>
                 <Modal
                     animationType="slide"
-                    visible={this.state.QRModalVisble}>
+                    visible={this.state.QRModalVisble}
+                    onRequestClose={()=> {this.setQRModalVisible(!this.state.QRModalVisble)}}>
                     <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-end', backgroundColor: 'black' }}>
                         <BarCodeScanner
                             onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned}
@@ -68,7 +69,7 @@ class WarehousePage extends Component {
                         onPress={() => this.props.navigation.push('InPage')}>
                         <MaterialCommunityIcons
                             name="ballot-outline"
-                            size={45}
+                            size={55}
                             color="#000000" />
                         <Text>In</Text>
                     </TouchableOpacity>
@@ -76,7 +77,7 @@ class WarehousePage extends Component {
                     {/* OUT PAGE */}
                     <TouchableOpacity style={styles.box}
                         onPress={() => this.props.navigation.push('OutPage')}>
-                        <MaterialCommunityIcons name="ballot" size={45} color="#000000" />
+                        <MaterialCommunityIcons name="ballot" size={55} color="#000000" />
                         <Text>Out</Text>
                     </TouchableOpacity>
                 </View>
@@ -85,14 +86,14 @@ class WarehousePage extends Component {
                     {/* STOCKS PAGE */}
                     <TouchableOpacity style={styles.box}
                         onPress={() => this.props.navigation.push('StocksPage')}>
-                        <MaterialCommunityIcons name="image-filter-none" size={45} color="#000000" />
+                        <MaterialCommunityIcons name="image-filter-none" size={55} color="#000000" />
                         <Text>Stocks</Text>
                     </TouchableOpacity>
 
                     {/* HISTORY PAGE */}
                     <TouchableOpacity style={styles.box}
                         onPress={() => this.props.navigation.push('HistoryPage')}>
-                        <MaterialIcons name="rotate-left" size={45} color="#000000" />
+                        <MaterialIcons name="rotate-left" size={55} color="#000000" />
                         <Text>History</Text>
                     </TouchableOpacity>
                 </View>
@@ -100,14 +101,14 @@ class WarehousePage extends Component {
                 <View style={{ flexDirection: "row" }}>
                     {/* MAPS PAGE IS PROBABLY GONNA BE CHANGED, IDK WHAT YET MAYBE A CHAT FEATURE */}
                     <TouchableOpacity style={styles.box}>
-                        <Feather name="map" size={45} color="#000000" />
+                        <MaterialIcons name="map" size={55} color="#000000" />
                         <Text>Map</Text>
                     </TouchableOpacity>
 
                     {/* ADD QR SCANNER MODAL */}
-                    <TouchableOpacity style={styles.box}
+                    <TouchableOpacity style={[styles.box]}
                         onPress={() => this.setQRModalVisible(true)}>
-                        <MaterialIcons name="add" size={45} color="#000000" />
+                        <MaterialIcons name="add" size={55} color="#27AE60" />
                         <Text>Add</Text>
                     </TouchableOpacity>
                 </View>
@@ -118,7 +119,7 @@ class WarehousePage extends Component {
     handleBarCodeScanned = ({ type, data }) => {
         this.setState({ scanned: true });
         let jsonData = JSON.parse(data);
-        this.props.addItem(jsonData)
+        this.props.addItem(data)
         alert(`Bar code with type ${type} and data ${data} has been scanned!`);
     };
 }
@@ -129,18 +130,17 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        flexDirection: "column"
+        flexDirection: "column",
+        backgroundColor: "#F2F2F2"
     },
     box: {
-        width: 122,
-        height: 117,
+        width: 152.5,
+        height: 146.25,
         alignItems: 'center',
         justifyContent: 'center',
         margin: 30,
         backgroundColor: "#f7f7f7",
-        borderRadius: 20,
-        borderColor: '#ffffff',
-        borderWidth: 1,
+        borderRadius: 25,
 
         shadowColor: "#000",
         shadowOffset: {
@@ -174,7 +174,15 @@ const styles = StyleSheet.create({
     layerBottom: {
         flex: 0.5,
         backgroundColor: opacity
+    },
+    addBox: {
+        backgroundColor: "#27AE60",
+        color: "white"
     }
 });
 
-export default withNavigation(connect(null, { addItem })(WarehousePage));
+const mapStateToProps = (state) => ({
+    inventoryErr: state.inventory.inventoryErr
+})
+
+export default connect(mapStateToProps, { addItem })(WarehouseHome)
