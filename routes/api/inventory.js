@@ -42,7 +42,7 @@ router.post('/add', (req, res, next) => {
 
 router.put('/remove', isLoggedIn, (req, res, next) => {
     try {
-        
+
     } catch (error) {
         console.log(error)
     }

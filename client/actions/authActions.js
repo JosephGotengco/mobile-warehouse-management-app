@@ -21,7 +21,7 @@ export const signIn = (email, password) => {
         console.log(body)
 
         return axios
-            .post(`http://10.0.2.2:5000/api/auth/`, body, config)
+            .post(`https://warehouse-management-api.herokuapp.com/api/auth/`, body, config)
             .then(res => {
                 console.log('res', res.data)
                 dispatch({

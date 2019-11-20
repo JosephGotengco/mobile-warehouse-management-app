@@ -7,6 +7,7 @@ const initialState = {
 const inventoryReducer = (state = initialState, action) => {
     switch (action.type) {
         case UPDATE_INVENTORY:
+            console.log(action.payload)
             return {
                 ...state,
                 inventoryError: false
