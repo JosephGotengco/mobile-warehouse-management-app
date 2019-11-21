@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Alert, ActivityIndicator} from 'react-native';
+import { Button } from 'react-native-elements'
 import { TextField } from 'react-native-material-textfield';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { withNavigation } from 'react-navigation';
 import { connect } from "react-redux";
-import { signIn } from "../../actions/authActions"
+import { signIn, resetFailedLogin } from "../../actions/authActions"
 
 import logo from "./../../assets/logo.png";
 
@@ -16,6 +17,7 @@ class SignInPage extends Component {
             email: '',
             password: '',
             passwordHide: true,
+            buttonLoading: false
         };
         this._scrollToInput = this._scrollToInput.bind(this);
     }
@@ -27,7 +29,17 @@ class SignInPage extends Component {
 
     onSubmit = () => {
         let { email, password } = this.state;
+        if (email == null || email == '' || password == null || password == '') return alert("Please enter your login credentials")
+        this.setState({buttonLoading: true})
         this.props.signIn(email, password)
+    }
+
+    componentDidUpdate(){
+        if (this.props.loginErr == true){
+            this.props.resetFailedLogin()
+            alert('bad login')
+            this.setState({buttonLoading: false})
+        }
     }
 
     // componentDidUpdate(prevProps) {
@@ -60,7 +72,7 @@ class SignInPage extends Component {
                             fontFamily: 'Rubik-Bold',
                             fontSize: 32,
                             color: "#4F4F4F"
-                        }}>Welcome {"\n"}Back</Text>
+                        }}>Warehouse{"\n"}Management</Text>
                     </View>
 
                     <View style={{ width: '100%', display: "flex", flexDirection: "row" }}>
@@ -101,12 +113,16 @@ class SignInPage extends Component {
                             onPress={this.onSubmit}>
                             Sign In
                         </Text>
-                        <View style={{
+                        <Button
+                        icon={<MaterialIcons name="arrow-forward" size={32} color="#F2F2F2"/>}
+                        buttonStyle={{
                             height: 50, width: 50, backgroundColor: "#4F4F4F", elevation: 5,
                             borderRadius: 25, display: 'flex', justifyContent: 'center', alignItems: 'center'
-                        }}>
-                            <MaterialIcons name="arrow-forward" size={32} color="#F2F2F2" onPress={this.onSubmit} />
-                        </View>
+                        }}
+                            onPress={this.onSubmit}
+                            loading={this.state.buttonLoading}
+                        />
+                        
                     </View>
                     <View style={{
                         display: 'flex', width: "90%", justifyContent: 'flex-start',
@@ -130,11 +146,12 @@ class SignInPage extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        loggedIn: state.auth.loggedIn
+        loggedIn: state.auth.loggedIn,
+        loginErr: state.auth.loginErr
     }
 }
 
-export default withNavigation(connect(mapStateToProps, { signIn })(SignInPage));
+export default withNavigation(connect(mapStateToProps, { signIn, resetFailedLogin })(SignInPage));
 
 const styles = StyleSheet.create({
     container: {
