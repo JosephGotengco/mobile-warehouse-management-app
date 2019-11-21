@@ -4,6 +4,7 @@ export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 
 export const LOGIN_FAIL = "LOGIN_FAIL";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const RESET_ON_FAILED_LOGIN = "RESET_ON_FAILED_LOGIN"
 
 // inventory
 export const UPDATE_INVENTORY = "UPDATE_INVENTORY"

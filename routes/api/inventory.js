@@ -11,6 +11,7 @@ const isLoggedIn = (req, res, next) => {
     }
 }
 
+//Adds items to database based on QR Code data.
 router.post('/add', (req, res, next) => {
     try {
         // res.status(200).send({...req.body})
@@ -48,6 +49,7 @@ router.put('/remove', isLoggedIn, (req, res, next) => {
     }
 })
 
+//Get all items in database
 router.get('/all', (req, res, next) => {
     try {
         Item.find().then(items => {

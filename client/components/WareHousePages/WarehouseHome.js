@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Modal, TouchableHighlight, Button } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, TouchableHighlight, Button, Alert } from 'react-native';
 import { MaterialIcons, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import * as Permissions from 'expo-permissions';
 import { BarCodeScanner } from 'expo-barcode-scanner';
@@ -17,6 +17,7 @@ class WarehouseHome extends Component {
             QRModalVisble: false,
             hasCameraPermission: null,
             scanned: false,
+            inventoryErr: false,
         }
     }
 
@@ -35,6 +36,19 @@ class WarehouseHome extends Component {
         // Closes modal
         this.setState({ QRModalVisble: visible })
         this.setState({ scanned: false})
+    }
+
+    QRErrorAlert = () => {
+        Alert.alert('Scanning Error','There was an error scanning the QR Code. Please try again',
+        [
+            {text: 'Tap to scan again', onPress: () => this.setState({scanned: false})}
+        ])
+    }
+
+    componentDidUpdate(){
+        if (this.props.inventoryErr == true) {
+            this.QRErrorAlert()
+        }
     }
 
     render() {
@@ -133,7 +147,7 @@ class WarehouseHome extends Component {
     handleBarCodeScanned = ({ type, data }) => {
         this.setState({ scanned: true });
         let jsonData = JSON.parse(data);
-        this.props.addItem(data)
+        this.props.addItem(jsonData)
         alert(`Bar code with type ${type} and data ${data} has been scanned!`);
     };
 }
