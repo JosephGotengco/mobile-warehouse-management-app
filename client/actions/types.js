@@ -8,3 +8,7 @@ export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 // inventory
 export const UPDATE_INVENTORY = "UPDATE_INVENTORY"
 export const UPDATE_INVENOTRY_ERR = "UPDATE_INVENTORY_ERR"
+export const GET_INVENTORY = "GET_INVENTORY"
+export const GET_INVENTORY_ERR = "GET_INVENTORY_ERR"
+export const GET_ITEM = "GET_ITEM"
+export const GET_ITEM_ERR = "GET_ITEM_ERR"

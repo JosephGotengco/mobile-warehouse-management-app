@@ -20,16 +20,20 @@ class WarehouseHome extends Component {
     }
 
     async componentDidMount() {
+        // Grabs camera permissions on initial component load.
         this.getPermissionsAsync();
     }
 
     getPermissionsAsync = async () => {
+        // Grabs camera permissions
         const { status } = await Permissions.askAsync(Permissions.CAMERA);
         this.setState({ hasCameraPermission: status === 'granted' });
     }
 
     setQRModalVisible = (visible) => {
+        // Closes modal
         this.setState({ QRModalVisble: visible })
+        this.setState({ scanned: false})
     }
 
     render() {
@@ -45,6 +49,7 @@ class WarehouseHome extends Component {
 
         return (
             <View style={styles.container}>
+                {/* QR CAMERA MODAL */}
                 <Modal
                     animationType="slide"
                     visible={this.state.QRModalVisble}
@@ -52,12 +57,21 @@ class WarehouseHome extends Component {
                     <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-end', backgroundColor: 'black' }}>
                         <BarCodeScanner
                             onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned}
-                            style={StyleSheet.absoluteFillObject} />
+                            style={StyleSheet.absoluteFillObject}>
+                                {/* Opacity for border */}
+                                <View style={styles.layerTop} />
+                                <View style={styles.layerCenter}>
+                                <View style={styles.layerLeft} />
+                                <View style={styles.focused} />
+                                <View style={styles.layerRight} />
+                                </View>
+                                <View style={styles.layerBottom} />
+                            </BarCodeScanner>
                         {scanned && (<Button title={'Tap to Scan Again'}
                             onPress={() => this.setState({ scanned: false })} />)}
                     </View>
                     <Button
-                        title="Hide Modal"
+                        title="Cancel"
                         onPress={() => { this.setQRModalVisible(!this.state.QRModalVisble) }} />
                 </Modal>
 

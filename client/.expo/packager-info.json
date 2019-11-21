@@ -1,9 +1,10 @@
 {
-  "expoServerPort": 19000,
-  "expoServerNgrokUrl": "https://5d-5w2.anonymous.client.exp.direct",
-  "packagerNgrokUrl": "https://packager.5d-5w2.anonymous.client.exp.direct",
-  "ngrokPid": 5472,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "devToolsPort": 19002,
-  "packagerPort": 19001,
-  "packagerPid": 1752
+  "expoServerPort": null,
+  "webpackServerPort": null
 }

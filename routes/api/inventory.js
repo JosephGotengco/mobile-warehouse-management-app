@@ -48,4 +48,18 @@ router.put('/remove', isLoggedIn, (req, res, next) => {
     }
 })
 
+router.get('/all', (req, res, next) => {
+    try {
+        Item.find().then(items => {
+            if (items) {
+                return res.status(200).send({items})
+            } else {
+                return res.status(404).send("Unable to connect to database")
+            }
+        })
+    } catch (error) {
+        console.log(error)
+    }
+})
+
 module.exports = router
