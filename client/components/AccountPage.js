@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 class AccountPage extends Component {
     state = {}
@@ -13,8 +14,8 @@ class AccountPage extends Component {
                 		<Image source={{
                 uri: 'https://picsum.photos/id/893/200/300'
             }} style={{
-                width: 100,
-                height: 100,
+                width: hp('15%'),
+                height: hp('15%'),
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: 100
@@ -29,7 +30,7 @@ class AccountPage extends Component {
             		</Text>
                 <Text style={{
                 fontWeight: "bold",
-                fontSize: 20,
+                fontSize: hp('3%'),
                 marginLeft: 20
             }}>
                 Jimmy Scott
@@ -38,14 +39,15 @@ class AccountPage extends Component {
                 </View>
                 <View style={{
                 flexDirection: 'row',
-                marginTop: 70
+                marginTop: 50
             }}>
                 	<View style={{
-                borderBottom: 20,
+                borderBottom: 10,
                 borderBottomWidth: 2,
                 borderColor: '#4F4F4F',
-                marginLeft: 30,
-                flex: 1,
+                marginLeft: hp('-1%'),
+                width: hp('17.5%'),
+                height: hp('8%')
             }}>
                 		<Text style={{
                 color: '#4F4F4F',
@@ -59,8 +61,9 @@ class AccountPage extends Component {
                 borderBottom: 20,
                 borderBottomWidth: 2,
                 borderColor: '#4F4F4F',
-                marginLeft: 50,
-                flex: 1
+                marginLeft: hp('10%'),
+                width: hp('17.2%'),
+                height: hp('8%')
             }}>
                 		<Text style={{
                 color: '#4F4F4F',
@@ -71,16 +74,14 @@ class AccountPage extends Component {
             }}>Scott</Text>
                 	</View>
                 </View>
-                <View style={{
-                flexDirection: 'row'
-            }}>
                 	<View style={{
                 borderBottom: 20,
                 borderBottomWidth: 2,
                 borderColor: '#4F4F4F',
                 marginTop: 30,
-                marginLeft: 30,
-                flex: 1
+                marginRight: hp('1%'),
+                width: hp('45%'),
+                height: hp('8%')
             }}>
                 		<Text style={{
                 color: '#4F4F4F',
@@ -95,8 +96,9 @@ class AccountPage extends Component {
                 borderBottomWidth: 2,
                 borderColor: '#4F4F4F',
                 marginTop: 30,
-                marginLeft: 50,
-                flex: 1
+                marginRight: hp('1%'),
+                width: hp('45%'),
+                height: hp('8%')
             }}>
                 		<Text style={{
                 color: '#4F4F4F',
@@ -106,13 +108,14 @@ class AccountPage extends Component {
                 color: '#4F4F4F'
             }}>JimmyS@gmail.com</Text>
                 	</View>
-                </View>
                   <View style={{
                 borderBottom: 20,
                 borderBottomWidth: 2,
                 borderColor: '#4F4F4F',
                 marginTop: 30,
-                marginRight: 200
+                marginRight: hp('1%'),
+                width: hp('45%'),
+                height: hp('8%')
             }}>
                 		<Text style={{
                 color: '#4F4F4F',
@@ -127,7 +130,9 @@ class AccountPage extends Component {
                 borderBottomWidth: 2,
                 borderColor: '#4F4F4F',
                 marginTop: 30,
-                marginRight: 230
+                marginRight: hp('1%'),
+                width: hp('45%'),
+                height: hp('8%')
             }}>
                 		<Text style={{
                 color: '#4F4F4F',
@@ -149,7 +154,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     text: {
-        fontSize: 20,
+        fontSize: hp('3%'),
         textAlign: 'center',
         justifyContent: 'center',
         marginLeft: 20
