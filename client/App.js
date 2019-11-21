@@ -31,7 +31,7 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        {this.state.fontLoaded ? (<BottomTabNavigator />) : null}
+        {this.state.fontLoaded ? (<Bridge />) : null}
       </Provider>
     );
   }
