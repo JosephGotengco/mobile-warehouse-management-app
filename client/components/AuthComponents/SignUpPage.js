@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import ReactNative, { View, Text, StyleSheet, Image } from 'react-native';
+import ReactNative, { View, Text, StyleSheet, Image, ActivityIndicator} from 'react-native';
 import { TextField } from 'react-native-material-textfield';
+import { Button } from 'react-native-elements'
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { withNavigation } from 'react-navigation';
@@ -165,13 +166,15 @@ class SignUpPage extends Component {
                             onPress={this.onSubmit} >
                             Sign Up
                         </Text>
-                        <View style={{
+                        <Button 
+                        icon={<MaterialIcons name="arrow-forward" size={32} color="#F2F2F2"/>}
+                        onPress={this.onSubmit}
+                        buttonStyle={{
                             height: 50, width: 50, backgroundColor: "#4F4F4F", elevation: 5,
                             borderRadius: 25, display: 'flex', justifyContent: 'center', alignItems: 'center'
                         }}>
-                            <MaterialIcons name="arrow-forward" size={32} color="#F2F2F2"
-                                onPress={this.onSubmit} />
-                        </View>
+                            
+                        </Button>
                     </View>
                     <View style={{
                         display: 'flex', width: "90%", justifyContent: 'flex-start',

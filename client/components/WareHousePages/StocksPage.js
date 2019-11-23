@@ -1,16 +1,65 @@
 import React, { Component } from "react";
-import { View, Text } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  Button,
+  TouchableHighlight,
+  ActivityIndicator
+} from "react-native";
+import { ListItem, SearchBar } from "react-native-elements";
+import { connect } from "react-redux";
 import { withNavigation } from "react-navigation";
+import { getInventory } from "../../actions/inventoryActions";
 
-class StocksPage extends Component {
-  state = {};
+export class StocksPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      source: []
+    };
+  }
+
+  componentWillMount() {
+    this.props.getInventory();
+  }
+
+  componentDidMount() {
+    this.setState({
+      source: this.props.items
+    });
+  }
+
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <Text>Stocks Page</Text>
+      <View style={{ flex: 1, backgroundColor: "white" }}>
+        <FlatList
+          data={this.props.items}
+          keyExtractor={item => `${item.id}`}
+          renderItem={({ item }) => (
+            <ListItem
+              containerStyle={{
+                backgroundColor: "#f1f1f1",
+                borderBottomColor: "black",
+                borderBottomWidth: 1
+              }}
+              key={item.id}
+              title={item.name}
+              subtitle={"Current Stock: " + item.quantity}
+              subtitleStyle={{ fontSize: 13 }}
+              bottomDivider={true}
+            />
+          )}
+        />
       </View>
     );
   }
 }
 
-export default withNavigation(StocksPage);
+const mapStateToProps = state => ({
+  items: state.inventory.items
+});
+
+export default withNavigation(
+  connect(mapStateToProps, { getInventory })(StocksPage)
+);

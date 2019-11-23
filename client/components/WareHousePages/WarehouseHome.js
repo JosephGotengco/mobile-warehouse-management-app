@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   Modal,
   TouchableHighlight,
-  Button
+  Button,
+  Alert
 } from "react-native";
 import {
   MaterialIcons,
@@ -17,6 +18,7 @@ import * as Permissions from "expo-permissions";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { connect } from "react-redux";
 import { addItem } from "../../actions/inventoryActions";
+import { withNavigation } from "react-navigation";
 
 //react native built in icons: 1 = ballot-outline, 2 = ballot-outline, 3 = image-filter-none, 4 = rotate-left, 5 = map, 6 = icon
 
@@ -30,18 +32,51 @@ class WarehouseHome extends Component {
     };
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      QRModalVisble: false,
+      hasCameraPermission: null,
+      scanned: false,
+      inventoryErr: false
+    };
+  }
+
   async componentDidMount() {
+    // Grabs camera permissions on initial component load.
     this.getPermissionsAsync();
   }
 
   getPermissionsAsync = async () => {
+    // Grabs camera permissions
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({ hasCameraPermission: status === "granted" });
   };
 
   setQRModalVisible = visible => {
+    // Closes modal
     this.setState({ QRModalVisble: visible });
+    this.setState({ scanned: false });
   };
+
+  QRErrorAlert = () => {
+    Alert.alert(
+      "Scanning Error",
+      "There was an error scanning the QR Code. Please try again",
+      [
+        {
+          text: "Tap to scan again",
+          onPress: () => this.setState({ scanned: false })
+        }
+      ]
+    );
+  };
+
+  componentDidUpdate() {
+    if (this.props.inventoryErr == true) {
+      this.QRErrorAlert();
+    }
+  }
 
   render() {
     const { hasCameraPermission, scanned } = this.state;
@@ -55,6 +90,7 @@ class WarehouseHome extends Component {
 
     return (
       <View style={styles.container}>
+        {/* QR CAMERA MODAL */}
         <Modal
           animationType="slide"
           visible={this.state.QRModalVisble}
@@ -73,7 +109,16 @@ class WarehouseHome extends Component {
             <BarCodeScanner
               onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned}
               style={StyleSheet.absoluteFillObject}
-            />
+            >
+              {/* Opacity for border */}
+              <View style={styles.layerTop} />
+              <View style={styles.layerCenter}>
+                <View style={styles.layerLeft} />
+                <View style={styles.focused} />
+                <View style={styles.layerRight} />
+              </View>
+              <View style={styles.layerBottom} />
+            </BarCodeScanner>
             {scanned && (
               <Button
                 title={"Tap to Scan Again"}
@@ -82,7 +127,7 @@ class WarehouseHome extends Component {
             )}
           </View>
           <Button
-            title="Hide Modal"
+            title="Cancel"
             onPress={() => {
               this.setQRModalVisible(!this.state.QRModalVisble);
             }}
@@ -160,7 +205,7 @@ class WarehouseHome extends Component {
   handleBarCodeScanned = ({ type, data }) => {
     this.setState({ scanned: true });
     let jsonData = JSON.parse(data);
-    this.props.addItem(data);
+    this.props.addItem(jsonData);
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
   };
 }
