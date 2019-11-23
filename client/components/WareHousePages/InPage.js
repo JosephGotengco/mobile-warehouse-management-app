@@ -270,4 +270,8 @@ class InPage extends Component {
   }
 }
 
+export const inPageStyles = StyleSheet.create({
+
+})
+
 export default withNavigation(InPage);
