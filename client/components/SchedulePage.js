@@ -56,6 +56,7 @@ class SchedulePage extends Component {
         if (shifts) {
             for (dateKey of Object.keys(shifts)) {
                 agendaDates[dateKey] = [{ ...shifts[dateKey] }];
+                console.log(shifts[dateKey].date)
                 var date = new Date(...shifts[dateKey].date.split("-"));
                 var date = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
                 if (markedDates[date]) {
@@ -197,7 +198,7 @@ class SchedulePage extends Component {
     onSubmit = () => {
         let { newShift } = this.state;
         let { date, startTime, endTime } = newShift;
-        console.log(date, startTime, endTime)
+        this.props.addShift(date.year, date.month, date.date, startTime, endTime);
     }
 
     render() {

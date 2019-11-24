@@ -46,20 +46,20 @@ router.post("/", isLoggedIn, async (req, res) => {
         if (!isValidTime(startTime)) return res.status(400).send("Please provide a valid start time.");
         if (!isValidTime(endTime)) return res.status(400).send("Please provide a valid end time.");
         if (hmsToSeconds(endTime) - hmsToSeconds(startTime) < 0) return res.status(400).send("End time must be after start time.");
-        
+
         // Get the date in the PST time zone (Vancouver)
         var d = new Date();
         var utc = d.getTime() + (d.getTimezoneOffset() * 60000);
-        var nd = new Date(utc - (3600000*8));
-        
+        var nd = new Date(utc - (3600000 * 8));
+
         // Parse the user's date input
         var dateArr = date.split("-");
         var fullYear = dateArr[0];
         var month = dateArr[1];
         var dateNum = dateArr[2];
-        
-        if (sameDay(nd, new Date(fullYear, month-1, dateNum,))) return res.status(400).send("Please schedule shifts a day before the shift date.")
-        
+
+        if (sameDay(nd, new Date(fullYear, month - 1, dateNum))) return res.status(400).send("Please schedule shifts a day before the shift date.")
+
         // Parse the user's startTime input
         var startTimeArr = startTime.split(":");
         var startHour = startTimeArr[0];
@@ -72,6 +72,7 @@ router.post("/", isLoggedIn, async (req, res) => {
         let { shifts } = user;
         // the key for this object is date so no need to add the date as a property
         var shiftObj = {
+            date,
             startTime,
             endTime
         };

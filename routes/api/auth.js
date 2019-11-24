@@ -34,8 +34,12 @@ router.post(
 // @route   GET api/auth/user
 // @desc    Get user data, only if they have a sesssion
 // @access  Private
-router.get("/user", isLoggedIn, (req, res) => {
-    res.status(200).json({ ...req.user })
+router.get("/user", isLoggedIn, async(req, res) => {
+    let result = await User.findById(req.user._id);
+    let user = result._doc;
+    delete user.password;
+    delete user.__v;
+    res.status(200).json({ ...user })
 });
 
 // @route   POST api/auth/logout

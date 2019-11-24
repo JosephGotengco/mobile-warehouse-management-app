@@ -2,9 +2,9 @@ import axios from "axios";
 import { ADDING_SHIFT, ADDED_SHIFT_SUCCESSFUL, ADDED_SHIFT_FAILURE } from "./types";
 import * as Constants from './../constants'
 
-export const addShift = (year, month, date, startTime, endtime) => dispatch => {
+export const addShift = (year, month, date, startTime, endTime) => dispatch => {
     dispatch({ type: ADDING_SHIFT })
-    let date = `${year}-${month}-${date}`;
+    let dateString = `${year}-${month}-${date}`;
     // Headers
     const config = {
         headers: {
@@ -12,7 +12,7 @@ export const addShift = (year, month, date, startTime, endtime) => dispatch => {
         }
     };
     const body = {
-        date,
+        date: dateString,
         startTime,
         endTime
     }
