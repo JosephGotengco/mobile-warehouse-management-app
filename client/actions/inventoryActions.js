@@ -1,9 +1,6 @@
 import axios from "axios";
 import { UPDATE_INVENTORY, UPDATE_INVENOTRY_ERR } from "./types";
-
-// const API_URL = "http://10.0.2.2:5000"
-// const API_URL = "https://warehouse-management-api.herokuapp.com"
-const API_URL = "http://192.168.86.78:5000"
+import * as Constants from './../constants'
 
 export const addItem = data => dispatch => {
     // Headers
@@ -14,7 +11,7 @@ export const addItem = data => dispatch => {
     };
     const body = data
     axios
-        .post(`${API_URL}/api/inventory/add`, body, config)
+        .post(`${Constants.BASEURL}/api/inventory/add`, body, config)
         .then(res => {
             console.log(res.data)
             dispatch({

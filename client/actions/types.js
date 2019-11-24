@@ -1,9 +1,14 @@
-// auth actions & reducer
+// auth
 export const REGISTER_FAIL = "REGISTER_FAIL";
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 
 export const LOGIN_FAIL = "LOGIN_FAIL";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+
+// shifts
+export const ADDING_SHIFT = "ADDING_SHIFT";
+export const ADDED_SHIFT_SUCCESSFUL = "ADDED_SHIFT_SUCCESSFUL";
+export const ADDED_SHIFT_FAILURE = "ADDED_SHIFT_FAILURE";
 
 // inventory
 export const UPDATE_INVENTORY = "UPDATE_INVENTORY"

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as Constants from './../constants'
 
 import { LOGIN_SUCCESS, LOGIN_FAIL, REGISTER_SUCCESS, REGISTER_FAIL } from './types';
 
@@ -21,7 +22,7 @@ export const signIn = (email, password) => {
         console.log(body)
 
         return axios
-            .post(`https://warehouse-management-api.herokuapp.com/api/auth/`, body, config)
+            .post(`${Constants.BASEURL}/api/auth/`, body, config)
             .then(res => {
                 console.log('res', res.data)
                 dispatch({
@@ -58,7 +59,7 @@ export const signUp = ({ firstName, lastName, phone, email, password, confirmPas
             confirmPassword
         });
         return axios
-            .post(`http://10.0.2.2:5000/api/users/`, body, config)
+            .post(`${Constants.BASEURL}/api/users/`, body, config)
             .then(res => {
                 console.log('res', res.data)
                 dispatch({
