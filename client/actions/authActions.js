@@ -1,11 +1,14 @@
 import axios from 'axios';
 import * as Constants from './../constants'
 
-import { LOGIN_SUCCESS, LOGIN_FAIL, REGISTER_SUCCESS, REGISTER_FAIL, RESET_ON_FAILED_LOGIN } from './types';
-
-// const API_URL = "http://10.0.2.2:5000"
-const API_URL = "https://warehouse-management-api.herokuapp.com"
-// const API_URL = "http://192.168.56.1:5000"
+import {
+    LOGIN_SUCCESS,
+    LOGIN_FAIL,
+    REGISTER_SUCCESS,
+    REGISTER_FAIL,
+    RESET_ON_FAILED_LOGIN,
+    RESET_ON_FAILED_REGISTER
+} from './types';
 
 export const resetFailedLogin = () => dispatch => {
     dispatch({
@@ -32,27 +35,33 @@ export const signIn = (email, password) => {
         return axios
             .post(`${Constants.BASEURL}/api/auth/`, body, config)
             .then(res => {
-                console.log('res', res.data)
                 dispatch({
                     type: LOGIN_SUCCESS,
                     payload: res.data
                 })
             })
             .catch(err => {
-                console.log(err)
-                if (err.response.data == undefined){
+                console.log('err', err.response.status);
+                if (err.isAxiosError && !err.response) {
+                    // default login error
                     dispatch({
                         type: LOGIN_FAIL,
-                        payload: err
-                    })
+                        payload: "There was an error logging you in. Please check you have internet access."
+                    });
                 } else {
                     dispatch({
                         type: LOGIN_FAIL,
-                        payload: err.response
-                    })
+                        payload: err.response.data
+                    });
                 }
             })
     }
+}
+
+export const resetFailedSignUp = () => dispatch => {
+    dispatch({
+        type: RESET_ON_FAILED_REGISTER
+    })
 }
 
 export const signUp = ({ firstName, lastName, phone, email, password, confirmPassword }) => {
@@ -74,19 +83,25 @@ export const signUp = ({ firstName, lastName, phone, email, password, confirmPas
         return axios
             .post(`${Constants.BASEURL}/api/users/`, body, config)
             .then(res => {
-                console.log('res', res.data)
                 dispatch({
                     type: REGISTER_SUCCESS,
                     payload: res.data
                 })
             })
             .catch(err => {
-                console.log('err', err.response.status)
-                console.log('err msg', err.response.data)
-                dispatch({
-                    type: REGISTER_FAIL,
-                    payload: err.response
-                })
+                console.log('err', err.response.status);
+                if (err.isAxiosError && !err.response) {
+                    // default login error
+                    dispatch({
+                        type: REGISTER_FAIL,
+                        payload: "There was an error logging you in. Please check you have internet access."
+                    });
+                } else {
+                    dispatch({
+                        type: REGISTER_FAIL,
+                        payload: err.response.data
+                    });
+                }
             })
     }
 }

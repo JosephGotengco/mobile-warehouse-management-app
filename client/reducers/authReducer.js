@@ -3,12 +3,16 @@ import {
     LOGIN_FAIL,
     REGISTER_SUCCESS,
     REGISTER_FAIL,
-    RESET_ON_FAILED_LOGIN
+    RESET_ON_FAILED_LOGIN,
+    RESET_ON_FAILED_REGISTER
 } from "./../actions/types";
 
 const initialState = {
     loggedIn: false,
     loginErr: false,
+    loginErrMsg: "",
+    registerErr: false,
+    registerErrMsg: "",
     user: {}
 }
 
@@ -26,7 +30,14 @@ const authReducer = (state = initialState, action) => {
         case LOGIN_FAIL:
             return {
                 ...state,
-                loginErr: true
+                loginErr: true,
+                loginErrMsg: action.payload
+            }
+
+        case RESET_ON_FAILED_LOGIN:
+            return {
+                ...state,
+                loginErr: false
             }
 
         case REGISTER_SUCCESS:
@@ -35,14 +46,18 @@ const authReducer = (state = initialState, action) => {
                 loggedIn: true,
                 user: action.payload
             }
-        case RESET_ON_FAILED_LOGIN:
-            return {
-                ...state,
-                loginErr: false
-            }
+
         case REGISTER_FAIL:
             return {
-                ...state
+                ...state,
+                registerErr: true,
+                registerErrMsg: action.payload
+            }
+
+        case RESET_ON_FAILED_REGISTER:
+            return {
+                ...state,
+                registerErr: false
             }
 
         default: {

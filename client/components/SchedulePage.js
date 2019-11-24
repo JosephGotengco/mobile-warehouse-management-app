@@ -48,23 +48,25 @@ class SchedulePage extends Component {
 
     componentDidMount() {
         let { shifts } = this.props.user;
-        let { months } = this.state;
-        let startTimes = this.getTimeInRange(Constants.START_TIME, Constants.END_TIME - Constants.MINIMUM_SHIFT_LENGTH);
-        let endTimes = this.getTimeInRange(Constants.START_TIME + Constants.MINIMUM_SHIFT_LENGTH, Constants.END_TIME)
+
         // load data for markedDates and agendaDates
         let markedDates = {};
         let agendaDates = {};
-        for (dateKey of Object.keys(shifts)) {
-            agendaDates[dateKey] = [{ ...shifts[dateKey] }];
-            var date = new Date(...shifts[dateKey].date.split("-"));
-            var date = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
-            if (markedDates[date]) {
-                markedDates[date]['dots'].push({ key: dateKey, color: 'black' });
-            } else {
-                markedDates[date] = {
-                    dots: [{ key: dateKey, color: 'black' }]
+        let selectedShifts = [];
+        if (shifts) {
+            for (dateKey of Object.keys(shifts)) {
+                agendaDates[dateKey] = [{ ...shifts[dateKey] }];
+                var date = new Date(...shifts[dateKey].date.split("-"));
+                var date = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
+                if (markedDates[date]) {
+                    markedDates[date]['dots'].push({ key: dateKey, color: 'black' });
+                } else {
+                    markedDates[date] = {
+                        dots: [{ key: dateKey, color: 'black' }]
+                    }
                 }
             }
+            selectedShifts = Object.values(shifts).filter(shift => shift.date === currentDateString);
         }
 
         // Get the date in the PST time zone (Vancouver)
@@ -83,8 +85,10 @@ class SchedulePage extends Component {
             fullYear: currentFullYear
         }
         let allowedYears = this.getYearsInRange(currentFullYear, this.state.amountOfYearsAllowed);
-        let selectedShifts = Object.values(shifts).filter(shift => shift.date === currentDateString);
         let remainingDays = this.getDaysInMonth(currentDateNum, currentMonth + 1, currentFullYear);
+        // get start times & end times
+        let startTimes = this.getTimeInRange(Constants.START_TIME, Constants.END_TIME - Constants.MINIMUM_SHIFT_LENGTH);
+        let endTimes = this.getTimeInRange(Constants.START_TIME + Constants.MINIMUM_SHIFT_LENGTH, Constants.END_TIME);
         this.setState({
             markedDates,
             agendaDates,
@@ -108,20 +112,22 @@ class SchedulePage extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        // if there was a change in the number of shifts for the user
-        if (Object.keys(prevProps.user.shifts).length !== Object.keys(this.props.user.shifts).length) {
-            // load data for markedDates and agendaDates
-            let markedDates = {};
-            let agendaDates = {};
-            for (dateKey of Object.keys(shifts)) {
-                // agendaDates[dateKey] = [{ ...shifts[dateKey] }];
-                var date = new Date(...dateKey.split("-"));
-                var date = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
-                if (markedDates[date]) {
-                    markedDates[date]['dots'].push({ key: dateKey, color: 'black' });
-                } else {
-                    markedDates[date] = {
-                        dots: [{ key: dateKey, color: 'black' }]
+        if (this.props.user.shifts) {
+            // if there was a change in the number of shifts for the user
+            if (Object.keys(prevProps.user.shifts).length !== Object.keys(this.props.user.shifts).length) {
+                // load data for markedDates and agendaDates
+                let markedDates = {};
+                let agendaDates = {};
+                for (dateKey of Object.keys(shifts)) {
+                    // agendaDates[dateKey] = [{ ...shifts[dateKey] }];
+                    var date = new Date(...dateKey.split("-"));
+                    var date = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
+                    if (markedDates[date]) {
+                        markedDates[date]['dots'].push({ key: dateKey, color: 'black' });
+                    } else {
+                        markedDates[date] = {
+                            dots: [{ key: dateKey, color: 'black' }]
+                        }
                     }
                 }
             }
@@ -130,8 +136,10 @@ class SchedulePage extends Component {
 
     getShifts = selectedDate => {
         let { shifts } = this.props.user;
-        let selectedShifts = Object.values(shifts).filter(shift => shift.date === selectedDate);
-        this.setState({ selectedShifts })
+        if (shifts) {
+            let selectedShifts = Object.values(shifts).filter(shift => shift.date === selectedDate);
+            this.setState({ selectedShifts })
+        }
     }
 
     calcHourDiff = (startHour, startMinute, endHour, endMinute) => {
@@ -348,10 +356,10 @@ class SchedulePage extends Component {
                                         let newRemainingDays;
                                         if (currentDate.month === itemIndex && currentDate.fullYear === newShift.date.year) {
                                             let { dateNum, fullYear } = currentDate;
-                                            newRemainingDays = this.getDaysInMonth(dateNum, itemIndex+1, fullYear);
+                                            newRemainingDays = this.getDaysInMonth(dateNum, itemIndex + 1, fullYear);
                                         } else {
                                             console.log(typeof itemIndex, itemIndex);
-                                            newRemainingDays = this.getDaysInMonth(1, itemIndex+1, newShift.date.year);
+                                            newRemainingDays = this.getDaysInMonth(1, itemIndex + 1, newShift.date.year);
                                         }
                                         this.setState({ newShift, remainingDays: newRemainingDays })
                                     }}
@@ -381,9 +389,9 @@ class SchedulePage extends Component {
                                         let { dateNum, month } = currentDate;
 
                                         if (currentDate.month === newShift.date.month && currentDate.fullYear === itemValue) {
-                                            newRemainingDays = this.getDaysInMonth(dateNum, parseInt(month)+1, parseInt(itemValue));
+                                            newRemainingDays = this.getDaysInMonth(dateNum, parseInt(month) + 1, parseInt(itemValue));
                                         } else {
-                                            newRemainingDays = this.getDaysInMonth(1, parseInt(month)+1, parseInt(itemValue));
+                                            newRemainingDays = this.getDaysInMonth(1, parseInt(month) + 1, parseInt(itemValue));
                                         }
                                         this.setState({ newShift, remainingDays: newRemainingDays })
                                     }}
