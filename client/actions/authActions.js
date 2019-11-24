@@ -1,7 +1,17 @@
 import axios from 'axios';
 import * as Constants from './../constants'
 
-import { LOGIN_SUCCESS, LOGIN_FAIL, REGISTER_SUCCESS, REGISTER_FAIL } from './types';
+import { LOGIN_SUCCESS, LOGIN_FAIL, REGISTER_SUCCESS, REGISTER_FAIL, RESET_ON_FAILED_LOGIN } from './types';
+
+// const API_URL = "http://10.0.2.2:5000"
+const API_URL = "https://warehouse-management-api.herokuapp.com"
+// const API_URL = "http://192.168.56.1:5000"
+
+export const resetFailedLogin = () => dispatch => {
+    dispatch({
+        type: RESET_ON_FAILED_LOGIN
+    })
+}
 
 export const signIn = (email, password) => {
     // ASYNC action creator
@@ -18,9 +28,7 @@ export const signIn = (email, password) => {
             username: email,
             password
         });
-        
-        console.log(body)
-
+        console.log("Trying to login...")
         return axios
             .post(`${Constants.BASEURL}/api/auth/`, body, config)
             .then(res => {
@@ -31,12 +39,18 @@ export const signIn = (email, password) => {
                 })
             })
             .catch(err => {
-                console.log('err', err.response.status)
-                console.log('err msg', err.response.data)
-                dispatch({
-                    type: LOGIN_FAIL,
-                    payload: err.response
-                })
+                console.log(err)
+                if (err.response.data == undefined){
+                    dispatch({
+                        type: LOGIN_FAIL,
+                        payload: err
+                    })
+                } else {
+                    dispatch({
+                        type: LOGIN_FAIL,
+                        payload: err.response
+                    })
+                }
             })
     }
 }
@@ -48,7 +62,6 @@ export const signUp = ({ firstName, lastName, phone, email, password, confirmPas
                 "Content-type": "application/json"
             }
         };
-
         // Request body
         const body = JSON.stringify({
             firstName,
