@@ -111,28 +111,34 @@ class SchedulePage extends Component {
         });
     }
 
+    updateMarkedDates = shifts => {
+        console.log('updating!')
+        // load data for markedDates and agendaDates
+        let markedDates = {};
+        for (dateKey of Object.keys(shifts)) {
+            // agendaDates[dateKey] = [{ ...shifts[dateKey] }];
+            var date = new Date(...shifts[dateKey].date.split("-"));
+            var date = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
+            if (markedDates[date]) {
+                markedDates[date]['dots'].push({ key: dateKey, color: 'black' });
+            } else {
+                markedDates[date] = {
+                    dots: [{ key: dateKey, color: 'black' }]
+                }
+            }
+        }
+        this.setState({ markedDates });
+    }
+
     componentDidUpdate(prevProps) {
         let { shifts } = this.props.user;
         if (shifts) {
             console.log("shifts exist")
             // if there was a change in the number of shifts for the user
-            if (Object.keys(prevProps.user.shifts).length !== Object.keys(shifts).length) {
-                console.log('updating!')
-                // load data for markedDates and agendaDates
-                let markedDates = {};
-                for (dateKey of Object.keys(shifts)) {
-                    // agendaDates[dateKey] = [{ ...shifts[dateKey] }];
-                    var date = new Date(...shifts[dateKey].date.split("-"));
-                    var date = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
-                    if (markedDates[date]) {
-                        markedDates[date]['dots'].push({ key: dateKey, color: 'black' });
-                    } else {
-                        markedDates[date] = {
-                            dots: [{ key: dateKey, color: 'black' }]
-                        }
-                    }
-                }
-                this.setState({ markedDates })
+            if (!prevProps.user.shifts && Object.keys(shifts).length === 1) {
+                this.updateMarkedDates(shifts);
+            } else if (Object.keys(prevProps.user.shifts).length !== Object.keys(shifts).length) {
+                this.updateMarkedDates(shifts);
             }
         }
     }
