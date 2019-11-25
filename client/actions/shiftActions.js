@@ -21,7 +21,6 @@ export const addShift = (year, month, date, startTime, endTime) => dispatch => {
         .then(res => {
             let { user, msg } = res.data;
             console.log(msg);
-            console.log(user);
             dispatch({
                 type: UPDATE_USER,
                 payload: user
