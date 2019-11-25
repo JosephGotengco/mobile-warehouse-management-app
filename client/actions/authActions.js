@@ -7,7 +7,7 @@ import {
     REGISTER_SUCCESS,
     REGISTER_FAIL,
     RESET_ON_FAILED_LOGIN,
-    RESET_ON_FAILED_REGISTER
+    RESET_ON_FAILED_REGISTER,
 } from './types';
 
 export const resetFailedLogin = () => dispatch => {
@@ -105,3 +105,4 @@ export const signUp = ({ firstName, lastName, phone, email, password, confirmPas
             })
     }
 }
+

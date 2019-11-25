@@ -4,7 +4,8 @@ import {
     REGISTER_SUCCESS,
     REGISTER_FAIL,
     RESET_ON_FAILED_LOGIN,
-    RESET_ON_FAILED_REGISTER
+    RESET_ON_FAILED_REGISTER,
+    UPDATE_USER,
 } from "./../actions/types";
 
 const initialState = {
@@ -58,6 +59,12 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 registerErr: false
+            }
+
+        case UPDATE_USER:
+            return {
+                ...state,
+                user: action.payload
             }
 
         default: {

@@ -29,8 +29,6 @@ const hmsToSeconds = timeString => {
     return b[0] * 3600 + b[1] * 60 + (+b[2] || 0);
 }
 const sameDay = (d1, d2) => {
-    console.log(d1.getMonth(), d2.getMonth());
-    console.log(d1.getDate(), d2.getDate());
     return d1.getFullYear() === d2.getFullYear() &&
         d1.getMonth() === d2.getMonth() &&
         d1.getDate() === d2.getDate();
@@ -88,7 +86,14 @@ router.post("/", isLoggedIn, async (req, res) => {
                 }
             }
         );
-        res.status(200).send(`Successfully added a shift from ${startTime} to ${endTime} on ${date}`);
+        let result = await User.findById(req.user._id);
+        let updatedUser = result.toObject();
+        delete updatedUser.password;
+        delete updatedUser.__v;
+        res.status(200).json({
+            msg: `Successfully added a shift from ${startTime} to ${endTime} on ${date}`,
+            user: updatedUser
+        });
     } catch (e) {
         console.log('error', e)
     }

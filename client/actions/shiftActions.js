@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ADDING_SHIFT, ADDED_SHIFT_SUCCESSFUL, ADDED_SHIFT_FAILURE } from "./types";
+import { ADDING_SHIFT, ADDED_SHIFT_SUCCESSFUL, ADDED_SHIFT_FAILURE, UPDATE_USER } from "./types";
 import * as Constants from './../constants'
 
 export const addShift = (year, month, date, startTime, endTime) => dispatch => {
@@ -19,10 +19,17 @@ export const addShift = (year, month, date, startTime, endTime) => dispatch => {
     axios
         .post(`${Constants.BASEURL}/api/shifts`, body, config)
         .then(res => {
+            let { user, msg } = res.data;
+            console.log(msg);
+            console.log(user);
+            dispatch({
+                type: UPDATE_USER,
+                payload: user
+            })
             dispatch({
                 type: ADDED_SHIFT_SUCCESSFUL,
             })
-            console.log(res.data)
+            // console.log(res.data)
         }).catch(err => {
             dispatch({
                 type: ADDED_SHIFT_FAILURE,
