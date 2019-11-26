@@ -10,6 +10,10 @@ import {
 } from './types';
 
 const API_URL = "https://warehouse-management-api.herokuapp.com"
+<<<<<<< HEAD
+=======
+// const API_URL = "http://192.168.56.1:5000"
+>>>>>>> parent of 0165ae5... code formatting and login error handling
 
 export const resetFailedLogin = () => dispatch => {
     dispatch({

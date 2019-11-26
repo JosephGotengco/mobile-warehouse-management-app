@@ -26,7 +26,7 @@ router.post('/add', (req, res, next) => {
                         if (err) return res.send(err)
                     })
                 } else {
-                    res.send("Item not found. Trying to create object in collection...")
+                    res.send("Trying to create object in collection...")
                     Item.create({
                         id: id,
                         name: name,
