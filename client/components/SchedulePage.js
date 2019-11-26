@@ -206,7 +206,11 @@ class SchedulePage extends Component {
     onSubmit = () => {
         let { newShift } = this.state;
         let { date, startTime, endTime } = newShift;
-        this.props.addShift(date.year, date.month + 1, date.date, startTime, endTime);
+        this.props.addShift(date.year, date.month + 1, date.date, startTime, endTime)
+            .then(result => {
+                console.log(result);
+                alert(this.props.shiftMsg)
+            })
     }
 
     render() {
@@ -299,7 +303,7 @@ class SchedulePage extends Component {
                         const styles = {
                             height: 70, width: '100%', backgroundColor: "#E0E0E0",
                             borderRadius: 15, padding: 10, display: "flex", justifyContent: 'flex-start',
-                            flexDirection: "column", marginVertical: 10
+                            flexDirection: "row", marginVertical: 10
                         }
 
                         let shiftType;
@@ -316,17 +320,33 @@ class SchedulePage extends Component {
                         if (i + 1 === length) {
                             return (
                                 <View key={i} style={{ ...styles, marginBottom: 40 }}>
-                                    <Text style={{ fontFamily: "Rubik-Regular", fontSize: 12, color: "#000000", marginVertical: "auto" }}>{shiftType}</Text>
-                                    <Text style={{ fontFamily: "Rubik-Regular", fontSize: 12, color: "#4F4F4F", marginVertical: "auto" }}>{startHourNormal}:{startMinute}{startMeridiem}-{endHourNormal}:{endMinute}{endMeridiem}</Text>
-                                    <Text style={{ fontFamily: "Rubik-Regular", fontSize: 12, color: "#4F4F4F", marginVertical: "auto" }}>{hourDifference > 0 ? `${hourDifference} hours` : null}{minuteDifference > 0 ? `${minuteDifference} minutes` : null}</Text>
+                                    <View style={{ display: 'flex', flexDirection: 'column' }}>
+                                        <Text style={{ fontFamily: "Rubik-Regular", fontSize: 12, color: "#000000", marginVertical: "auto" }}>{shiftType}</Text>
+                                        <Text style={{ fontFamily: "Rubik-Regular", fontSize: 12, color: "#4F4F4F", marginVertical: "auto" }}>{startHourNormal}:{startMinute}{startMeridiem}-{endHourNormal}:{endMinute}{endMeridiem}</Text>
+                                        <Text style={{ fontFamily: "Rubik-Regular", fontSize: 12, color: "#4F4F4F", marginVertical: "auto" }}>{hourDifference > 0 ? `${hourDifference} hours` : null}{minuteDifference > 0 ? `${minuteDifference} minutes` : null}</Text>
+                                    </View>
+                                    <View style={{justifyContent: 'center', alignItems: 'center', display: 'flex', marginLeft: 'auto'}}>
+                                        <MaterialCommunityIcons name="window-close" size={25} color={"black"}
+                                            onPress={() => {
+                                                console.log("DELETE")
+                                            }} />
+                                    </View>
                                 </View>
                             )
                         } else {
                             return (
                                 <View key={i} style={styles}>
-                                    <Text style={{ fontFamily: "Rubik-Regular", fontSize: 12, color: "#000000", marginVertical: "auto" }}>{shiftType}</Text>
-                                    <Text style={{ fontFamily: "Rubik-Regular", fontSize: 12, color: "#4F4F4F", marginVertical: "auto" }}>{startHourNormal}:{startMinute}{startMeridiem}-{endHourNormal}:{endMinute}{endMeridiem}</Text>
-                                    <Text style={{ fontFamily: "Rubik-Regular", fontSize: 12, color: "#4F4F4F", marginVertical: "auto" }}>{hourDifference > 0 ? `${hourDifference} ${hourDifference > 1 ? "hours" : "hour"}` : null}{minuteDifference > 0 ? `${minuteDifference} minutes` : null}</Text>
+                                    <View style={{ display: 'flex', flexDirection: 'column' }}>
+                                        <Text style={{ fontFamily: "Rubik-Regular", fontSize: 12, color: "#000000", marginVertical: "auto" }}>{shiftType}</Text>
+                                        <Text style={{ fontFamily: "Rubik-Regular", fontSize: 12, color: "#4F4F4F", marginVertical: "auto" }}>{startHourNormal}:{startMinute}{startMeridiem}-{endHourNormal}:{endMinute}{endMeridiem}</Text>
+                                        <Text style={{ fontFamily: "Rubik-Regular", fontSize: 12, color: "#4F4F4F", marginVertical: "auto" }}>{hourDifference > 0 ? `${hourDifference} ${hourDifference > 1 ? "hours" : "hour"}` : null}{minuteDifference > 0 ? `${minuteDifference} minutes` : null}</Text>
+                                    </View>
+                                    <View style={{justifyContent: 'center', alignItems: 'center', display: 'flex', marginLeft: 'auto'}}>
+                                        <MaterialCommunityIcons name="window-close" size={25} color={"black"}
+                                            onPress={() => {
+                                                console.log("DELETE")
+                                            }} />
+                                    </View>
                                 </View>
                             )
                         }
@@ -454,7 +474,8 @@ class SchedulePage extends Component {
 const mapStateToProps = (state) => {
     return {
         user: state.auth.user,
-        loggedIn: state.auth.loggedIn
+        loggedIn: state.auth.loggedIn,
+        shiftMsg: state.shift.shiftMsg
     }
 }
 
