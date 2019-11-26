@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-<<<<<<< HEAD
+
 import {
   View,
   Text,
@@ -9,9 +9,6 @@ import {
   Alert,
   ActivityIndicator
 } from "react-native";
-=======
-import { View, Text, StyleSheet, Image, TouchableOpacity, Alert, ActivityIndicator} from 'react-native';
->>>>>>> parent of 0165ae5... code formatting and login error handling
 import { Button } from 'react-native-elements'
 import { TextField } from 'react-native-material-textfield';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
@@ -19,10 +16,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { withNavigation } from 'react-navigation';
 import { connect } from "react-redux";
 import { signIn, resetFailedLogin } from "../../actions/authActions"
-<<<<<<< HEAD
-=======
-
->>>>>>> parent of 0165ae5... code formatting and login error handling
 import logo from "./../../assets/logo.png";
 
 class SignInPage extends Component {
@@ -44,7 +37,6 @@ class SignInPage extends Component {
 
     onSubmit = () => {
         let { email, password } = this.state;
-<<<<<<< HEAD
         if (email == null || email == '' || password == null || password == '') return alert("Please provide both your email and password.")
         this.setState({ buttonLoading: true });
         this.props.signIn(email, password);
@@ -61,29 +53,6 @@ class SignInPage extends Component {
 
     render() {
         let { email, password, passwordHide, buttonLoading } = this.state;
-=======
-        if (email == null || email == '' || password == null || password == '') return alert("Please enter your login credentials")
-        this.setState({buttonLoading: true})
-        this.props.signIn(email, password)
-    }
-
-    componentDidUpdate(){
-        if (this.props.loginErr == true){
-            this.props.resetFailedLogin()
-            alert('bad login')
-            this.setState({buttonLoading: false})
-        }
-    }
-
-    // componentDidUpdate(prevProps) {
-    //     if (prevProps.loggedIn !== this.props.loggedIn) {
-    //         this.props.navigation.push('HomePage');
-    //     }
-    // }
-
-    render() {
-        let { email, password, passwordHide } = this.state;
->>>>>>> parent of 0165ae5... code formatting and login error handling
 
         return (
             <View style={styles.container}>
@@ -148,7 +117,6 @@ class SignInPage extends Component {
                             Sign In
                         </Text>
                         <Button
-<<<<<<< HEAD
                             icon={<MaterialIcons name="arrow-forward" size={32} color="#F2F2F2" />}
                             buttonStyle={{
                                 height: 50, width: 50, backgroundColor: "#4F4F4F", elevation: 5,
@@ -157,18 +125,6 @@ class SignInPage extends Component {
                             onPress={this.onSubmit}
                             loading={buttonLoading}
                         />
-
-=======
-                        icon={<MaterialIcons name="arrow-forward" size={32} color="#F2F2F2"/>}
-                        buttonStyle={{
-                            height: 50, width: 50, backgroundColor: "#4F4F4F", elevation: 5,
-                            borderRadius: 25, display: 'flex', justifyContent: 'center', alignItems: 'center'
-                        }}
-                            onPress={this.onSubmit}
-                            loading={this.state.buttonLoading}
-                        />
-                        
->>>>>>> parent of 0165ae5... code formatting and login error handling
                     </View>
                     <View style={{
                         display: 'flex', width: "90%", justifyContent: 'flex-start',
@@ -184,7 +140,6 @@ class SignInPage extends Component {
                         </Text>
                     </View>
                 </KeyboardAwareScrollView>
-<<<<<<< HEAD
             </View>
           </View>
           <View
@@ -209,8 +164,6 @@ class SignInPage extends Component {
                   this.setState({ passwordHide: !this.state.passwordHide })
                 }
               />
-=======
->>>>>>> parent of 0165ae5... code formatting and login error handling
             </View>
 
         );
@@ -220,12 +173,8 @@ class SignInPage extends Component {
 const mapStateToProps = (state) => {
     return {
         loggedIn: state.auth.loggedIn,
-<<<<<<< HEAD
         loginErr: state.auth.loginErr,
         loginErrMsg: state.auth.loginErrMsg
-=======
-        loginErr: state.auth.loginErr
->>>>>>> parent of 0165ae5... code formatting and login error handling
     }
 }
 
