@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
-
+const passport = require("passport");
 
 // @route   POST api/users
 // @desc    Registers New User
@@ -37,19 +37,23 @@ router.post("/", (req, res) => {
                     newUser.password = hash;
                     newUser.save().then(user => {
                         let { id, firstName, lastName, email, phone, registrationDate } = user;
-                        res.json({
-                            user: {
-                                id,
-                                firstName,
-                                lastName,
-                                email,
-                                phone,
-                                registrationDate
-                            }
-                        });
+                        req.login(user, (err) => {
+                            if (err) return res.status(400).send("There was an error registering your account.");
+                            res.json({
+                                user: {
+                                    id,
+                                    firstName,
+                                    lastName,
+                                    email,
+                                    phone,
+                                    registrationDate
+                                }
+                            });
+                        })
                     });
                 });
             });
+
         });
     } catch(e) {
         res.status(400)
