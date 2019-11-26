@@ -33,7 +33,8 @@ export const signIn = (email, password) => {
             username: email,
             password
         });
-        console.log("Trying to login...")
+
+        console.log(body)
         return axios
             .post(`${Constants.BASEURL}/api/auth/`, body, config)
             .then(res => {
