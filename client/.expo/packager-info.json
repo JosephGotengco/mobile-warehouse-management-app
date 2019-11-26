@@ -1,10 +1,10 @@
 {
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "packagerPort": 19001,
+  "packagerPid": 11024,
+  "expoServerNgrokUrl": "https://kg-sy8.anonymous.client.exp.direct",
+  "packagerNgrokUrl": "https://packager.kg-sy8.anonymous.client.exp.direct",
+  "ngrokPid": 4256,
   "devToolsPort": 19002,
-  "expoServerPort": null,
+  "expoServerPort": 19000,
   "webpackServerPort": null
 }
