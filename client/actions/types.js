@@ -11,6 +11,7 @@ export const UPDATE_USER = "UPDATE_USER";
 
 // shifts
 export const ADDING_SHIFT = "ADDING_SHIFT";
+export const SET_SHIFT_MSG = "SET_SHIFT_MSG"
 export const ADDED_SHIFT_SUCCESSFUL = "ADDED_SHIFT_SUCCESSFUL";
 export const ADDED_SHIFT_FAILURE = "ADDED_SHIFT_FAILURE";
 

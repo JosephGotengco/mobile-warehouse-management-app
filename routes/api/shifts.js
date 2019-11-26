@@ -33,6 +33,7 @@ const sameDay = (d1, d2) => {
         d1.getMonth() === d2.getMonth() &&
         d1.getDate() === d2.getDate();
 }
+
 // @route   POST api/shifts/
 // @desc    adds a new shift
 // @access  Private
@@ -56,12 +57,39 @@ router.post("/", isLoggedIn, async (req, res) => {
         var month = dateArr[1];
         var dateNum = dateArr[2];
 
-        if (sameDay(nd, new Date(fullYear, month - 1, dateNum))) return res.status(400).send("Please schedule shifts a day before the shift date.")
-
         // Parse the user's startTime input
         var startTimeArr = startTime.split(":");
         var startHour = startTimeArr[0];
         var startMinute = startTimeArr[1];
+
+        if (sameDay(nd, new Date(fullYear, month - 1, dateNum))) return res.status(400).send("Please schedule shifts a day before the shift date.")
+
+        // scheduled year, month, etc...
+        let sFullYear = parseInt(fullYear);
+        let sMonth = parseInt(month);
+        let sDate = parseInt(dateNum);
+        let sHours = parseInt(startHour);
+        let sMinutes = parseInt(startMinute);
+
+        // today's year, month, etc...
+        let tFullYear = nd.getFullYear();
+        let tMonth = nd.getMonth()+1;
+        let tDate = nd.getDate();
+        let tHours = nd.getHours();
+        let tMinutes = nd.getMinutes();
+
+        console.log(sFullYear, tFullYear, sMonth, tMonth, sDate, tDate, sHours, tHours, sMinutes, tMinutes)
+        console.log(sFullYear <= tFullYear, sMonth <= tMonth, sDate <= tDate, sHours <= tHours, sMinutes <= tMinutes)
+        let yearCheck = sFullYear <= tFullYear;
+        let monthCheck = sMonth <= tMonth;
+        let dateCheck = sDate <= tDate;
+        let hourCheck = sHours <= tHours;
+        let minuteCheck = sMinutes <= tMinutes;
+
+        // BIG BRAIN IF STATEMENT, I USED BOOLEAN ALGEBRA
+        if (yearCheck && (monthCheck && (dateCheck && ((hourCheck && minuteCheck) || hourCheck )))) {
+            return res.status(400).send('You cannot schedule shifts in the past.');
+        }
 
         // dateKey will be used to uniquely identify each shift
         var dateKey = new Date(fullYear, month, dateNum, startHour, startMinute);
@@ -98,5 +126,43 @@ router.post("/", isLoggedIn, async (req, res) => {
         console.log('error', e)
     }
 });
+
+// @route   DELETE api/shifts/:shiftID
+// @desc    deletes a shift from a user account
+// @access  Private
+router.delete("/:shiftID", isLoggedIn, async (req, res) => {
+    try {
+        let { shiftID } = req.params;
+        let user = await User.findById(req.user._id);
+        let { shifts } = user;
+        if (shifts[shiftID]) {
+            let deletedShift = shifts[shiftID];
+            let { startTime, endTime, date } = deletedShift;
+            delete shifts[shiftID];
+            await User.updateOne(
+                { _id: req.user._id },
+                {
+                    $set: {
+                        shifts
+                    }
+                }
+            );
+            let result = await User.findById(req.user._id);
+            let updatedUser = result.toObject();
+            delete updatedUser.password;
+            delete updatedUser.__v;
+            res.status(200).json({
+                msg: `The shift from ${startTime} to ${endTime} on ${date} was successfully deleted.`,
+                user: updatedUser
+            });
+        } else {
+            res.status(400).send(`Cannot find shift with key of ${shiftID}.`)
+        }
+    } catch (e) {
+        console.log('error', e)
+    }
+});
+
+
 
 module.exports = router;
