@@ -10,6 +10,8 @@ import {
     RESET_ON_FAILED_REGISTER,
 } from './types';
 
+const API_URL = "https://warehouse-management-api.herokuapp.com"
+
 export const resetFailedLogin = () => dispatch => {
     dispatch({
         type: RESET_ON_FAILED_LOGIN

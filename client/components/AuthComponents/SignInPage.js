@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator
+} from "react-native";
 import { Button } from 'react-native-elements'
 import { TextField } from 'react-native-material-textfield';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
@@ -116,7 +125,6 @@ class SignInPage extends Component {
                             onPress={this.onSubmit}
                             loading={buttonLoading}
                         />
-
                     </View>
                     <View style={{
                         display: 'flex', width: "90%", justifyContent: 'flex-start',
@@ -132,6 +140,30 @@ class SignInPage extends Component {
                         </Text>
                     </View>
                 </KeyboardAwareScrollView>
+            </View>
+          </View>
+          <View
+            style={{ width: "100%", display: "flex", flexDirection: "row" }}
+          >
+            <View style={{ width: "90%", position: "relative" }}>
+              <TextField
+                label="Password"
+                lineWidth={2}
+                tintColor={"#828282"}
+                baseColor={"#828282"}
+                secureTextEntry={passwordHide}
+                value={password}
+                onChangeText={password => this.setState({ password })}
+              />
+              <MaterialCommunityIcons
+                name={passwordHide ? "eye-off-outline" : "eye-outline"}
+                size={24}
+                color="#828282"
+                style={{ position: "absolute", right: "3%", top: "45%" }}
+                onPress={() =>
+                  this.setState({ passwordHide: !this.state.passwordHide })
+                }
+              />
             </View>
 
         );

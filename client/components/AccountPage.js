@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 class AccountPage extends Component {
     state = {}
@@ -15,6 +16,7 @@ class AccountPage extends Component {
             }} style={{
                 width: 100,
                 height: 100,
+
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: 100
@@ -30,6 +32,7 @@ class AccountPage extends Component {
                 <Text style={{
                 fontWeight: "bold",
                 fontSize: 20,
+
                 marginLeft: 20
             }}>
                 Jimmy Scott
@@ -46,6 +49,7 @@ class AccountPage extends Component {
                 borderColor: '#4F4F4F',
                 marginLeft: 30,
                 flex: 1,
+--
             }}>
                 		<Text style={{
                 color: '#4F4F4F',
@@ -61,6 +65,7 @@ class AccountPage extends Component {
                 borderColor: '#4F4F4F',
                 marginLeft: 50,
                 flex: 1
+
             }}>
                 		<Text style={{
                 color: '#4F4F4F',
@@ -128,6 +133,7 @@ class AccountPage extends Component {
                 borderColor: '#4F4F4F',
                 marginTop: 30,
                 marginRight: 230
+
             }}>
                 		<Text style={{
                 color: '#4F4F4F',
