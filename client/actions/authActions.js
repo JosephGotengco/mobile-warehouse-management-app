@@ -4,7 +4,7 @@ import { LOGIN_SUCCESS, LOGIN_FAIL, REGISTER_SUCCESS, REGISTER_FAIL, RESET_ON_FA
 
 // const API_URL = "http://10.0.2.2:5000"
 const API_URL = "https://warehouse-management-api.herokuapp.com"
-// const API_URL = "http://192.168.56.1:5000"
+// const API_URL = "http://142.232.148.252:5000"
 
 export const resetFailedLogin = () => dispatch => {
     dispatch({

@@ -3,7 +3,7 @@ import { UPDATE_INVENTORY, UPDATE_INVENOTRY_ERR, GET_INVENTORY, GET_INVENTORY_ER
 
 // const API_URL = "http://10.0.2.2:5000"
 const API_URL = "https://warehouse-management-api.herokuapp.com"
-// const API_URL = "http://192.168.56.1:5000"
+// const API_URL = "http://142.232.148.252:5000"
 
 // Headers
 
@@ -16,6 +16,7 @@ export const addItem = data => dispatch => {
     };
 
     const body = data
+    console.log(typeof(body))
     axios
         .post(`${API_URL}/api/inventory/add`, body, config)
         .then(res => {

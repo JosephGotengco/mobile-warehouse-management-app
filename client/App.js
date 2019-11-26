@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import * as Font from 'expo-font';
+import React, { Component } from "react";
+import * as Font from "expo-font";
 
 // Redux imports
 import { Provider } from "react-redux";
@@ -27,13 +27,11 @@ export default class App extends Component {
     this.setState({ fontLoaded: true });
   }
 
-
   render() {
     return (
       <Provider store={store}>
-        {this.state.fontLoaded ? (<Bridge />) : null}
+        {this.state.fontLoaded ? <Bridge /> : null}
       </Provider>
     );
   }
 }
-
