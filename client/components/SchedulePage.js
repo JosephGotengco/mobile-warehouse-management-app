@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Dimensions, Text, ScrollView, Modal, Picker, Alert, Button } from 'react-native';
 import { CalendarList } from "react-native-calendars";
 import { connect } from "react-redux";
-import { addShift } from "./../actions/shiftActions";
+import { addShift, deleteShift } from "./../actions/shiftActions";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Constants from './../constants';
 
@@ -78,6 +78,8 @@ class SchedulePage extends Component {
         let currentMonth = nd.getMonth();
         let currentFullYear = nd.getFullYear();
         var currentDateString = `${currentFullYear}-${currentMonth + 1}-${currentDateNum}`;
+        this.getShifts(currentDateString);
+
         let currentDate = {
             dateString: currentDateString,
             dateNum: currentDateNum,
@@ -126,6 +128,8 @@ class SchedulePage extends Component {
                     dots: [{ key: dateKey, color: 'black' }]
                 }
             }
+
+            this.getShifts(this.state.selectedDate);
         }
         this.setState({ markedDates });
     }
@@ -146,7 +150,12 @@ class SchedulePage extends Component {
     getShifts = selectedDate => {
         let { shifts } = this.props.user;
         if (shifts) {
-            let selectedShifts = Object.values(shifts).filter(shift => shift.date === selectedDate);
+            let selectedShifts = [];
+            for (var key in shifts) {
+                if (shifts[key].date === selectedDate) {
+                    selectedShifts.push({key, ...shifts[key]});
+                }
+            }
             this.setState({ selectedShifts })
         }
     }
@@ -284,7 +293,8 @@ class SchedulePage extends Component {
 
                     {selectedShifts.map((shift, i) => {
                         const length = selectedShifts.length;
-                        let { date, startTime, endTime } = shift;
+                        let { key, startTime, endTime } = shift;
+                        console.log(shift )
                         var startTimeArr = startTime.split(":");
                         var endTimeArr = endTime.split(":");
                         var startHour = startTimeArr[0];
@@ -328,7 +338,7 @@ class SchedulePage extends Component {
                                     <View style={{justifyContent: 'center', alignItems: 'center', display: 'flex', marginLeft: 'auto'}}>
                                         <MaterialCommunityIcons name="window-close" size={25} color={"black"}
                                             onPress={() => {
-                                                console.log("DELETE")
+                                                this.props.deleteShift(key)
                                             }} />
                                     </View>
                                 </View>
@@ -344,7 +354,7 @@ class SchedulePage extends Component {
                                     <View style={{justifyContent: 'center', alignItems: 'center', display: 'flex', marginLeft: 'auto'}}>
                                         <MaterialCommunityIcons name="window-close" size={25} color={"black"}
                                             onPress={() => {
-                                                console.log("DELETE")
+                                                this.props.deleteShift(key)
                                             }} />
                                     </View>
                                 </View>
@@ -479,4 +489,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, { addShift })(SchedulePage);
+export default connect(mapStateToProps, { addShift, deleteShift })(SchedulePage);
