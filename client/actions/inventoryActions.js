@@ -2,8 +2,6 @@ import axios from "axios";
 import { UPDATE_INVENTORY, UPDATE_INVENOTRY_ERR } from "./types";
 import * as Constants from './../constants'
 
-const API_URL = "https://warehouse-management-api.herokuapp.com"
-
 export const addItem = data => dispatch => {
 
     const config = {
