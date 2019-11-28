@@ -45,7 +45,8 @@ router.post("/", isLoggedIn, async (req, res) => {
         if (!isValidTime(startTime)) return res.status(400).send("Please provide a valid start time.");
         if (!isValidTime(endTime)) return res.status(400).send("Please provide a valid end time.");
         if (hmsToSeconds(endTime) - hmsToSeconds(startTime) < 0) return res.status(400).send("End time must be after start time.");
-
+        if (hmsToSeconds(endTime) - hmsToSeconds(startTime) <= 10800) return res.status(400).send("The shift must be more than three hours long.");
+        console.log(hmsToSeconds(endTime) - hmsToSeconds(startTime))
         // Get the date in the PST time zone (Vancouver)
         var d = new Date();
         var utc = d.getTime() + (d.getTimezoneOffset() * 60000);
@@ -73,7 +74,7 @@ router.post("/", isLoggedIn, async (req, res) => {
 
         // today's year, month, etc...
         let tFullYear = nd.getFullYear();
-        let tMonth = nd.getMonth()+1;
+        let tMonth = nd.getMonth() + 1;
         let tDate = nd.getDate();
         let tHours = nd.getHours();
         let tMinutes = nd.getMinutes();
@@ -87,7 +88,7 @@ router.post("/", isLoggedIn, async (req, res) => {
         let minuteCheck = sMinutes <= tMinutes;
 
         // BIG BRAIN IF STATEMENT, I USED BOOLEAN ALGEBRA
-        if (yearCheck && (monthCheck && (dateCheck && ((hourCheck && minuteCheck) || hourCheck )))) {
+        if (yearCheck && (monthCheck && (dateCheck && ((hourCheck && minuteCheck) || hourCheck)))) {
             return res.status(400).send('You cannot schedule shifts in the past.');
         }
 

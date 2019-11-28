@@ -40,13 +40,13 @@ export const addShift = (year, month, date, startTime, endTime) => {
 }
 
 export const deleteShift = key => dispatch => {
-            // Headers
-            const config = {
-                headers: {
-                    "Content-type": "application/json"
-                }
-            };
-            const body = {}
+    // Headers
+    const config = {
+        headers: {
+            "Content-type": "application/json"
+        }
+    };
+    const body = {}
     axios
         .delete(`${Constants.BASEURL}/api/shifts/${key}`, body, config)
         .then(res => {
