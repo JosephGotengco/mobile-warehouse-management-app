@@ -232,6 +232,22 @@ class SchedulePage extends Component {
             })
     }
 
+    confirmShiftDelete = key => {
+        Alert.alert(
+            'Confirm Shift Cancel',
+            'Are you sure you want to cancel this shift?',
+            [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                { text: 'Yes', onPress: () => this.props.deleteShift(key) },
+            ],
+            { cancelable: true }
+        );
+    }
+
     render() {
         let { selectedDate, currentDate, selectedShifts, months } = this.state;
         let todayOrDate;
@@ -348,7 +364,7 @@ class SchedulePage extends Component {
                                     <View style={{ justifyContent: 'center', alignItems: 'center', display: 'flex', marginLeft: 'auto' }}>
                                         <MaterialCommunityIcons name="window-close" size={25} color={"black"}
                                             onPress={() => {
-                                                this.props.deleteShift(key)
+                                                this.confirmShiftDelete(key);
                                             }} />
                                     </View>
                                 </View>
@@ -364,7 +380,7 @@ class SchedulePage extends Component {
                                     <View style={{ justifyContent: 'center', alignItems: 'center', display: 'flex', marginLeft: 'auto' }}>
                                         <MaterialCommunityIcons name="window-close" size={25} color={"black"}
                                             onPress={() => {
-                                                this.props.deleteShift(key)
+                                                this.confirmShiftDelete(key);
                                             }} />
                                     </View>
                                 </View>
