@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import ReactNative, { View, Text, StyleSheet, Image, ActivityIndicator} from 'react-native';
-import { TextField } from 'react-native-material-textfield';
+import ReactNative, { View, Text, StyleSheet, Image } from 'react-native';
 import { Button } from 'react-native-elements'
+import { TextField } from 'react-native-material-textfield';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { withNavigation } from 'react-navigation';
 import { connect } from "react-redux";
-import { signUp } from "../../actions/authActions"
-
+import { signUp, resetFailedSignUp } from "../../actions/authActions"
 import logo from "./../../assets/logo.png";
 
 class SignUpPage extends Component {
@@ -21,7 +20,8 @@ class SignUpPage extends Component {
             password: '',
             passwordHide: true,
             confirmPassword: '',
-            confirmPasswordHide: true
+            confirmPasswordHide: true,
+            buttonLoading: false
         };
         this._scrollToInput = this._scrollToInput.bind(this);
     }
@@ -38,17 +38,23 @@ class SignUpPage extends Component {
 
     onSubmit = () => {
         let { firstName, lastName, email, phone, password, confirmPassword } = this.state;
-        this.props.signUp({ firstName, lastName, email, phone, password, confirmPassword })
+        if (!firstName || !lastName || !email || !phone || !password || !confirmPassword) return alert("Please fill in all the fields.");
+        this.setState({ buttonLoading: true });
+        this.props.signUp({ firstName, lastName, email, phone, password, confirmPassword });
     }
 
-    // componentDidUpdate(prevProps) {
-    //     if (prevProps.loggedIn !== this.props.loggedIn) {
-    //         this.props.navigation.push('HomePage');
-    //     }
-    // }
+    componentDidUpdate() {
+        let { registerErr, resetFailedSignUp, registerErrMsg } = this.props;
+        if (registerErr == true) {
+            resetFailedSignUp();
+            alert(registerErrMsg);
+            this.setState({ buttonLoading: false });
+        }
+    }
 
     render() {
-        let { firstName, lastName, phone, email, password, passwordHide, confirmPassword, confirmPasswordHide } = this.state;
+        let { firstName, lastName, phone, email, password,
+            passwordHide, confirmPassword, confirmPasswordHide, buttonLoading } = this.state;
 
         return (
             <View style={styles.container}>
@@ -133,7 +139,7 @@ class SignUpPage extends Component {
                             />
                             <MaterialCommunityIcons name={passwordHide ? "eye-off-outline" : "eye-outline"} size={24} color="#828282"
                                 style={{ position: 'absolute', right: '3%', top: '45%' }}
-                                onPress={() => this.setState({ passwordHide: !this.state.passwordHide })}
+                                onPress={() => this.setState({ passwordHide: !passwordHide })}
                             />
                         </View>
                     </View>
@@ -154,7 +160,7 @@ class SignUpPage extends Component {
                             />
                             <MaterialCommunityIcons name={confirmPasswordHide ? "eye-off-outline" : "eye-outline"} size={24} color="#828282"
                                 style={{ position: 'absolute', right: '3%', top: '45%' }}
-                                onPress={() => this.setState({ confirmPasswordHide: !this.state.confirmPasswordHide })}
+                                onPress={() => this.setState({ confirmPasswordHide: !confirmPasswordHide })}
                             />
                         </View>
                     </View>
@@ -166,14 +172,15 @@ class SignUpPage extends Component {
                             onPress={this.onSubmit} >
                             Sign Up
                         </Text>
-                        <Button 
-                        icon={<MaterialIcons name="arrow-forward" size={32} color="#F2F2F2"/>}
-                        onPress={this.onSubmit}
-                        buttonStyle={{
-                            height: 50, width: 50, backgroundColor: "#4F4F4F", elevation: 5,
-                            borderRadius: 25, display: 'flex', justifyContent: 'center', alignItems: 'center'
-                        }}>
-                            
+                        <Button
+                            icon={<MaterialIcons name="arrow-forward" size={32} color="#F2F2F2" />}
+                            onPress={this.onSubmit}
+                            loading={buttonLoading}
+                            buttonStyle={{
+                                height: 50, width: 50, backgroundColor: "#4F4F4F", elevation: 5,
+                                borderRadius: 25, display: 'flex', justifyContent: 'center', alignItems: 'center'
+                            }}>
+
                         </Button>
                     </View>
                     <View style={{
@@ -198,11 +205,13 @@ class SignUpPage extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        loggedIn: state.auth.loggedIn
+        loggedIn: state.auth.loggedIn,
+        registerErr: state.auth.registerErr,
+        registerErrMsg: state.auth.registerErrMsg
     }
 }
 
-export default withNavigation(connect(mapStateToProps, { signUp })(SignUpPage));
+export default withNavigation(connect(mapStateToProps, { signUp, resetFailedSignUp })(SignUpPage));
 
 const styles = StyleSheet.create({
     container: {

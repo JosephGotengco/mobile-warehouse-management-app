@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Alert, ActivityIndicator} from 'react-native';
+
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator
+} from "react-native";
 import { Button } from 'react-native-elements'
 import { TextField } from 'react-native-material-textfield';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
@@ -7,7 +16,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { withNavigation } from 'react-navigation';
 import { connect } from "react-redux";
 import { signIn, resetFailedLogin } from "../../actions/authActions"
-
 import logo from "./../../assets/logo.png";
 
 class SignInPage extends Component {
@@ -29,27 +37,22 @@ class SignInPage extends Component {
 
     onSubmit = () => {
         let { email, password } = this.state;
-        if (email == null || email == '' || password == null || password == '') return alert("Please enter your login credentials")
-        this.setState({buttonLoading: true})
-        this.props.signIn(email, password)
+        if (email == null || email == '' || password == null || password == '') return alert("Please provide both your email and password.")
+        this.setState({ buttonLoading: true });
+        this.props.signIn(email, password);
     }
 
-    componentDidUpdate(){
-        if (this.props.loginErr == true){
-            this.props.resetFailedLogin()
-            alert('bad login')
-            this.setState({buttonLoading: false})
+    componentDidUpdate() {
+        let { loginErr, resetFailedLogin, loginErrMsg } = this.props;
+        if (loginErr == true) {
+            resetFailedLogin();
+            alert(loginErrMsg);
+            this.setState({ buttonLoading: false });
         }
     }
 
-    // componentDidUpdate(prevProps) {
-    //     if (prevProps.loggedIn !== this.props.loggedIn) {
-    //         this.props.navigation.push('HomePage');
-    //     }
-    // }
-
     render() {
-        let { email, password, passwordHide } = this.state;
+        let { email, password, passwordHide, buttonLoading } = this.state;
 
         return (
             <View style={styles.container}>
@@ -114,15 +117,14 @@ class SignInPage extends Component {
                             Sign In
                         </Text>
                         <Button
-                        icon={<MaterialIcons name="arrow-forward" size={32} color="#F2F2F2"/>}
-                        buttonStyle={{
-                            height: 50, width: 50, backgroundColor: "#4F4F4F", elevation: 5,
-                            borderRadius: 25, display: 'flex', justifyContent: 'center', alignItems: 'center'
-                        }}
+                            icon={<MaterialIcons name="arrow-forward" size={32} color="#F2F2F2" />}
+                            buttonStyle={{
+                                height: 50, width: 50, backgroundColor: "#4F4F4F", elevation: 5,
+                                borderRadius: 25, display: 'flex', justifyContent: 'center', alignItems: 'center'
+                            }}
                             onPress={this.onSubmit}
-                            loading={this.state.buttonLoading}
+                            loading={buttonLoading}
                         />
-                        
                     </View>
                     <View style={{
                         display: 'flex', width: "90%", justifyContent: 'flex-start',
@@ -139,6 +141,30 @@ class SignInPage extends Component {
                     </View>
                 </KeyboardAwareScrollView>
             </View>
+          </View>
+          <View
+            style={{ width: "100%", display: "flex", flexDirection: "row" }}
+          >
+            <View style={{ width: "90%", position: "relative" }}>
+              <TextField
+                label="Password"
+                lineWidth={2}
+                tintColor={"#828282"}
+                baseColor={"#828282"}
+                secureTextEntry={passwordHide}
+                value={password}
+                onChangeText={password => this.setState({ password })}
+              />
+              <MaterialCommunityIcons
+                name={passwordHide ? "eye-off-outline" : "eye-outline"}
+                size={24}
+                color="#828282"
+                style={{ position: "absolute", right: "3%", top: "45%" }}
+                onPress={() =>
+                  this.setState({ passwordHide: !this.state.passwordHide })
+                }
+              />
+            </View>
 
         );
     }
@@ -147,7 +173,8 @@ class SignInPage extends Component {
 const mapStateToProps = (state) => {
     return {
         loggedIn: state.auth.loggedIn,
-        loginErr: state.auth.loginErr
+        loginErr: state.auth.loginErr,
+        loginErrMsg: state.auth.loginErrMsg
     }
 }
 
