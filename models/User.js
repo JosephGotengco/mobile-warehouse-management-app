@@ -36,7 +36,7 @@ const UserSchema = new Schema({
     },
     shifts: {
         type: Object,
-        default: {}
+        default: {},
     }
 });
 

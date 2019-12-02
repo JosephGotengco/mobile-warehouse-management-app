@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Dimensions, Text, ScrollView, Modal, Picker, Alert, Button, TouchableWithoutFeedback } from 'react-native';
+import { View, Dimensions, Text, ScrollView, Modal, Picker, Alert, Button, TouchableOpacity } from 'react-native';
 import { CalendarList } from "react-native-calendars";
 import { connect } from "react-redux";
 import { addShift, deleteShift } from "./../actions/shiftActions";
@@ -40,23 +40,12 @@ class SchedulePage extends Component {
         }
         this.getShifts = this.getShifts.bind(this);
         this.setModalVisible = this.setModalVisible.bind(this);
-        this.setSelectedDateBackground = this.setSelectedDateBackground.bind(this);
     }
 
     setModalVisible(visible) {
         this.setState({ modalVisible: visible });
     }
 
-    setSelectedDateBackground = selectedDate => {
-        let { dateString } = selectedDate;
-        const markedDates = Object.assign({}, this.state.markedDates)
-        if (markedDates.hasOwnProperty(dateString)) {
-            delete markedDates[dateString]
-        } else {
-            markedDates[dateString] = { selected: true, marked: true }
-        }
-        this.setState(markedDates)
-    }
 
     componentDidMount() {
         let { shifts } = this.props.user;
@@ -68,8 +57,8 @@ class SchedulePage extends Component {
         if (shifts) {
             for (dateKey of Object.keys(shifts)) {
                 agendaDates[dateKey] = [{ ...shifts[dateKey] }];
-                var date = new Date(...shifts[dateKey].date.split("-"));
-                var date = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
+                var date = shifts[dateKey].date;
+                console.log(date);
                 if (markedDates[date]) {
                     markedDates[date]['dots'].push({ key: dateKey, color: 'black' });
                 } else {
@@ -131,8 +120,8 @@ class SchedulePage extends Component {
         let markedDates = {};
         for (dateKey of Object.keys(shifts)) {
             // agendaDates[dateKey] = [{ ...shifts[dateKey] }];
-            var date = new Date(...shifts[dateKey].date.split("-"));
-            var date = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
+            var date = shifts[dateKey].date;
+
             if (markedDates[date]) {
                 markedDates[date]['dots'].push({ key: dateKey, color: 'black' });
             } else {
@@ -151,9 +140,15 @@ class SchedulePage extends Component {
         if (shifts) {
             // if there was a change in the number of shifts for the user
             if (!prevProps.user.shifts && Object.keys(shifts).length === 1) {
+                // date.year, date.month + 1, date.date
                 this.updateMarkedDates(shifts);
             } else if (Object.keys(prevProps.user.shifts).length !== Object.keys(shifts).length) {
                 this.updateMarkedDates(shifts);
+            }
+        } else if (prevProps.user.shifts) {
+            if (!shifts && Object.keys(prevProps.user.shifts).length === 1) {
+                this.updateMarkedDates({});
+                this.setState({ selectedShifts: [] });
             }
         }
     }
@@ -191,7 +186,6 @@ class SchedulePage extends Component {
             days.push(new Date(date).getDate());
             date.setDate(date.getDate() + 1);
         }
-
         return days;
     }
 
@@ -226,6 +220,7 @@ class SchedulePage extends Component {
     onSubmit = () => {
         let { newShift } = this.state;
         let { date, startTime, endTime } = newShift;
+        console.log(date.year, date.month + 1, date.date, startTime, endTime);
         this.props.addShift(date.year, date.month + 1, date.date, startTime, endTime)
             .then(result => {
                 alert(this.props.shiftMsg)
@@ -273,7 +268,6 @@ class SchedulePage extends Component {
                     pastScrollRange={12}
                     onDayPress={selectedDate => {
                         this.setState({ selectedDate: selectedDate.dateString });
-                        this.setSelectedDateBackground(selectedDate.dateString)
                         this.getShifts(selectedDate.dateString);
                     }}
                     markingType={'multi-dot'}
@@ -390,122 +384,123 @@ class SchedulePage extends Component {
                     })}
                 </ScrollView>
                 <Modal
-                    animationType="slide"
+                    animationType="fade"
                     transparent={true}
                     visible={this.state.modalVisible}
-                    onRequestClose={() => {
-                        Alert.alert('Modal has been closed.');
-                    }}
+                    onRequestClose={() => { this.setModalVisible(false) }}
                 >
-                    <TouchableWithoutFeedback onPress={() => {
-                        this.setModalVisible(!this.state.modalVisible);
-                    }} >
-                        <View style={{ marginTop: 22, flex: 1, justifyContent: 'center', alignItems: 'center', padding: 10 }}>
-                            <View style={{ backgroundColor: "#E0E0E0", position: 'relative', minWidth: 300, padding: 20, borderRadius: 15 }}>
-                                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                                    <Text style={{ fontFamily: "Rubik-Bold", fontSize: 26 }} >Add a new shift</Text>
-                                    <View>
-                                        <MaterialCommunityIcons name="window-close" size={25} color={"black"}
-                                            onPress={() => {
-                                                this.setModalVisible(!this.state.modalVisible);
-                                            }} />
-                                    </View>
-                                </View>
-                                <View style={{ marginVertical: 10 }}>
-                                    <Text style={{ fontFamily: "Rubik-Regular", fontSize: 16, paddingLeft: 5 }}>Date:</Text>
-                                </View>
-                                <View style={{ width: '100%', display: 'flex', flexDirection: 'row' }}>
-                                    <Picker
-                                        selectedValue={this.state.newShift.date.month}
-                                        onValueChange={(itemValue, itemIndex) => {
-                                            let { newShift } = this.state;
-                                            newShift.date.month = itemValue;
-                                            let { currentDate } = this.state;
-                                            let newRemainingDays;
-                                            if (currentDate.month === itemIndex && currentDate.fullYear === newShift.date.year) {
-                                                let { dateNum, fullYear } = currentDate;
-                                                newRemainingDays = this.getDaysInMonth(dateNum, itemIndex + 1, fullYear);
-                                            } else {
-                                                newRemainingDays = this.getDaysInMonth(1, itemIndex + 1, newShift.date.year);
-                                            }
-                                            this.setState({ newShift, remainingDays: newRemainingDays })
-                                        }}
-                                        style={{ height: 50, width: 100 }}>
-                                        {this.state.months.map((month, i) => {
-                                            return (<Picker.Item key={i} label={month} value={i} />)
-                                        })}
-                                    </Picker>
-                                    <Picker
-                                        selectedValue={this.state.newShift.date.date}
-                                        onValueChange={(itemValue, itemIndex) => {
-                                            let { newShift } = this.state;
-                                            newShift.date.date = itemValue;
-                                            this.setState({ newShift })
-                                        }}
-                                        style={{ height: 50, width: 90 }}>
-                                        {this.state.remainingDays.map((date, i) => {
-                                            return (<Picker.Item key={i} label={`${date}`} value={date} />)
-                                        })}
-                                    </Picker>
-                                    <Picker
-                                        selectedValue={this.state.newShift.date.year}
-                                        onValueChange={(itemValue, itemIndex) => {
-                                            let { newShift, currentDate } = this.state;
-                                            newShift.date.year = itemValue;
-                                            let newRemainingDays;
-                                            let { dateNum, month } = currentDate;
-
-                                            if (currentDate.month === newShift.date.month && currentDate.fullYear === itemValue) {
-                                                newRemainingDays = this.getDaysInMonth(dateNum, parseInt(month) + 1, parseInt(itemValue));
-                                            } else {
-                                                newRemainingDays = this.getDaysInMonth(1, parseInt(month) + 1, parseInt(itemValue));
-                                            }
-                                            this.setState({ newShift, remainingDays: newRemainingDays })
-                                        }}
-                                        style={{ height: 50, width: 125 }}>
-                                        {this.state.allowedYears.map((year, i) => {
-                                            return (<Picker.Item key={i} label={`${year}`} value={year} />)
-                                        })}
-                                    </Picker>
-                                </View>
-                                <View style={{ width: '100%', display: 'flex', flexDirection: 'row' }}>
-                                    <View style={{ marginVertical: 10 }}>
-                                        <Text style={{ fontFamily: "Rubik-Regular", fontSize: 16, paddingLeft: 5 }}>From:</Text>
-                                        <Picker
-                                            selectedValue={this.state.newShift.startTime}
-                                            onValueChange={(itemValue, itemIndex) => {
-                                                let { newShift } = this.state;
-                                                newShift.startTime = itemValue;
-                                                this.setState({ newShift })
-                                            }}
-                                            style={{ height: 50, width: 150 }}>
-                                            {this.state.startTimes.map((o, i) => {
-                                                return (<Picker.Item key={i} label={`${o.label}`} value={`${o.value}`} />)
-                                            })}
-                                        </Picker>
-                                    </View>
-                                    <View style={{ marginVertical: 10 }}>
-                                        <Text style={{ fontFamily: "Rubik-Regular", fontSize: 16, paddingLeft: 5 }}>To:</Text>
-                                        <Picker
-                                            selectedValue={this.state.newShift.endTime}
-                                            onValueChange={(itemValue, itemIndex) => {
-                                                let { newShift } = this.state;
-                                                newShift.endTime = itemValue;
-                                                this.setState({ newShift })
-                                            }}
-                                            style={{ height: 50, width: 150 }}>
-                                            {this.state.endTimes.map((o, i) => {
-                                                return (<Picker.Item key={i} label={`${o.label}`} value={`${o.value}`} />)
-                                            })}
-                                        </Picker>
-                                    </View>
-                                </View>
+                    <TouchableOpacity
+                        style={{ marginTop: 22, flex: 1, justifyContent: 'center', alignItems: 'center', padding: 10, zIndex: 2 }}
+                        activeOpacity={1}
+                        onPressOut={() => { this.setModalVisible(false) }}
+                    >
+                        <TouchableOpacity style={{ backgroundColor: "#E0E0E0", position: 'relative', minWidth: 300, padding: 20, borderRadius: 15 }}
+                            activeOpacity={1}
+                        >
+                            <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <Text style={{ fontFamily: "Rubik-Bold", fontSize: 26 }} >Add a new shift</Text>
                                 <View>
-                                    <Button title="Add Shift" onPress={this.onSubmit} />
+                                    <MaterialCommunityIcons name="window-close" size={25} color={"black"}
+                                        onPress={() => {
+                                            this.setModalVisible(!this.state.modalVisible);
+                                        }} />
                                 </View>
                             </View>
-                        </View>
-                    </TouchableWithoutFeedback>
+                            <View style={{ marginVertical: 10 }}>
+                                <Text style={{ fontFamily: "Rubik-Regular", fontSize: 16, paddingLeft: 5 }}>Date:</Text>
+                            </View>
+                            <View style={{ width: '100%', display: 'flex', flexDirection: 'row' }}>
+                                <Picker
+                                    selectedValue={this.state.newShift.date.month}
+                                    onValueChange={(itemValue, itemIndex) => {
+                                        let { newShift } = this.state;
+                                        newShift.date.month = itemValue;
+                                        let { currentDate } = this.state;
+                                        let newRemainingDays;
+                                        if (currentDate.month === itemIndex && currentDate.fullYear === newShift.date.year) {
+                                            let { dateNum, fullYear } = currentDate;
+                                            newRemainingDays = this.getDaysInMonth(dateNum, itemIndex + 1, fullYear);
+                                        } else {
+                                            newRemainingDays = this.getDaysInMonth(1, itemIndex + 1, newShift.date.year);
+                                        }
+                                        this.setState({ newShift, remainingDays: newRemainingDays })
+                                    }}
+                                    style={{ height: 50, width: 100 }}>
+                                    {this.state.months.map((month, i) => {
+                                        return (<Picker.Item key={i} label={month} value={i} />)
+                                    })}
+                                </Picker>
+                                <Picker
+                                    selectedValue={this.state.newShift.date.date}
+                                    onValueChange={(itemValue, itemIndex) => {
+                                        let { newShift } = this.state;
+                                        newShift.date.date = itemValue;
+                                        this.setState({ newShift })
+                                    }}
+                                    style={{ height: 50, width: 90 }}>
+                                    {this.state.remainingDays.map((date, i) => {
+                                        return (<Picker.Item key={i} label={`${date}`} value={date < 10 ? `0${date}` : `${date}`} />)
+                                    })}
+                                </Picker>
+                                <Picker
+                                    selectedValue={this.state.newShift.date.year}
+                                    onValueChange={(itemValue, itemIndex) => {
+                                        let { newShift, currentDate } = this.state;
+                                        newShift.date.year = itemValue;
+                                        let newRemainingDays;
+                                        let { dateNum, month } = currentDate;
+
+                                        if (currentDate.month === newShift.date.month && currentDate.fullYear === itemValue) {
+                                            newRemainingDays = this.getDaysInMonth(dateNum, parseInt(month) + 1, parseInt(itemValue));
+                                        } else {
+                                            newRemainingDays = this.getDaysInMonth(1, parseInt(month) + 1, parseInt(itemValue));
+                                        }
+                                        this.setState({ newShift, remainingDays: newRemainingDays })
+                                    }}
+                                    style={{ height: 50, width: 125 }}>
+                                    {this.state.allowedYears.map((year, i) => {
+                                        return (<Picker.Item key={i} label={`${year}`} value={year} />)
+                                    })}
+                                </Picker>
+                            </View>
+                            <View style={{ width: '100%', display: 'flex', flexDirection: 'row' }}>
+                                <View style={{ marginVertical: 10 }}>
+                                    <Text style={{ fontFamily: "Rubik-Regular", fontSize: 16, paddingLeft: 5 }}>From:</Text>
+                                    <Picker
+                                        selectedValue={this.state.newShift.startTime}
+                                        onValueChange={(itemValue, itemIndex) => {
+                                            let { newShift } = this.state;
+                                            newShift.startTime = itemValue;
+                                            this.setState({ newShift })
+                                        }}
+                                        style={{ height: 50, width: 150 }}>
+                                        {this.state.startTimes.map((o, i) => {
+                                            return (<Picker.Item key={i} label={`${o.label}`} value={`${o.value}`} />)
+                                        })}
+                                    </Picker>
+                                </View>
+                                <View style={{ marginVertical: 10 }}>
+                                    <Text style={{ fontFamily: "Rubik-Regular", fontSize: 16, paddingLeft: 5 }}>To:</Text>
+                                    <Picker
+                                        selectedValue={this.state.newShift.endTime}
+                                        onValueChange={(itemValue, itemIndex) => {
+                                            let { newShift } = this.state;
+                                            newShift.endTime = itemValue;
+                                            this.setState({ newShift })
+                                        }}
+                                        style={{ height: 50, width: 150 }}>
+                                        {this.state.endTimes.map((o, i) => {
+                                            return (<Picker.Item key={i} label={`${o.label}`} value={`${o.value}`} />)
+                                        })}
+                                    </Picker>
+                                </View>
+                            </View>
+                            <View>
+                                <Button title="Add Shift" onPress={this.onSubmit} />
+                            </View>
+                        </TouchableOpacity>
+                    </TouchableOpacity>
+
                 </Modal>
             </View>
         );
