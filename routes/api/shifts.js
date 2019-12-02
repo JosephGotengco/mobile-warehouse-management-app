@@ -119,8 +119,9 @@ router.post("/", isLoggedIn, async (req, res) => {
         let updatedUser = result.toObject();
         delete updatedUser.password;
         delete updatedUser.__v;
+        let monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
         res.status(200).json({
-            msg: `Successfully added a shift from ${startTime} to ${endTime} on ${date}`,
+            msg: `Successfully added a shift from ${startTime} to ${endTime} on ${monthList[month-1]} ${dateNum}, ${fullYear}`,
             user: updatedUser
         });
     } catch (e) {
