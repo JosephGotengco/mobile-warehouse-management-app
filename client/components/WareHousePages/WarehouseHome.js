@@ -117,17 +117,6 @@ class WarehouseHome extends Component {
                         <MaterialCommunityIcons name="image-filter-none" size={55} color="#000000" />
                         <Text>Stocks</Text>
                     </TouchableOpacity>
-
-                    {/* HISTORY PAGE */}
-                    <TouchableOpacity style={styles.box}
-                        onPress={() => this.props.navigation.push('HistoryPage')}>
-                        <MaterialIcons name="rotate-left" size={55} color="#000000" />
-                        <Text>History</Text>
-                    </TouchableOpacity>
-                </View>
-
-                <View style={{ flexDirection: "row" }}>
-
                     {/* ADD QR SCANNER MODAL */}
                     <TouchableOpacity style={[styles.box]}
                         onPress={() => this.setQRModalVisible(true)}>
