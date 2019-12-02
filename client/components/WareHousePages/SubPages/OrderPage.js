@@ -74,7 +74,7 @@ class OrderPage extends Component {
                             containerStyle={{ backgroundColor: "#f1f1f1", borderBottomColor: "black", borderBottomWidth: 1 }}
                             key={item.id}
                             title={item.name}
-                            subtitle={"Current Stock: " + item.quantity}
+                            subtitle={"Quantity: " + item.quantity}
                             subtitleStyle={{ fontSize: 13 }}
                             bottomDivider={true}
                         />

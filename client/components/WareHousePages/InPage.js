@@ -61,42 +61,48 @@ class InPage extends Component {
         let { ordersByDate } = this.state;
         return (
             <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
-                {ordersByDate.map(obj => {
-                    let key = Object.keys(obj)[0];
-                    // date
-                    let dateArr = key.split('-');
-                    let fullYear = dateArr[0];
-                    let monthNum = dateArr[1];
-                    let dateNum = dateArr[2];
-                    let month = Constants.MONTHS[monthNum - 1];
-                    return (
-                        <View key={key}>
-                            <Text>{`${month} ${dateNum}, ${fullYear}`}</Text>
-                            <FlatList
-                                data={obj[key]}
-                                keyExtractor={item => `${item.id}`}
-                                renderItem={({ item }) => {
-                                    // time
-                                    let timeArr = item.time.split(':');
-                                    let hour = parseInt(timeArr[0]);
-                                    let minute = parseInt(timeArr[1]);
+                {ordersByDate.length === 0 ? (
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={{ fontSize: 24 }}>There are no orders going out.</Text>
+                    </View>
+                ) :
+                    ordersByDate.map(obj => {
+                        let key = Object.keys(obj)[0];
+                        // date
+                        let dateArr = key.split('-');
+                        let fullYear = dateArr[0];
+                        let monthNum = dateArr[1];
+                        let dateNum = dateArr[2];
+                        let month = Constants.MONTHS[monthNum - 1];
+                        return (
+                            <View key={key}>
+                                <Text>{`${month} ${dateNum}, ${fullYear}`}</Text>
+                                <FlatList
+                                    data={obj[key]}
+                                    keyExtractor={item => `${item.id}`}
+                                    renderItem={({ item }) => {
+                                        // time
+                                        let timeArr = item.time.split(':');
+                                        let hour = parseInt(timeArr[0]);
+                                        let minute = parseInt(timeArr[1]);
 
-                                    return (
-                                        <ListItem
-                                            containerStyle={{ backgroundColor: "#f1f1f1", borderBottomColor: "black", borderBottomWidth: 1 }}
-                                            key={item.id}
-                                            onPress={() => this.onOrderPress(item)}
-                                            title={hour > 12 ? `${hour - 12}:${minute}PM` : `${item.time}AM`}
-                                            subtitle={"Number of Items: " + item.items.length}
-                                            subtitleStyle={{ fontSize: 13 }}
-                                            bottomDivider={true}
-                                        />
-                                    )
-                                }
-                                }
-                            />
-                        </View>)
-                })}
+                                        return (
+                                            <ListItem
+                                                containerStyle={{ backgroundColor: "#f1f1f1", borderBottomColor: "black", borderBottomWidth: 1 }}
+                                                key={item.id}
+                                                onPress={() => this.onOrderPress(item)}
+                                                title={hour > 12 ? `${hour - 12}:${minute}PM` : `${item.time}AM`}
+                                                subtitle={"Number of Items: " + item.items.length}
+                                                subtitleStyle={{ fontSize: 13 }}
+                                                bottomDivider={true}
+                                            />
+                                        )
+                                    }
+                                    }
+                                />
+                            </View>)
+                    })
+                }
             </ScrollView>
         );
     }

@@ -127,11 +127,6 @@ class WarehouseHome extends Component {
                 </View>
 
                 <View style={{ flexDirection: "row" }}>
-                    {/* MAPS PAGE IS PROBABLY GONNA BE CHANGED, IDK WHAT YET MAYBE A CHAT FEATURE */}
-                    <TouchableOpacity style={styles.box}>
-                        <MaterialIcons name="map" size={55} color="#000000" />
-                        <Text>Map</Text>
-                    </TouchableOpacity>
 
                     {/* ADD QR SCANNER MODAL */}
                     <TouchableOpacity style={[styles.box]}

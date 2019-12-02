@@ -46,7 +46,7 @@ const WarehouseStack = createStackNavigator(
         OrderPage: {
             screen: OrderPage,
             navigationOptions: {
-                title: "Order Page"
+                title: "Order Details"
             }
         }
     },
