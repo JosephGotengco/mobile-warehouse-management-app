@@ -14,6 +14,7 @@ class InPage extends Component {
             ordersByDate: []
         };
         this.groupOrdersByDate = this.groupOrdersByDate.bind(this);
+        this.onOrderPress = this.onOrderPress.bind(this);
     }
 
     componentWillMount() {
@@ -51,8 +52,9 @@ class InPage extends Component {
         this.setState({ ordersByDate });
     };
 
-    onOrderClick = order => {
-        this.props.navigation.navigate('', {})
+    onOrderPress = order => {
+        let { id, date, time, items } = order;
+        this.props.navigation.navigate('OrderPage', { orderId: id, date, time, items })
     }
 
     render() {
@@ -83,6 +85,7 @@ class InPage extends Component {
                                         <ListItem
                                             containerStyle={{ backgroundColor: "#f1f1f1", borderBottomColor: "black", borderBottomWidth: 1 }}
                                             key={item.id}
+                                            onPress={() => this.onOrderPress(item)}
                                             title={hour > 12 ? `${hour - 12}:${minute}PM` : `${item.time}AM`}
                                             subtitle={"Number of Items: " + item.items.length}
                                             subtitleStyle={{ fontSize: 13 }}
