@@ -25,7 +25,7 @@ export const addItem = data => dispatch => {
 }
 
 export const getInventory = () => dispatch => {
-    axios.get(`${API_URL}/api/inventory/all`)
+    axios.get(`${Constants.BASEURL}/api/inventory/all`)
     .then(res => {
         dispatch({
             type: GET_INVENTORY,
