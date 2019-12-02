@@ -14,9 +14,8 @@ const isLoggedIn = (req, res, next) => {
 //Adds items to database based on QR Code data.
 router.post('/add', isLoggedIn, (req, res, next) => {
     try {
-        // res.status(200).send({...req.body})
+        console.log(req.user)
         const { id, name, quantity, tags } = req.body;
-        console.log(typeof (id), typeof (name), typeof (quantity))
         if (!id || !name || !quantity) { return res.status(400).send("Invalid QR Code") }
         Item.findOne({ id: id })
             .then(item => {

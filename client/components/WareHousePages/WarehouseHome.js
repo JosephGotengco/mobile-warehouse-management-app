@@ -45,6 +45,22 @@ class WarehouseHome extends Component {
         ])
     }
 
+    handleType = (data) => {
+        if (data.type == 1){
+            Alert.alert('Add Item?', `Add ${data.quantity} of ${data.name} to the database?`,
+            [
+                {text: "Yes", onPress: () => this.props.addItem(data)},
+                {text: "No", style: "cancel"}
+            ])
+        } else if (data.type == 2 ){
+            Alert.alert('Remove Item?', `Remove ${data.quantity} of ${data.name}s to the database?`,
+            [
+                {text: "Yes", onPress: () => this.props.removeItem(data)},
+                {text: "No", style: "cancel"}
+            ])
+        }
+    }
+
     componentDidUpdate(){
         if (this.props.inventoryErr == true) {
             this.QRErrorAlert()
@@ -147,13 +163,9 @@ class WarehouseHome extends Component {
     handleBarCodeScanned = ({ type, data }) => {
         this.setState({ scanned: true });
         let jsonData = JSON.parse(data);
-        if (jsonData.type == 1){
-            this.props.addItem(jsonData)
-        } else if (jsonData.type == 2 ){
-            this.props.removeItem(jsonData)
-        }
+        this.handleType(jsonData)
         // this.props.addItem(jsonData)
-        alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+        // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
     };
 }
 
