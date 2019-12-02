@@ -4,7 +4,7 @@ import { MaterialIcons, MaterialCommunityIcons, Feather } from '@expo/vector-ico
 import * as Permissions from 'expo-permissions';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { connect } from 'react-redux'
-import { addItem } from '../../actions/inventoryActions'
+import { addItem, removeItem } from '../../actions/inventoryActions'
 import { withNavigation } from 'react-navigation';
 
 //react native built in icons: 1 = ballot-outline, 2 = ballot-outline, 3 = image-filter-none, 4 = rotate-left, 5 = map, 6 = icon
@@ -147,7 +147,12 @@ class WarehouseHome extends Component {
     handleBarCodeScanned = ({ type, data }) => {
         this.setState({ scanned: true });
         let jsonData = JSON.parse(data);
-        this.props.addItem(jsonData)
+        if (jsonData.type == 1){
+            this.props.addItem(jsonData)
+        } else if (jsonData.type == 2 ){
+            this.props.removeItem(jsonData)
+        }
+        // this.props.addItem(jsonData)
         alert(`Bar code with type ${type} and data ${data} has been scanned!`);
     };
 }
@@ -213,4 +218,4 @@ const mapStateToProps = (state) => ({
     inventoryErr: state.inventory.inventoryErr
 })
 
-export default connect(mapStateToProps, { addItem })(WarehouseHome)
+export default connect(mapStateToProps, { addItem, removeItem })(WarehouseHome)
