@@ -1,23 +1,23 @@
 import React, { Component } from 'react'
-import { View, Text, FlatList, Button, TouchableHighlight, ActivityIndicator} from 'react-native'
-import { ListItem, SearchBar} from 'react-native-elements'
+import { View, FlatList, } from 'react-native'
+import { ListItem } from 'react-native-elements'
 import { connect } from 'react-redux'
 import { withNavigation } from 'react-navigation'
 import { getInventory } from '../../actions/inventoryActions'
 
 export class StocksPage extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             source: []
         }
     }
 
-    componentWillMount(){
+    componentWillMount() {
         this.props.getInventory()
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.setState({
             source: this.props.items
         })
@@ -25,8 +25,8 @@ export class StocksPage extends Component {
 
     render() {
         return (
-            <View style={{ flex: 1, backgroundColor: "white"}}>
-            <FlatList
+            <View style={{ flex: 1, backgroundColor: "white" }}>
+                <FlatList
                     data={this.props.items}
                     keyExtractor={item => `${item.id}`}
                     renderItem={({ item }) =>

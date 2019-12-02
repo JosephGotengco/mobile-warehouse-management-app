@@ -1,9 +1,9 @@
 {
-  "packagerPort": 19001,
-  "packagerPid": 24020,
+  "packagerPort": null,
+  "packagerPid": null,
   "expoServerNgrokUrl": "https://q4-bhq.joeysalads.client.exp.direct",
   "packagerNgrokUrl": "https://packager.q4-bhq.joeysalads.client.exp.direct",
-  "ngrokPid": 23860,
+  "ngrokPid": 1408,
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "webpackServerPort": null

@@ -8,6 +8,7 @@ import InPage from './WareHousePages/InPage';
 import OutPage from './WareHousePages/OutPage';
 import StocksPage from './WareHousePages/StocksPage';
 import HistoryPage from './WareHousePages/HistoryPage';
+import OrderPage from './WareHousePages/SubPages/OrderPage';
 
 
 const WarehouseStack = createStackNavigator(
@@ -40,6 +41,12 @@ const WarehouseStack = createStackNavigator(
             screen: HistoryPage,
             navigationOptions: {
                 title: "History"
+            }
+        },
+        OrderPage: {
+            screen: OrderPage,
+            navigationOptions: {
+                title: "Order Page"
             }
         }
     },

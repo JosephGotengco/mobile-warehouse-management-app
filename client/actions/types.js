@@ -26,3 +26,9 @@ export const GET_INVENTORY = "GET_INVENTORY"
 export const GET_INVENTORY_ERR = "GET_INVENTORY_ERR"
 export const GET_ITEM = "GET_ITEM"
 export const GET_ITEM_ERR = "GET_ITEM_ERR"
+
+// orders
+export const GET_IN_ORDERS = "GET_IN_ORDERS";
+export const GET_IN_ORDERS_ERR = "GET_IN_ORDERS_ERR";
+export const GET_OUT_ORDERS = "GET_OUT_ORDERS";
+export const GET_OUT_ORDERS_ERR = "GET_OUT_ORDERS_ERR"
