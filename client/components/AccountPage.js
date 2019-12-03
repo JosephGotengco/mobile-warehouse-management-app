@@ -38,20 +38,21 @@ class AccountPage extends Component {
             quality: 1
         });
 
-        console.log(result);
 
         if (!result.cancelled) {
             this.setState({ image: result.uri });
-            const data = new FormData();
-
-            data.append("photo", {
-                name: result.fileName,
-                type: result.type,
-                uri:
-                    Platform.OS === "android" ? result.uri : result.uri.replace("file://", "")
+            let uri = result.uri;
+            let uriParts = uri.split('.');
+            let fileType = uriParts[uriParts.length - 1];
+            console.log(fileType)
+            console.log(uri)
+            let formData = new FormData();
+            formData.append('photo', {
+                uri,
+                name: `photo.${fileType}`,
+                type: `image/${fileType}`,
             });
-            console.log(data);
-            this.props.updateUserProfilePicture(data)
+            this.props.updateUserProfilePicture(formData)
         }
     };
     capitalizeFirstLetter = string => {

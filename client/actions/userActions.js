@@ -17,12 +17,13 @@ export const getNumOfUsers = () => dispatch => {
 
 export const updateUserProfilePicture = data => dispatch => {
     try {
-        console.log(data)
+        console.log('body', data)
         axios
-            .put(`${Constants.BASEURL}/api/users`, data)
+            .put(`${Constants.BASEURL}/api/users`, data, {
+                'Content-type': 'multipart/form-data',
+            })
             .then(response => {
-                console.log("upload success", response, {
-                });
+                console.log("upload success", response);
                 alert("Upload success!");
             })
             .catch(error => {
