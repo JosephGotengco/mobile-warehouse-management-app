@@ -16,16 +16,20 @@ export const getNumOfUsers = () => dispatch => {
 }
 
 export const updateUserProfilePicture = data => dispatch => {
-    axios
-        .put('/api/users', { ...data })
-        .then(response => response.json())
-        .then(response => {
-            console.log("upload success", response);
-            alert("Upload success!");
-        })
-        .catch(error => {
-            console.log("upload error", Object.keys(error.toJSON()));
-            alert("Upload failed!");
-        });
-
+    try {
+        console.log(data)
+        axios
+            .put(`${Constants.BASEURL}/api/users`, data)
+            .then(response => {
+                console.log("upload success", response, {
+                });
+                alert("Upload success!");
+            })
+            .catch(error => {
+                console.log(error)
+                alert("Upload failed!");
+            });
+    } catch (e) {
+        console.log(e)
+    }
 }
