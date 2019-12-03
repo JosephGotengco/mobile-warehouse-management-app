@@ -3,6 +3,15 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 
+const isLoggedIn = (req, res, next) => {
+    // checks if user is logged in
+    if (req.user) {
+        next();
+    } else {
+        res.sendStatus(403);
+    }
+}
+
 // @route   POST api/users
 // @desc    Registers New User
 // @access  Public
@@ -16,11 +25,11 @@ router.post("/", (req, res) => {
         if (password !== confirmPassword) {
             return res.status(400).send("Passwords do not match.")
         }
-    
+
         // Check for existing user
         User.findOne({ username: email }).then(user => {
             if (user) return res.status(400).send("A user with that email already exists.");
-    
+
             const newUser = new User({
                 firstName,
                 lastName,
@@ -29,7 +38,7 @@ router.post("/", (req, res) => {
                 email,
                 phone
             });
-    
+
             // Create salt & hash
             bcrypt.genSalt(10, (err, salt) => {
                 bcrypt.hash(newUser.password, salt, (err, hash) => {
@@ -55,11 +64,20 @@ router.post("/", (req, res) => {
             });
 
         });
-    } catch(e) {
+    } catch (e) {
         res.status(400)
         console.log("error", e)
     }
+});
 
+router.get('/length', async (req, res) => {
+    try {
+        let result = await User.find({});
+        let numOfUsers = result.length;
+        res.status(200).send(''+numOfUsers);
+    } catch (e) {
+        console.log(e)
+    }
 });
 
 module.exports = router;

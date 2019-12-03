@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Modal, TouchableHighlight, Button, Alert } from 'react-native';
-import { MaterialIcons, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, Button, Alert } from 'react-native';
+import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Permissions from 'expo-permissions';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { connect } from 'react-redux'
 import { addItem, removeItem } from '../../actions/inventoryActions'
 import { withNavigation } from 'react-navigation';
+
 
 //react native built in icons: 1 = ballot-outline, 2 = ballot-outline, 3 = image-filter-none, 4 = rotate-left, 5 = map, 6 = icon
 
@@ -35,15 +36,16 @@ class WarehouseHome extends Component {
     setQRModalVisible = (visible) => {
         // Closes modal
         this.setState({ QRModalVisble: visible })
-        this.setState({ scanned: false})
+        this.setState({ scanned: false })
     }
 
     QRErrorAlert = () => {
-        Alert.alert('Scanning Error','There was an error scanning the QR Code. Please try again',
-        [
-            {text: 'Tap to scan again', onPress: () => this.setState({scanned: false})}
-        ])
+        Alert.alert('Scanning Error', 'There was an error scanning the QR Code. Please try again',
+            [
+                { text: 'Tap to scan again', onPress: () => this.setState({ scanned: false }) }
+            ])
     }
+
 
     handleType = (data) => {
         if (data.type == 1){
@@ -61,7 +63,9 @@ class WarehouseHome extends Component {
         }
     }
 
-    componentDidUpdate(){
+
+
+    componentDidUpdate() {
         if (this.props.inventoryErr == true) {
             this.QRErrorAlert()
         }
@@ -84,20 +88,20 @@ class WarehouseHome extends Component {
                 <Modal
                     animationType="slide"
                     visible={this.state.QRModalVisble}
-                    onRequestClose={()=> {this.setQRModalVisible(!this.state.QRModalVisble)}}>
+                    onRequestClose={() => { this.setQRModalVisible(!this.state.QRModalVisble) }}>
                     <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-end', backgroundColor: 'black' }}>
                         <BarCodeScanner
                             onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned}
                             style={StyleSheet.absoluteFillObject}>
-                                {/* Opacity for border */}
-                                <View style={styles.layerTop} />
-                                <View style={styles.layerCenter}>
+                            {/* Opacity for border */}
+                            <View style={styles.layerTop} />
+                            <View style={styles.layerCenter}>
                                 <View style={styles.layerLeft} />
                                 <View style={styles.focused} />
                                 <View style={styles.layerRight} />
-                                </View>
-                                <View style={styles.layerBottom} />
-                            </BarCodeScanner>
+                            </View>
+                            <View style={styles.layerBottom} />
+                        </BarCodeScanner>
                         {scanned && (<Button title={'Tap to Scan Again'}
                             onPress={() => this.setState({ scanned: false })} />)}
                     </View>
@@ -133,22 +137,6 @@ class WarehouseHome extends Component {
                         <MaterialCommunityIcons name="image-filter-none" size={55} color="#000000" />
                         <Text>Stocks</Text>
                     </TouchableOpacity>
-
-                    {/* HISTORY PAGE */}
-                    <TouchableOpacity style={styles.box}
-                        onPress={() => this.props.navigation.push('HistoryPage')}>
-                        <MaterialIcons name="rotate-left" size={55} color="#000000" />
-                        <Text>History</Text>
-                    </TouchableOpacity>
-                </View>
-
-                <View style={{ flexDirection: "row" }}>
-                    {/* MAPS PAGE IS PROBABLY GONNA BE CHANGED, IDK WHAT YET MAYBE A CHAT FEATURE */}
-                    <TouchableOpacity style={styles.box}>
-                        <MaterialIcons name="map" size={55} color="#000000" />
-                        <Text>Map</Text>
-                    </TouchableOpacity>
-
                     {/* ADD QR SCANNER MODAL */}
                     <TouchableOpacity style={[styles.box]}
                         onPress={() => this.setQRModalVisible(true)}>
@@ -166,6 +154,7 @@ class WarehouseHome extends Component {
         this.handleType(jsonData)
         // this.props.addItem(jsonData)
         // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+
     };
 }
 

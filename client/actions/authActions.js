@@ -41,7 +41,6 @@ export const signIn = (email, password) => {
                 })
             })
             .catch(err => {
-                console.log('err', err.response.status);
                 if (err.isAxiosError && !err.response) {
                     // default login error
                     dispatch({

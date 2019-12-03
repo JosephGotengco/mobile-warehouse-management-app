@@ -19,6 +19,7 @@ const isValidDate = dateString => {
     if (!dNum && dNum !== 0) return false; // NaN value, Invalid date
     return d.toISOString().slice(0, 10) === dateString;
 }
+
 const isValidTime = timeString => {
     var regEx = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
     if (!timeString.match(regEx)) return false;  // Invalid format

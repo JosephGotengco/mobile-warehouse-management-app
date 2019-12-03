@@ -2,25 +2,21 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const passportLocalMongoose = require('passport-local-mongoose');
 
-const ItemSchema = new Schema({
+const SystemVariablesSchema = new Schema({
     id: {
         type: Number,
         required: true,
         unique: true
     },
-    name: {
+    keyName: {
         type: String,
-        required: true
+        required: true,
     },
-    quantity: {
-        type: Number,
-        required: true
-    },
-    tags: {
-        type: Array,
+    theValue: {
+        type: Schema.Types.Mixed,
         required: true
     }
 })
 
-ItemSchema.plugin(passportLocalMongoose)
-module.exports = Item = mongoose.model('item', ItemSchema)
+SystemVariablesSchema.plugin(passportLocalMongoose)
+module.exports = SystemVariables = mongoose.model('systemVariable', SystemVariablesSchema)

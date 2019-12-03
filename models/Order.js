@@ -2,25 +2,29 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const passportLocalMongoose = require('passport-local-mongoose');
 
-const ItemSchema = new Schema({
+const OrderSchema = new Schema({
     id: {
         type: Number,
         required: true,
         unique: true
     },
-    name: {
+    date: {
         type: String,
-        required: true
+        required: true,
     },
-    quantity: {
-        type: Number,
-        required: true
+    time: {
+        type: String,
+        required: true,
     },
-    tags: {
+    items: {
         type: Array,
+        required: true,
+    },
+    type: {
+        type: String,
         required: true
     }
 })
 
-ItemSchema.plugin(passportLocalMongoose)
-module.exports = Item = mongoose.model('item', ItemSchema)
+OrderSchema.plugin(passportLocalMongoose)
+module.exports = Order = mongoose.model('order', OrderSchema)
