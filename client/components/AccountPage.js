@@ -124,14 +124,12 @@ class AccountPage extends Component {
         let { image } = this.state;
         let { user } = this.props;
         let { firstName, lastName, email, phone, img } = user;
-        var base64Flag = `data:${img.contentType};base64,`;
-        var base64 = img.data.toString('base64');
-        var imageStr = new Buffer(base64, 'base64');
+
         return (
             <View style={{ flex: 1, backgroundColor: "#F2F2F2", padding: wp('10%') }}>
                 <View style={{ position: 'relative', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     <View style={{ width: wp('50%'), height: wp('50%') }}>
-                        <Image source={img ? base64Flag + imageStr  : require('./../assets/placeholder.jpg')} style={{ width: wp('50%'), height: wp('50%'), borderRadius: 100 }} />
+                        <Image source={require('./../assets/placeholder.jpg')} style={{ width: wp('50%'), height: wp('50%'), borderRadius: 100 }} />
                         <MaterialCommunityIcons name="camera" size={24} style={{
                             position: 'absolute', right: '5%', bottom: '5%',
                             padding: 5, backgroundColor: 'white', borderRadius: 50
