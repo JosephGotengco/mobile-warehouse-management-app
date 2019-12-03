@@ -37,6 +37,10 @@ const UserSchema = new Schema({
     shifts: {
         type: Object,
         default: {},
+    },
+    img: { 
+        data: Buffer, 
+        contentType: String 
     }
 });
 

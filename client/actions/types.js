@@ -7,7 +7,7 @@ export const LOGIN_FAIL = "LOGIN_FAIL";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const RESET_ON_FAILED_LOGIN = "RESET_ON_FAILED_LOGIN";
 
-export const UPDATE_USER = "UPDATE_USER";
+export const LOGOUT_USER = "LOGOUT_USER";
 
 // shifts
 export const ADDING_SHIFT_FAIL = "ADDING_SHIFT_FAIL";
@@ -32,3 +32,7 @@ export const GET_IN_ORDERS = "GET_IN_ORDERS";
 export const GET_IN_ORDERS_ERR = "GET_IN_ORDERS_ERR";
 export const GET_OUT_ORDERS = "GET_OUT_ORDERS";
 export const GET_OUT_ORDERS_ERR = "GET_OUT_ORDERS_ERR"
+
+
+// users
+export const GET_NUM_OF_USERS = "GET_NUM_OF_USERS";

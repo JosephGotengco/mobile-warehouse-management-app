@@ -1,4 +1,4 @@
-export const BASEURL = "http://10.0.2.2:5000";
+export const BASEURL = "https://warehouse-management-api.herokuapp.com";
 export const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
 export const START_TIME = 8 * 60 + 30;

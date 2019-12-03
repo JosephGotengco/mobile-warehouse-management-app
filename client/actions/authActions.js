@@ -8,6 +8,7 @@ import {
     REGISTER_FAIL,
     RESET_ON_FAILED_LOGIN,
     RESET_ON_FAILED_REGISTER,
+    LOGOUT_USER,
 } from './types';
 
 export const resetFailedLogin = () => dispatch => {
@@ -105,3 +106,10 @@ export const signUp = ({ firstName, lastName, phone, email, password, confirmPas
     }
 }
 
+export const logout = () => dispatch => {
+    axios
+        .post(`${Constants.BASEURL}/api/auth/logout`)
+        .then(res => {
+            dispatch({ type: LOGOUT_USER, payload: res.data })
+        })
+}

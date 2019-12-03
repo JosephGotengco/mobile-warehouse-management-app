@@ -6,20 +6,41 @@ import {
     RESET_ON_FAILED_LOGIN,
     RESET_ON_FAILED_REGISTER,
     UPDATE_USER,
+    LOGOUT_USER,
 } from "./../actions/types";
 
 const initialState = {
-    loggedIn: false,
+    loggedIn: true,
     loginErr: false,
     loginErrMsg: "",
     registerErr: false,
     registerErrMsg: "",
-    user: {}
+    user: {
+        "registrationDate": "2019-11-17T06:02:07.323Z",
+        "_id": "5dd0e27abd21d35678740e39",
+        "firstName": "first",
+        "lastName": "last",
+        "username": "1",
+        "email": "1",
+        "phone": "phone",
+        "shifts": {
+            "1577644200000": {
+                "date": "2019-11-29",
+                "startTime": "10:30",
+                "endTime": "13:31"
+            }
+        }
+    }
 }
 
 
 const authReducer = (state = initialState, action) => {
     switch (action.type) {
+        case LOGOUT_USER:
+            return {
+                ...state,
+                loggedIn: false,
+            }
 
         case LOGIN_SUCCESS:
             return {
