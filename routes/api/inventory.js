@@ -12,11 +12,10 @@ const isLoggedIn = (req, res, next) => {
 }
 
 //Adds items to database based on QR Code data.
-router.post('/add', (req, res, next) => {
+router.post('/add', isLoggedIn, (req, res, next) => {
     try {
-        // res.status(200).send({...req.body})
+        console.log(req.user)
         const { id, name, quantity, tags } = req.body;
-        console.log(typeof (id), typeof (name), typeof (quantity))
         if (!id || !name || !quantity) { return res.status(400).send("Invalid QR Code") }
         Item.findOne({ id: id })
             .then(item => {
@@ -41,16 +40,31 @@ router.post('/add', (req, res, next) => {
     }
 })
 
+//Remove an item from database
 router.put('/remove', isLoggedIn, (req, res, next) => {
     try {
-
+        const { id, name, quantity } = req.body
+        if (!id || !name || !quantity) { return res.status(400).send("Invalid QR Code") }
+        try {
+            Item.findOne({ id: id })
+            .then(item => {
+                if (item) {
+                    res.send("Item found. Trying to update quantity...")
+                    Item.updateOne({ id: id }, { $inc: { quantity: -quantity } }, function (err, response) {
+                        if (err) return res.send(err)
+                    })
+                }
+            })
+        } catch (error) {
+            console.log(error)
+        }
     } catch (error) {
         console.log(error)
     }
 })
 
 //Get all items in database
-router.get('/all', (req, res, next) => {
+router.get('/all', isLoggedIn, (req, res, next) => {
     try {
         Item.find().then(items => {
             if (items) {
