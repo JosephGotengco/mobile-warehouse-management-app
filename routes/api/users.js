@@ -2,19 +2,33 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const multer = require('multer')
+const fs = require('fs')
 
-var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null,path.join(__dirname+'/uploads/'));
+const DIR = './public/';
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        if (!fs.existsSync(DIR)) {
+            fs.mkdirSync(DIR);
+        }
+        cb(null, DIR);
     },
-    filename: function (req, file, cb) {
+    filename: (req, file, cb) => {
         cb(null, file.fieldname + '-' + Date.now())
+
     }
-})
-
-
-const upload = multer({ storage: storage });
-
+});
+var upload = multer({
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+            cb(null, true);
+        } else {
+            cb(null, false);
+            return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+        }
+    }
+});
 
 const isLoggedIn = (req, res, next) => {
     // checks if user is logged in
@@ -25,6 +39,13 @@ const isLoggedIn = (req, res, next) => {
     }
 }
 
+router.put('/', upload.single('photo'), (req, res) => {
+    console.log('body', req.body)
+
+    res.status(200).json({
+        message: 'success!',
+    })
+})
 // @route   POST api/users
 // @desc    Registers New User
 // @access  Public
@@ -83,13 +104,6 @@ router.post("/", (req, res) => {
     }
 });
 
-router.put('/', upload.single('photo'), (req, res) => {
-    console.log('body', req.body)
-
-    res.status(200).json({
-        message: 'success!',
-    })
-})
 
 router.get('/length', async (req, res) => {
     try {
