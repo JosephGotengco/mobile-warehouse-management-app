@@ -10,7 +10,7 @@ import {
 } from "./../actions/types";
 
 const initialState = {
-    loggedIn: true,
+    loggedIn: false,
     loginErr: false,
     loginErrMsg: "",
     registerErr: false,
@@ -63,10 +63,11 @@ const authReducer = (state = initialState, action) => {
             }
 
         case REGISTER_SUCCESS:
+            console.log(action.payload.user)
             return {
                 ...state,
                 loggedIn: true,
-                user: action.payload
+                user: action.payload.user
             }
 
         case REGISTER_FAIL:

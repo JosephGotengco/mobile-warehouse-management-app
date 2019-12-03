@@ -57,6 +57,7 @@ class AccountPage extends Component {
     };
     capitalizeFirstLetter = string => {
         return string.charAt(0).toUpperCase() + string.slice(1);
+
     }
     handleLogout = () => {
         Alert.alert('You have been logged out');
@@ -81,11 +82,11 @@ class AccountPage extends Component {
                 <View style={{ flex: 2, position: 'relative' }}>
                     <View style={styles.field}>
                         <Text style={styles.label}>First Name</Text>
-                        <Text>{this.capitalizeFirstLetter(firstName)}</Text>
+                        <Text>{firstName ? this.capitalizeFirstLetter(firstName) : ""}</Text>
                     </View>
                     <View style={styles.field}>
                         <Text style={styles.label}>Last Name</Text>
-                        <Text>{this.capitalizeFirstLetter(lastName)}</Text>
+                        <Text>{lastName ? this.capitalizeFirstLetter(lastName) : ""}</Text>
                     </View>
                     <View style={styles.field}>
                         <Text style={styles.label}>Phone</Text>
