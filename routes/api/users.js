@@ -5,7 +5,13 @@ const multer = require('multer')
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './uploads/')
+        var dirName =path.join(process.cwd(), './files/')
+        console.log(dirName)
+        if (!fs.existsSync(dirName)){
+                fs.mkdirSync(dirName);
+        }
+        cb(null,dirName)
+
     },
     filename: function (req, file, cb) {
         cb(null, file.fieldname + '-' + Date.now())
