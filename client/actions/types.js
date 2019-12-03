@@ -7,7 +7,7 @@ export const LOGIN_FAIL = "LOGIN_FAIL";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const RESET_ON_FAILED_LOGIN = "RESET_ON_FAILED_LOGIN";
 
-export const UPDATE_USER = "UPDATE_USER";
+export const LOGOUT_USER = "LOGOUT_USER";
 
 // shifts
 export const ADDING_SHIFT_FAIL = "ADDING_SHIFT_FAIL";

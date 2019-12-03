@@ -46,7 +46,7 @@ const bottomTabNavigator = createBottomTabNavigator(
         }
     },
     {
-        initialRouteName: 'Home',
+        initialRouteName: 'Account',
         tabBarOptions: {
             activeTintColor: "#46CDCD",
             style: {

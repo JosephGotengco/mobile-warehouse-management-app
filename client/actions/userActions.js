@@ -14,3 +14,12 @@ export const getNumOfUsers = () => dispatch => {
             console.log(res.data);
         })
 }
+
+export const updateUserProfilePicture = data => dispatch => {
+    axios
+        .put('/api/users', data)
+        .then(res => {
+            console.log(res.data);
+        })
+
+}

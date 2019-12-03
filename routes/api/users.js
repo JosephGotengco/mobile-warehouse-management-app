@@ -1,7 +1,19 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
-const passport = require("passport");
+const multer = require('multer')
+
+const Storage = multer.diskStorage({
+    destination(req, file, callback) {
+        callback(null, './images')
+    },
+    filename(req, file, callback) {
+        callback(null, `${file.fieldname}_${Date.now()}_${file.originalname}`)
+    },
+});
+
+const upload = multer({ storage: Storage });
+
 
 const isLoggedIn = (req, res, next) => {
     // checks if user is logged in
@@ -70,14 +82,24 @@ router.post("/", (req, res) => {
     }
 });
 
+router.put('/', isLoggedIn, upload.single('avatar'), (req, res) => {
+    console.log('file', req.files)
+    console.log('body', req.body)
+    res.status(200).json({
+        message: 'success!',
+    })
+})
+
 router.get('/length', async (req, res) => {
     try {
         let result = await User.find({});
         let numOfUsers = result.length;
-        res.status(200).send(''+numOfUsers);
+        res.status(200).send('' + numOfUsers);
     } catch (e) {
         console.log(e)
     }
 });
+
+
 
 module.exports = router;
