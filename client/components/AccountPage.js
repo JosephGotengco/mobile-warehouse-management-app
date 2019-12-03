@@ -8,6 +8,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'; // 6.2.2
 import { connect } from 'react-redux'
 import { logout } from "./../actions/authActions";
 import { updateUserProfilePicture } from "./../actions/userActions";
+import base64 from 'react-native-base64'
+import { Buffer } from 'buffer'
+
 
 class AccountPage extends Component {
 
@@ -63,15 +66,72 @@ class AccountPage extends Component {
         Alert.alert('You have been logged out');
         this.props.logout();
     }
+    arrayBufferToBase64(buffer) {
+        var binary = '';
+        var bytes = [].slice.call(new Uint8Array(buffer));
+        bytes.forEach((b) => binary += String.fromCharCode(b));
+        return window.btoa(binary);
+    };
+    chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+    Base64 = {
+        btoa: (input) => {
+            let str = input;
+            let output = '';
+
+            for (let block = 0, charCode, i = 0, map = this.chars;
+                str.charAt(i | 0) || (map = '=', i % 1);
+                output += map.charAt(63 & block >> 8 - i % 1 * 8)) {
+
+                charCode = str.charCodeAt(i += 3 / 4);
+
+                if (charCode > 0xFF) {
+                    throw new Error("'btoa' failed: The string to be encoded contains characters outside of the Latin1 range.");
+                }
+
+                block = block << 8 | charCode;
+            }
+
+            return output;
+        },
+
+        atob: (input) => {
+            let str = input.replace(/=+$/, '');
+            let output = '';
+
+            if (str.length % 4 == 1) {
+                throw new Error("'atob' failed: The string to be decoded is not correctly encoded.");
+            }
+            for (let bc = 0, bs = 0, buffer, i = 0;
+                buffer = str.charAt(i++);
+
+                ~buffer && (bs = bc % 4 ? bs * 64 + buffer : buffer,
+                    bc++ % 4) ? output += String.fromCharCode(255 & bs >> (-2 * bc & 6)) : 0
+            ) {
+                buffer = chars.indexOf(buffer);
+            }
+
+            return output;
+        }
+    };
+    arrayBufferToBase64(buffer) {
+        var binary = '';
+        var bytes = [].slice.call(new Uint8Array(buffer));
+        bytes.forEach((b) => binary += String.fromCharCode(b));
+        console.log(bytes)
+        return this.Base64.btoa(binary);
+    };
     render() {
         let { image } = this.state;
         let { user } = this.props;
-        let { firstName, lastName, email, phone } = user;
+        let { firstName, lastName, email, phone, img } = user;
+        var base64Flag = `data:${img.contentType};base64,`;
+        var base64 = img.data.toString('base64');
+        var imageStr = new Buffer(base64, 'base64');
         return (
             <View style={{ flex: 1, backgroundColor: "#F2F2F2", padding: wp('10%') }}>
                 <View style={{ position: 'relative', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     <View style={{ width: wp('50%'), height: wp('50%') }}>
-                        <Image source={image ? { uri: image } : require('./../assets/placeholder.jpg')} style={{ width: wp('50%'), height: wp('50%'), borderRadius: 100 }} />
+                        <Image source={img ? base64Flag + imageStr  : require('./../assets/placeholder.jpg')} style={{ width: wp('50%'), height: wp('50%'), borderRadius: 100 }} />
                         <MaterialCommunityIcons name="camera" size={24} style={{
                             position: 'absolute', right: '5%', bottom: '5%',
                             padding: 5, backgroundColor: 'white', borderRadius: 50

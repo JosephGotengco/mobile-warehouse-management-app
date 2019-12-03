@@ -45,7 +45,11 @@ router.put('/', [isLoggedIn, upload.single('photo')], async(req, res) => {
     let user = result[0];
     console.log('req.file', req.file)
     console.log('req.file.path', req.file.path)
-    user.img.data = fs.readFileSync(req.file.path);
+    let data = fs.readFileSync(req.file.path);
+    let base64 = data.toString('base64');
+    let imgData = new Buffer(base64, 'base64');
+
+    user.img.data = imgData;
     user.img.contentType = req.file.mimetype;
     user.save();
     console.log(user)
