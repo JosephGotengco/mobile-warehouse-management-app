@@ -1,6 +1,6 @@
 import axios from "axios";
 import { UPDATE_USER, ADDING_SHIFT_SUCCESS, ADDING_SHIFT_FAIL, DELETING_SHIFT_SUCCESS, DELETING_SHIFT_FAIL, RESET_ON_FAILED_SHIFT_ADD, RESET_ON_FAILED_SHIFT_DELETE } from "./types";
-import * as Constants from './../constants'
+import * as Constants from './../constants';
 
 export const addShift = (year, month, date, startTime, endTime) => {
     return (dispatch, getState) => {
@@ -34,13 +34,19 @@ export const addShift = (year, month, date, startTime, endTime) => {
                     type: ADDING_SHIFT_FAIL,
                     payload: err.response.data
                 })
-                console.log('err', err.response.data)
+                console.log('err msg', err.response.data)
             })
     }
-
 }
 
 export const deleteShift = key => dispatch => {
+    // Headers
+    const config = {
+        headers: {
+            "Content-type": "application/json"
+        }
+    };
+    const body = {}
     axios
         .delete(`${Constants.BASEURL}/api/shifts/${key}`, body, config)
         .then(res => {
@@ -59,7 +65,7 @@ export const deleteShift = key => dispatch => {
                 type: DELETING_SHIFT_FAIL,
                 payload: err.response.data
             })
-            console.log('err', err.response.data)
+            console.log('err msg', err.response.data)
         })
 }
 

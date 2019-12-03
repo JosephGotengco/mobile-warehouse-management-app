@@ -45,7 +45,7 @@ class AccountPage extends Component {
                 fontSize: hp('3%'),
                 marginLeft: 20
             }}>
-                {this.state.first_name} {this.state.last_name}}
+                {this.state.first_name} {this.state.last_name}
                 </Text>
                 </View>
                 </View>
@@ -174,4 +174,3 @@ const styles = StyleSheet.create({
 });
 
 export default AccountPage;
-

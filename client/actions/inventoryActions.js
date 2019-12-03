@@ -1,8 +1,6 @@
 import axios from "axios";
-import { UPDATE_INVENTORY, UPDATE_INVENOTRY_ERR } from "./types";
+import { UPDATE_INVENTORY, UPDATE_INVENOTRY_ERR, GET_INVENTORY, GET_INVENTORY_ERR } from "./types";
 import * as Constants from './../constants'
-
-const API_URL = "https://warehouse-management-api.herokuapp.com"
 
 export const addItem = data => dispatch => {
 
@@ -27,7 +25,7 @@ export const addItem = data => dispatch => {
 }
 
 export const getInventory = () => dispatch => {
-    axios.get(`${API_URL}/api/inventory/all`)
+    axios.get(`${Constants.BASEURL}/api/inventory/all`)
     .then(res => {
         dispatch({
             type: GET_INVENTORY,

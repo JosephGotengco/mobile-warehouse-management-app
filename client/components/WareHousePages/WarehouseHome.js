@@ -35,17 +35,17 @@ class WarehouseHome extends Component {
     setQRModalVisible = (visible) => {
         // Closes modal
         this.setState({ QRModalVisble: visible })
-        this.setState({ scanned: false})
+        this.setState({ scanned: false })
     }
 
     QRErrorAlert = () => {
-        Alert.alert('Scanning Error','There was an error scanning the QR Code. Please try again',
-        [
-            {text: 'Tap to scan again', onPress: () => this.setState({scanned: false})}
-        ])
+        Alert.alert('Scanning Error', 'There was an error scanning the QR Code. Please try again',
+            [
+                { text: 'Tap to scan again', onPress: () => this.setState({ scanned: false }) }
+            ])
     }
 
-    componentDidUpdate(){
+    componentDidUpdate() {
         if (this.props.inventoryErr == true) {
             this.QRErrorAlert()
         }
@@ -68,20 +68,20 @@ class WarehouseHome extends Component {
                 <Modal
                     animationType="slide"
                     visible={this.state.QRModalVisble}
-                    onRequestClose={()=> {this.setQRModalVisible(!this.state.QRModalVisble)}}>
+                    onRequestClose={() => { this.setQRModalVisible(!this.state.QRModalVisble) }}>
                     <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-end', backgroundColor: 'black' }}>
                         <BarCodeScanner
                             onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned}
                             style={StyleSheet.absoluteFillObject}>
-                                {/* Opacity for border */}
-                                <View style={styles.layerTop} />
-                                <View style={styles.layerCenter}>
+                            {/* Opacity for border */}
+                            <View style={styles.layerTop} />
+                            <View style={styles.layerCenter}>
                                 <View style={styles.layerLeft} />
                                 <View style={styles.focused} />
                                 <View style={styles.layerRight} />
-                                </View>
-                                <View style={styles.layerBottom} />
-                            </BarCodeScanner>
+                            </View>
+                            <View style={styles.layerBottom} />
+                        </BarCodeScanner>
                         {scanned && (<Button title={'Tap to Scan Again'}
                             onPress={() => this.setState({ scanned: false })} />)}
                     </View>
@@ -117,22 +117,6 @@ class WarehouseHome extends Component {
                         <MaterialCommunityIcons name="image-filter-none" size={55} color="#000000" />
                         <Text>Stocks</Text>
                     </TouchableOpacity>
-
-                    {/* HISTORY PAGE */}
-                    <TouchableOpacity style={styles.box}
-                        onPress={() => this.props.navigation.push('HistoryPage')}>
-                        <MaterialIcons name="rotate-left" size={55} color="#000000" />
-                        <Text>History</Text>
-                    </TouchableOpacity>
-                </View>
-
-                <View style={{ flexDirection: "row" }}>
-                    {/* MAPS PAGE IS PROBABLY GONNA BE CHANGED, IDK WHAT YET MAYBE A CHAT FEATURE */}
-                    <TouchableOpacity style={styles.box}>
-                        <MaterialIcons name="map" size={55} color="#000000" />
-                        <Text>Map</Text>
-                    </TouchableOpacity>
-
                     {/* ADD QR SCANNER MODAL */}
                     <TouchableOpacity style={[styles.box]}
                         onPress={() => this.setQRModalVisible(true)}>
@@ -146,9 +130,15 @@ class WarehouseHome extends Component {
 
     handleBarCodeScanned = ({ type, data }) => {
         this.setState({ scanned: true });
-        let jsonData = JSON.parse(data);
-        this.props.addItem(jsonData)
-        alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+        try {
+            let jsonData = JSON.parse(data);
+            this.props.addItem(jsonData)
+            alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+        } catch (e) {
+            console.log(e)
+            alert(e)
+        }
+
     };
 }
 

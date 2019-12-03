@@ -19,6 +19,7 @@ const isValidDate = dateString => {
     if (!dNum && dNum !== 0) return false; // NaN value, Invalid date
     return d.toISOString().slice(0, 10) === dateString;
 }
+
 const isValidTime = timeString => {
     var regEx = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
     if (!timeString.match(regEx)) return false;  // Invalid format
@@ -45,7 +46,8 @@ router.post("/", isLoggedIn, async (req, res) => {
         if (!isValidTime(startTime)) return res.status(400).send("Please provide a valid start time.");
         if (!isValidTime(endTime)) return res.status(400).send("Please provide a valid end time.");
         if (hmsToSeconds(endTime) - hmsToSeconds(startTime) < 0) return res.status(400).send("End time must be after start time.");
-
+        if (hmsToSeconds(endTime) - hmsToSeconds(startTime) <= 10800) return res.status(400).send("The shift must be more than three hours long.");
+        console.log(hmsToSeconds(endTime) - hmsToSeconds(startTime))
         // Get the date in the PST time zone (Vancouver)
         var d = new Date();
         var utc = d.getTime() + (d.getTimezoneOffset() * 60000);
@@ -73,7 +75,7 @@ router.post("/", isLoggedIn, async (req, res) => {
 
         // today's year, month, etc...
         let tFullYear = nd.getFullYear();
-        let tMonth = nd.getMonth()+1;
+        let tMonth = nd.getMonth() + 1;
         let tDate = nd.getDate();
         let tHours = nd.getHours();
         let tMinutes = nd.getMinutes();
@@ -87,7 +89,7 @@ router.post("/", isLoggedIn, async (req, res) => {
         let minuteCheck = sMinutes <= tMinutes;
 
         // BIG BRAIN IF STATEMENT, I USED BOOLEAN ALGEBRA
-        if (yearCheck && (monthCheck && (dateCheck && ((hourCheck && minuteCheck) || hourCheck )))) {
+        if (yearCheck && (monthCheck && (dateCheck && ((hourCheck && minuteCheck) || hourCheck)))) {
             return res.status(400).send('You cannot schedule shifts in the past.');
         }
 
@@ -118,8 +120,9 @@ router.post("/", isLoggedIn, async (req, res) => {
         let updatedUser = result.toObject();
         delete updatedUser.password;
         delete updatedUser.__v;
+        let monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
         res.status(200).json({
-            msg: `Successfully added a shift from ${startTime} to ${endTime} on ${date}`,
+            msg: `Successfully added a shift from ${startTime} to ${endTime} on ${monthList[month-1]} ${dateNum}, ${fullYear}`,
             user: updatedUser
         });
     } catch (e) {

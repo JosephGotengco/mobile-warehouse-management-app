@@ -1,4 +1,4 @@
-import { ADDING_SHIFT, SET_SHIFT_MSG, ADDED_SHIFT_SUCCESSFUL, ADDING_SHIFT_SUCCESS } from "./../actions/types";
+import { ADDING_SHIFT, SET_SHIFT_MSG, ADDED_SHIFT_SUCCESSFUL, ADDING_SHIFT_SUCCESS, ADDING_SHIFT_FAIL } from "./../actions/types";
 
 const initialState = {
     addingShift: false,
@@ -20,6 +20,12 @@ const shiftReducer = (state = initialState, action) => {
 
         case ADDING_SHIFT_SUCCESS:
             console.log(action.payload)
+            return {
+                ...state,
+                shiftMsg: action.payload
+            }
+
+        case ADDING_SHIFT_FAIL:
             return {
                 ...state,
                 shiftMsg: action.payload

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { View, Dimensions, Text, ScrollView, Modal, Picker, Alert, Button } from 'react-native';
+import { View, Dimensions, Text, ScrollView, Modal, Picker, Alert, Button, TouchableOpacity } from 'react-native';
 import { CalendarList } from "react-native-calendars";
 import { connect } from "react-redux";
-import { addShift } from "./../actions/shiftActions";
+import { addShift, deleteShift } from "./../actions/shiftActions";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Constants from './../constants';
 
@@ -46,6 +46,7 @@ class SchedulePage extends Component {
         this.setState({ modalVisible: visible });
     }
 
+
     componentDidMount() {
         let { shifts } = this.props.user;
 
@@ -56,8 +57,8 @@ class SchedulePage extends Component {
         if (shifts) {
             for (dateKey of Object.keys(shifts)) {
                 agendaDates[dateKey] = [{ ...shifts[dateKey] }];
-                var date = new Date(...shifts[dateKey].date.split("-"));
-                var date = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
+                var date = shifts[dateKey].date;
+                console.log(date);
                 if (markedDates[date]) {
                     markedDates[date]['dots'].push({ key: dateKey, color: 'black' });
                 } else {
@@ -69,6 +70,7 @@ class SchedulePage extends Component {
             selectedShifts = Object.values(shifts).filter(shift => shift.date === currentDateString);
         }
 
+
         // Get the date in the PST time zone (Vancouver)
         var d = new Date();
         var utc = d.getTime() + (d.getTimezoneOffset() * 60000);
@@ -78,6 +80,8 @@ class SchedulePage extends Component {
         let currentMonth = nd.getMonth();
         let currentFullYear = nd.getFullYear();
         var currentDateString = `${currentFullYear}-${currentMonth + 1}-${currentDateNum}`;
+        this.getShifts(currentDateString);
+
         let currentDate = {
             dateString: currentDateString,
             dateNum: currentDateNum,
@@ -112,13 +116,12 @@ class SchedulePage extends Component {
     }
 
     updateMarkedDates = shifts => {
-        console.log('updating!')
         // load data for markedDates and agendaDates
         let markedDates = {};
         for (dateKey of Object.keys(shifts)) {
             // agendaDates[dateKey] = [{ ...shifts[dateKey] }];
-            var date = new Date(...shifts[dateKey].date.split("-"));
-            var date = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
+            var date = shifts[dateKey].date;
+
             if (markedDates[date]) {
                 markedDates[date]['dots'].push({ key: dateKey, color: 'black' });
             } else {
@@ -126,6 +129,8 @@ class SchedulePage extends Component {
                     dots: [{ key: dateKey, color: 'black' }]
                 }
             }
+
+            this.getShifts(this.state.selectedDate);
         }
         this.setState({ markedDates });
     }
@@ -133,12 +138,17 @@ class SchedulePage extends Component {
     componentDidUpdate(prevProps) {
         let { shifts } = this.props.user;
         if (shifts) {
-            console.log("shifts exist")
             // if there was a change in the number of shifts for the user
             if (!prevProps.user.shifts && Object.keys(shifts).length === 1) {
+                // date.year, date.month + 1, date.date
                 this.updateMarkedDates(shifts);
             } else if (Object.keys(prevProps.user.shifts).length !== Object.keys(shifts).length) {
                 this.updateMarkedDates(shifts);
+            }
+        } else if (prevProps.user.shifts) {
+            if (!shifts && Object.keys(prevProps.user.shifts).length === 1) {
+                this.updateMarkedDates({});
+                this.setState({ selectedShifts: [] });
             }
         }
     }
@@ -146,7 +156,12 @@ class SchedulePage extends Component {
     getShifts = selectedDate => {
         let { shifts } = this.props.user;
         if (shifts) {
-            let selectedShifts = Object.values(shifts).filter(shift => shift.date === selectedDate);
+            let selectedShifts = [];
+            for (var key in shifts) {
+                if (shifts[key].date === selectedDate) {
+                    selectedShifts.push({ key, ...shifts[key] });
+                }
+            }
             this.setState({ selectedShifts })
         }
     }
@@ -171,7 +186,6 @@ class SchedulePage extends Component {
             days.push(new Date(date).getDate());
             date.setDate(date.getDate() + 1);
         }
-
         return days;
     }
 
@@ -196,7 +210,7 @@ class SchedulePage extends Component {
             var hh = Math.floor(tt / 60); // getting hours of day in 0-24 format
             var mm = (tt % 60); // getting minutes of the hour in 0-55 format
             o.value = ("0" + (hh)).slice(-2) + ':' + ("0" + mm).slice(-2);
-            o.label = ("0" + (hh % 12)).slice(-2) + ':' + ("0" + mm).slice(-2) + ap[Math.floor(hh / 12)];
+            o.label = ("0" + (hh % 12 === 0 ? 12 : hh % 12)).slice(-2) + ':' + ("0" + mm).slice(-2) + ap[Math.floor(hh / 12)];
             times[i] = o // pushing data in array in [00:00 - 12:00 AM/PM format]
             tt = tt + x;
         }
@@ -206,11 +220,27 @@ class SchedulePage extends Component {
     onSubmit = () => {
         let { newShift } = this.state;
         let { date, startTime, endTime } = newShift;
+        console.log(date.year, date.month + 1, date.date, startTime, endTime);
         this.props.addShift(date.year, date.month + 1, date.date, startTime, endTime)
             .then(result => {
-                console.log(result);
                 alert(this.props.shiftMsg)
             })
+    }
+
+    confirmShiftDelete = key => {
+        Alert.alert(
+            'Confirm Shift Cancel',
+            'Are you sure you want to cancel this shift?',
+            [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                { text: 'Yes', onPress: () => this.props.deleteShift(key) },
+            ],
+            { cancelable: true }
+        );
     }
 
     render() {
@@ -234,8 +264,8 @@ class SchedulePage extends Component {
                     calendarHeight={Dimensions.get('window').height / 2}
                     showScrollIndicator={true}
                     scrollEnabled={true}
-                    futureScrollRange={25}
-                    pastScrollRange={25}
+                    futureScrollRange={12}
+                    pastScrollRange={12}
                     onDayPress={selectedDate => {
                         this.setState({ selectedDate: selectedDate.dateString });
                         this.getShifts(selectedDate.dateString);
@@ -252,7 +282,7 @@ class SchedulePage extends Component {
                         calendarBackground: "#F2F2F2",
                         textMonthFontFamily: "Rubik-Bold",
                         textMonthFontSize: 32,
-                        selectedDayBackgroundColor: "#46CDCD",
+                        selectedDayBackgroundColor: '#1BB9EA',
                         textDayFontFamily: 'Rubik-Regular',
                         textMonthFontFamily: 'Rubik-Regular',
                         textDayHeaderFontFamily: 'Rubik-Regular',
@@ -284,7 +314,7 @@ class SchedulePage extends Component {
 
                     {selectedShifts.map((shift, i) => {
                         const length = selectedShifts.length;
-                        let { date, startTime, endTime } = shift;
+                        let { key, startTime, endTime } = shift;
                         var startTimeArr = startTime.split(":");
                         var endTimeArr = endTime.split(":");
                         var startHour = startTimeArr[0];
@@ -325,10 +355,10 @@ class SchedulePage extends Component {
                                         <Text style={{ fontFamily: "Rubik-Regular", fontSize: 12, color: "#4F4F4F", marginVertical: "auto" }}>{startHourNormal}:{startMinute}{startMeridiem}-{endHourNormal}:{endMinute}{endMeridiem}</Text>
                                         <Text style={{ fontFamily: "Rubik-Regular", fontSize: 12, color: "#4F4F4F", marginVertical: "auto" }}>{hourDifference > 0 ? `${hourDifference} hours` : null}{minuteDifference > 0 ? `${minuteDifference} minutes` : null}</Text>
                                     </View>
-                                    <View style={{justifyContent: 'center', alignItems: 'center', display: 'flex', marginLeft: 'auto'}}>
+                                    <View style={{ justifyContent: 'center', alignItems: 'center', display: 'flex', marginLeft: 'auto' }}>
                                         <MaterialCommunityIcons name="window-close" size={25} color={"black"}
                                             onPress={() => {
-                                                console.log("DELETE")
+                                                this.confirmShiftDelete(key);
                                             }} />
                                     </View>
                                 </View>
@@ -341,10 +371,10 @@ class SchedulePage extends Component {
                                         <Text style={{ fontFamily: "Rubik-Regular", fontSize: 12, color: "#4F4F4F", marginVertical: "auto" }}>{startHourNormal}:{startMinute}{startMeridiem}-{endHourNormal}:{endMinute}{endMeridiem}</Text>
                                         <Text style={{ fontFamily: "Rubik-Regular", fontSize: 12, color: "#4F4F4F", marginVertical: "auto" }}>{hourDifference > 0 ? `${hourDifference} ${hourDifference > 1 ? "hours" : "hour"}` : null}{minuteDifference > 0 ? `${minuteDifference} minutes` : null}</Text>
                                     </View>
-                                    <View style={{justifyContent: 'center', alignItems: 'center', display: 'flex', marginLeft: 'auto'}}>
+                                    <View style={{ justifyContent: 'center', alignItems: 'center', display: 'flex', marginLeft: 'auto' }}>
                                         <MaterialCommunityIcons name="window-close" size={25} color={"black"}
                                             onPress={() => {
-                                                console.log("DELETE")
+                                                this.confirmShiftDelete(key);
                                             }} />
                                     </View>
                                 </View>
@@ -354,16 +384,21 @@ class SchedulePage extends Component {
                     })}
                 </ScrollView>
                 <Modal
-                    animationType="slide"
+                    animationType="fade"
                     transparent={true}
                     visible={this.state.modalVisible}
-                    onRequestClose={() => {
-                        Alert.alert('Modal has been closed.');
-                    }}>
-                    <View style={{ marginTop: 22, flex: 1, justifyContent: 'center', alignItems: 'center', padding: 10 }}>
-                        <View style={{ backgroundColor: "#E0E0E0", position: 'relative', minWidth: 300, padding: 20, borderRadius: 15 }}>
+                    onRequestClose={() => { this.setModalVisible(false) }}
+                >
+                    <TouchableOpacity
+                        style={{ marginTop: 22, flex: 1, justifyContent: 'center', alignItems: 'center', padding: 10, zIndex: 2 }}
+                        activeOpacity={1}
+                        onPressOut={() => { this.setModalVisible(false) }}
+                    >
+                        <TouchableOpacity style={{ backgroundColor: "#E0E0E0", position: 'relative', minWidth: 300, padding: 20, borderRadius: 15 }}
+                            activeOpacity={1}
+                        >
                             <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                                <Text style={{ fontFamily: "Rubik-Bold", fontSize: 26 }}>Add a new shift</Text>
+                                <Text style={{ fontFamily: "Rubik-Bold", fontSize: 26 }} >Add a new shift</Text>
                                 <View>
                                     <MaterialCommunityIcons name="window-close" size={25} color={"black"}
                                         onPress={() => {
@@ -404,7 +439,7 @@ class SchedulePage extends Component {
                                     }}
                                     style={{ height: 50, width: 90 }}>
                                     {this.state.remainingDays.map((date, i) => {
-                                        return (<Picker.Item key={i} label={`${date}`} value={date} />)
+                                        return (<Picker.Item key={i} label={`${date}`} value={date < 10 ? `0${date}` : `${date}`} />)
                                     })}
                                 </Picker>
                                 <Picker
@@ -463,10 +498,11 @@ class SchedulePage extends Component {
                             <View>
                                 <Button title="Add Shift" onPress={this.onSubmit} />
                             </View>
-                        </View>
-                    </View>
+                        </TouchableOpacity>
+                    </TouchableOpacity>
+
                 </Modal>
-            </View >
+            </View>
         );
     }
 }
@@ -479,4 +515,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, { addShift })(SchedulePage);
+export default connect(mapStateToProps, { addShift, deleteShift })(SchedulePage);

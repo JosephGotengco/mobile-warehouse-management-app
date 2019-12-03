@@ -3,10 +3,10 @@ import ReactNative, { View, Text, StyleSheet, Image } from 'react-native';
 import { Button } from 'react-native-elements'
 import { TextField } from 'react-native-material-textfield';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { withNavigation } from 'react-navigation';
 import { connect } from "react-redux";
-import { signUp, resetFailedSignUp } from "../../actions/authActions"
+import { signUp, resetFailedSignUp } from "../../actions/authActions";
 import logo from "./../../assets/logo.png";
 
 class SignUpPage extends Component {
@@ -198,7 +198,6 @@ class SignUpPage extends Component {
                     </View>
                 </KeyboardAwareScrollView>
             </View>
-
         );
     }
 }
