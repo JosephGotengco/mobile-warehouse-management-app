@@ -32,3 +32,7 @@ export const GET_IN_ORDERS = "GET_IN_ORDERS";
 export const GET_IN_ORDERS_ERR = "GET_IN_ORDERS_ERR";
 export const GET_OUT_ORDERS = "GET_OUT_ORDERS";
 export const GET_OUT_ORDERS_ERR = "GET_OUT_ORDERS_ERR"
+
+
+// users
+export const GET_NUM_OF_USERS = "GET_NUM_OF_USERS";

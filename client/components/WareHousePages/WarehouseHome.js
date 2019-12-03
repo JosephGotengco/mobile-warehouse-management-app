@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Modal, TouchableHighlight, Button, Alert } from 'react-native';
-import { MaterialIcons, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, Button, Alert } from 'react-native';
+import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Permissions from 'expo-permissions';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { connect } from 'react-redux'
 import { addItem } from '../../actions/inventoryActions'
-import { withNavigation } from 'react-navigation';
 
 //react native built in icons: 1 = ballot-outline, 2 = ballot-outline, 3 = image-filter-none, 4 = rotate-left, 5 = map, 6 = icon
 
