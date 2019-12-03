@@ -5,7 +5,7 @@ const multer = require('multer')
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null,path.join(__dirname+'/uploads'));
+        cb(null,path.join(__dirname+'/uploads/'));
     },
     filename: function (req, file, cb) {
         cb(null, file.fieldname + '-' + Date.now())
@@ -85,7 +85,6 @@ router.post("/", (req, res) => {
 
 router.put('/', upload.single('photo'), (req, res) => {
     console.log('body', req.body)
-    req.socket.setTimeout(10 * 60 * 1000);
 
     res.status(200).json({
         message: 'success!',
