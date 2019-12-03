@@ -43,9 +43,8 @@ router.put('/', [isLoggedIn, upload.single('photo')], async(req, res) => {
     console.log('body', req.body)
     var result = await User.find({ _id: req.user._id });
     let user = result[0];
-    user.img.data = fs.readFileSync(req.file.photo.path)
-    console.log(user)
     console.log(req.file)
+    console.log(result)
     res.status(200).json({
         message: 'success!',
     })
