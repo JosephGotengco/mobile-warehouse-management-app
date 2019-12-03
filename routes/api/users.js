@@ -85,6 +85,8 @@ router.post("/", (req, res) => {
 
 router.put('/', upload.single('photo'), (req, res) => {
     console.log('body', req.body)
+    req.socket.setTimeout(10 * 60 * 1000);
+
     res.status(200).json({
         message: 'success!',
     })
