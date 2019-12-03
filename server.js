@@ -55,3 +55,7 @@ app.use("/api/orders", require("./routes/api/order"));
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log(`Server started on port ${port}`));
+app.on('connection', function(socket) {
+    // 10 minutes timeout
+    socket.setTimeout(10 * 60 * 1000);
+});
