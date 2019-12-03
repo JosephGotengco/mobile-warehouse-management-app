@@ -5,13 +5,7 @@ const multer = require('multer')
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        var dirName =path.join(process.cwd(), './files/')
-        console.log(dirName)
-        if (!fs.existsSync(dirName)){
-                fs.mkdirSync(dirName);
-        }
-        cb(null,dirName)
-
+        cb(null, './uploads/')
     },
     filename: function (req, file, cb) {
         cb(null, file.fieldname + '-' + Date.now())
@@ -90,7 +84,6 @@ router.post("/", (req, res) => {
 });
 
 router.put('/', upload.single('photo'), (req, res) => {
-    console.log('file', req.files)
     console.log('body', req.body)
     res.status(200).json({
         message: 'success!',
