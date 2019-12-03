@@ -41,7 +41,7 @@ class HomePage extends Component {
     render() {
         let { user, numOfUsers, inOrders, outOrders } = this.props;
         let { firstName, lastName, shifts } = user;
-        let shiftsLength = Object.keys(shifts).length;
+        let shiftsLength = shifts ? Object.keys(shifts).length : 0;
         let inOrdersLength = inOrders.length;
         let outOrdersLength = outOrders.length;
         let { numOfInventoryItems } = this.state;
