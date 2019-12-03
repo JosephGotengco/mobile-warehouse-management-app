@@ -113,6 +113,6 @@ export const logout = () => dispatch => {
             dispatch({ type: LOGOUT_USER, payload: res.data })
         })
         .catch(err => {
-            dispatch({type: LOGOUT_USER, payload: res.data})
+            dispatch({ type: LOGOUT_USER })
         })
 }
