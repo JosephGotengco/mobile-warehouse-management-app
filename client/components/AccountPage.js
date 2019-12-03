@@ -7,6 +7,7 @@ import * as Permissions from 'expo-permissions';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; // 6.2.2
 import { connect } from 'react-redux'
 import { logout } from "./../actions/authActions";
+import { updateUserProfilePicture } from "./../actions/userActions";
 
 class AccountPage extends Component {
 
@@ -50,6 +51,7 @@ class AccountPage extends Component {
                     Platform.OS === "android" ? result.uri : result.uri.replace("file://", "")
             });
             console.log(data);
+            this.props.updateUserProfilePicture(data)
         }
     };
     capitalizeFirstLetter = string => {
@@ -106,7 +108,7 @@ const mapStateToProps = (state) => ({
 })
 
 
-export default connect(mapStateToProps, { logout })(AccountPage);
+export default connect(mapStateToProps, { logout, updateUserProfilePicture })(AccountPage);
 
 const styles = StyleSheet.create({
     container: {

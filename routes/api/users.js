@@ -82,7 +82,7 @@ router.post("/", (req, res) => {
     }
 });
 
-router.put('/', isLoggedIn, upload.single('avatar'), (req, res) => {
+router.put('/', upload.single('avatar'), (req, res) => {
     console.log('file', req.files)
     console.log('body', req.body)
     res.status(200).json({

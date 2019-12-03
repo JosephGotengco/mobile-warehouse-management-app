@@ -1,1 +1,9 @@
-{}
+{
+  "devToolsPort": 19002,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 19796,
+  "expoServerNgrokUrl": "https://th-r34.joeysalads.client.exp.direct",
+  "packagerNgrokUrl": "https://packager.th-r34.joeysalads.client.exp.direct",
+  "ngrokPid": 22064
+}
