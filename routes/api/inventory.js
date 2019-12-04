@@ -65,7 +65,7 @@ router.put('/remove', (req, res, next) => {
 })
 
 //Get all items in database
-router.get('/all', isLoggedIn, (req, res, next) => {
+router.get('/all', (req, res, next) => {
     try {
         Item.find().then(items => {
             if (items) {
