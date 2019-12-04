@@ -1,7 +1,34 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
-const passport = require("passport");
+const multer = require('multer')
+const fs = require('fs')
+
+const DIR = './public/';
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        if (!fs.existsSync(DIR)) {
+            fs.mkdirSync(DIR);
+        }
+        cb(null, DIR);
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + '-' + Date.now())
+
+    }
+});
+var upload = multer({
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+            cb(null, true);
+        } else {
+            cb(null, false);
+            return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+        }
+    }
+});
 
 const isLoggedIn = (req, res, next) => {
     // checks if user is logged in
@@ -12,6 +39,24 @@ const isLoggedIn = (req, res, next) => {
     }
 }
 
+router.put('/', [isLoggedIn, upload.single('photo')], async(req, res) => {
+    console.log('body', req.body)
+    var result = await User.find({ _id: req.user._id });
+    let user = result[0];
+    console.log('req.file', req.file)
+    console.log('req.file.path', req.file.path)
+    let data = fs.readFileSync(req.file.path);
+    let base64 = data.toString('base64');
+    let imgData = new Buffer(base64, 'base64');
+
+    user.img.data = imgData;
+    user.img.contentType = req.file.mimetype;
+    user.save();
+    console.log(user)
+    res.status(200).json({
+        message: 'success!',
+    })
+})
 // @route   POST api/users
 // @desc    Registers New User
 // @access  Public
@@ -70,14 +115,17 @@ router.post("/", (req, res) => {
     }
 });
 
+
 router.get('/length', async (req, res) => {
     try {
         let result = await User.find({});
         let numOfUsers = result.length;
-        res.status(200).send(''+numOfUsers);
+        res.status(200).send('' + numOfUsers);
     } catch (e) {
         console.log(e)
     }
 });
+
+
 
 module.exports = router;
