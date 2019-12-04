@@ -40,11 +40,17 @@ class HomePage extends Component {
 
     render() {
         let { user, numOfUsers, inOrders, outOrders } = this.props;
-        let { firstName, lastName, shifts } = user;
+        let { firstName, lastName, shifts, registrationDate } = user;
         let shiftsLength = shifts ? Object.keys(shifts).length : 0;
         let inOrdersLength = inOrders.length;
         let outOrdersLength = outOrders.length;
         let { numOfInventoryItems } = this.state;
+        let registrationDateObj = new Date(registrationDate);
+        let currentDateObj = new Date();
+        const diffTime = Math.abs(currentDateObj - registrationDateObj);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        console.log(diffDays);
+
         return (
             <View style={{ flex: 1, justifyContent: 'flex-start', backgroundColor: "#F2F2F2", padding: 10, paddingHorizontal: '6%', alignItems: 'flex-start', paddingTop: Platform.OS === 'ios' ? 0 : 40 }}>
                 <View style={{ display: 'flex', flexDirection: 'column', marginVertical: 20 }}>
@@ -57,15 +63,15 @@ class HomePage extends Component {
                         <View style={styles.responsiveBox}>
                             <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
                                 <View style={{ backgroundColor: 'rgba(70, 205, 205, 0.25)', borderRadius: 50, padding: 5 }}>
-                                    <MaterialCommunityIcons name="calendar" size={32} color={'black'} />
+                                    <MaterialCommunityIcons name="calendar" size={wp('5%')} color={'black'} />
                                 </View>
                                 <View>
-                                    <Text style={{ color: '#46CDCD', fontSize: 26, fontWeight: '800' }}>{`${shiftsLength}`}</Text>
+                                    <Text style={{ color: '#46CDCD', fontSize: wp('5%'), fontWeight: '800' }}>{`${shiftsLength}`}</Text>
                                 </View>
                             </View>
                             <View>
                                 <View>
-                                    <Text style={{ fontSize: 14, color: "#333333" }}>
+                                    <Text style={{ fontSize: wp('3%'), color: "#333333" }}>
                                         # of Shifts
                                     </Text>
                                 </View>
@@ -74,15 +80,15 @@ class HomePage extends Component {
                         <View style={styles.responsiveBox}>
                             <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
                                 <View style={{ backgroundColor: 'rgba(70, 205, 205, 0.25)', borderRadius: 50, padding: 5 }}>
-                                    <MaterialCommunityIcons name="archive" size={32} color={'black'} />
+                                    <MaterialCommunityIcons name="archive" size={wp('5%')} color={'black'} />
                                 </View>
                                 <View>
-                                    <Text style={{ color: '#46CDCD', fontSize: 26, fontWeight: '800' }}>{`${numOfInventoryItems}`}</Text>
+                                    <Text style={{ color: '#46CDCD', fontSize: wp('5%'), fontWeight: '800' }}>{`${numOfInventoryItems}`}</Text>
                                 </View>
                             </View>
                             <View>
                                 <View>
-                                    <Text style={{ fontSize: 14, color: "#333333" }}>
+                                    <Text style={{ fontSize: wp('3%'), color: "#333333" }}>
                                         # of Items
                                     </Text>
                                 </View>
@@ -93,15 +99,15 @@ class HomePage extends Component {
                         <View style={styles.responsiveBox}>
                             <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
                                 <View style={{ backgroundColor: 'rgba(70, 205, 205, 0.25)', borderRadius: 50, padding: 5 }}>
-                                    <MaterialCommunityIcons name="arrow-expand-down" size={32} color={'black'} />
+                                    <MaterialCommunityIcons name="arrow-expand-down" size={wp('5%')} color={'black'} />
                                 </View>
                                 <View>
-                                    <Text style={{ color: '#46CDCD', fontSize: 26, fontWeight: '800' }}>{`${inOrdersLength}`}</Text>
+                                    <Text style={{ color: '#46CDCD', fontSize: wp('5%'), fontWeight: '800' }}>{`${inOrdersLength}`}</Text>
                                 </View>
                             </View>
                             <View>
                                 <View>
-                                    <Text style={{ fontSize: 14, color: "#333333" }}>
+                                    <Text style={{ fontSize: wp('3%'), color: "#333333" }}>
                                         # of Incoming Orders
                                     </Text>
                                 </View>
@@ -110,15 +116,15 @@ class HomePage extends Component {
                         <View style={styles.responsiveBox}>
                             <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
                                 <View style={{ backgroundColor: 'rgba(70, 205, 205, 0.25)', borderRadius: 50, padding: 5 }}>
-                                    <MaterialCommunityIcons name="arrow-expand-up" size={32} color={'black'} />
+                                    <MaterialCommunityIcons name="arrow-expand-up" size={wp('5%')} color={'black'} />
                                 </View>
                                 <View>
-                                    <Text style={{ color: '#46CDCD', fontSize: 26, fontWeight: '800' }}>{`${outOrdersLength}`}</Text>
+                                    <Text style={{ color: '#46CDCD', fontSize: wp('5%'), fontWeight: '800' }}>{`${outOrdersLength}`}</Text>
                                 </View>
                             </View>
                             <View>
                                 <View>
-                                    <Text style={{ fontSize: 14, color: "#333333" }}>
+                                    <Text style={{ fontSize: wp('3%'), color: "#333333" }}>
                                         # of Outgoing Orders
                                     </Text>
                                 </View>
@@ -132,15 +138,15 @@ class HomePage extends Component {
                         <View style={styles.responsiveBox}>
                             <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
                                 <View style={{ backgroundColor: 'rgba(70, 205, 205, 0.25)', borderRadius: 50, padding: 5 }}>
-                                    <MaterialCommunityIcons name="account" size={32} color={'black'} />
+                                    <MaterialCommunityIcons name="account" size={wp('5%')} color={'black'} />
                                 </View>
                                 <View>
-                                    <Text style={{ color: '#46CDCD', fontSize: 26, fontWeight: '800' }}>{`${numOfUsers}`}</Text>
+                                    <Text style={{ color: '#46CDCD', fontSize: wp('5%'), fontWeight: '800' }}>{`${numOfUsers}`}</Text>
                                 </View>
                             </View>
                             <View>
                                 <View>
-                                    <Text style={{ fontSize: 14, color: "#333333" }}>
+                                    <Text style={{ fontSize: wp('3%'), color: "#333333" }}>
                                         # of Employees
                                     </Text>
                                 </View>
@@ -149,16 +155,16 @@ class HomePage extends Component {
                         <View style={styles.responsiveBox}>
                             <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
                                 <View style={{ backgroundColor: 'rgba(70, 205, 205, 0.25)', borderRadius: 50, padding: 5 }}>
-                                    <MaterialCommunityIcons name="archive" size={32} color={'black'} />
+                                    <MaterialCommunityIcons name="account" size={wp('5%')} color={'black'} />
                                 </View>
                                 <View>
-                                    <Text style={{ color: '#46CDCD', fontSize: 26, fontWeight: '800' }}>{`${numOfInventoryItems}`}</Text>
+                                    <Text style={{ color: '#46CDCD', fontSize: wp('5%'), fontWeight: '800' }}>{`${diffDays}`}</Text>
                                 </View>
                             </View>
                             <View>
                                 <View>
-                                    <Text style={{ fontSize: 14, color: "#333333" }}>
-                                        # of Items
+                                    <Text style={{ fontSize: wp('3%'), color: "#333333" }}>
+                                        Days w/ Company
                                     </Text>
                                 </View>
                             </View>
