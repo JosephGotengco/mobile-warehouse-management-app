@@ -10,7 +10,7 @@ import {
 } from "./../actions/types";
 
 const initialState = {
-    loggedIn: true,
+    loggedIn: false,
     loginErr: false,
     loginErrMsg: "",
     registerErr: false,
