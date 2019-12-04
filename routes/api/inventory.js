@@ -5,6 +5,7 @@ const Item = require("../../models/Item")
 const isLoggedIn = (req, res, next) => {
     // checks if user is logged in
     if (req.user) {
+        console.log(req.user)
         next();
     } else {
         res.sendStatus(403);
@@ -12,7 +13,7 @@ const isLoggedIn = (req, res, next) => {
 }
 
 //Adds items to database based on QR Code data.
-router.post('/add', isLoggedIn, (req, res, next) => {
+router.post('/add', (req, res, next) => {
     try {
         console.log(req.user)
         const { id, name, quantity, tags } = req.body;
@@ -41,7 +42,7 @@ router.post('/add', isLoggedIn, (req, res, next) => {
 })
 
 //Remove an item from database
-router.put('/remove', isLoggedIn, (req, res, next) => {
+router.put('/remove', (req, res, next) => {
     try {
         const { id, name, quantity } = req.body
         if (!id || !name || !quantity) { return res.status(400).send("Invalid QR Code") }

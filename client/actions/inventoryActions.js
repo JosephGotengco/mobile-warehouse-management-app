@@ -21,6 +21,7 @@ export const addItem = data => dispatch => {
                 type: UPDATE_INVENTORY,
                 payload: res.data})
         }).catch(res => {
+            console.log(res)
             dispatch({
                 type: UPDATE_INVENOTRY_ERR
             })
@@ -34,13 +35,16 @@ export const removeItem = data => dispatch => {
         }
     }
     const body = data
+    console.log(body)
     axios.put(`${Constants.BASEURL}/api/inventory/remove`, body, config)
     .then(res => {
+        console.log(res.data)
         dispatch({
             type: UPDATE_INVENTORY,
             payload: res.data
         })
     }).catch(res => {
+        console.log(res)
         dispatch({
             type: UPDATE_INVENOTRY_ERR
         })
