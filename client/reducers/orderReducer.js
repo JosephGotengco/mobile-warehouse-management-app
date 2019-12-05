@@ -17,7 +17,7 @@ const orderReducer = (state = initialState, action) => {
         case GET_OUT_ORDERS:
             return {
                 ...state,
-                outORders: action.payload
+                outOrders: action.payload
             }
         default: {
             return state;

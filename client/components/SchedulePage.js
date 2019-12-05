@@ -356,10 +356,10 @@ class SchedulePage extends Component {
                                         <Text style={{ fontFamily: "Rubik-Regular", fontSize: 12, color: "#4F4F4F", marginVertical: "auto" }}>{hourDifference > 0 ? `${hourDifference} hours` : null}{minuteDifference > 0 ? `${minuteDifference} minutes` : null}</Text>
                                     </View>
                                     <View style={{ justifyContent: 'center', alignItems: 'center', display: 'flex', marginLeft: 'auto' }}>
-                                        <MaterialCommunityIcons name="window-close" size={25} color={"black"}
+                                        {/* <MaterialCommunityIcons name="window-close" size={25} color={"black"}
                                             onPress={() => {
                                                 this.confirmShiftDelete(key);
-                                            }} />
+                                            }} /> */}
                                     </View>
                                 </View>
                             )
@@ -372,10 +372,10 @@ class SchedulePage extends Component {
                                         <Text style={{ fontFamily: "Rubik-Regular", fontSize: 12, color: "#4F4F4F", marginVertical: "auto" }}>{hourDifference > 0 ? `${hourDifference} ${hourDifference > 1 ? "hours" : "hour"}` : null}{minuteDifference > 0 ? `${minuteDifference} minutes` : null}</Text>
                                     </View>
                                     <View style={{ justifyContent: 'center', alignItems: 'center', display: 'flex', marginLeft: 'auto' }}>
-                                        <MaterialCommunityIcons name="window-close" size={25} color={"black"}
+                                        {/* <MaterialCommunityIcons name="window-close" size={25} color={"black"}
                                             onPress={() => {
                                                 this.confirmShiftDelete(key);
-                                            }} />
+                                            }} /> */}
                                     </View>
                                 </View>
                             )

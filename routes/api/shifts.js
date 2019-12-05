@@ -133,7 +133,7 @@ router.post("/", isLoggedIn, async (req, res) => {
 // @route   DELETE api/shifts/:shiftID
 // @desc    deletes a shift from a user account
 // @access  Private
-router.delete("/:shiftID", isLoggedIn, async (req, res) => {
+router.delete("/:shiftID", async (req, res) => {
     try {
         let { shiftID } = req.params;
         let user = await User.findById(req.user._id);

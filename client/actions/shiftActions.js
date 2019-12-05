@@ -16,6 +16,7 @@ export const addShift = (year, month, date, startTime, endTime) => {
             startTime,
             endTime
         }
+        console.log('body', body)
         return axios
             .post(`${Constants.BASEURL}/api/shifts`, body, config)
             .then(res => {
@@ -34,7 +35,6 @@ export const addShift = (year, month, date, startTime, endTime) => {
                     type: ADDING_SHIFT_FAIL,
                     payload: err.response.data
                 })
-                console.log('err msg', err.response.data)
             })
     }
 }
