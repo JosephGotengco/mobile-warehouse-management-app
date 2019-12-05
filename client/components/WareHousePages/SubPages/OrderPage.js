@@ -64,12 +64,12 @@ class OrderPage extends Component {
             }}>
                         <View>
                             <Text style={{
-                fontSize: hp('3%')
+                fontSize: wp('4%')
             }}>Order ID: {`${orderId}`}</Text>
                         </View>
                         <View>
                             <Text style={{
-                fontSize: hp('3%')
+                fontSize: wp('4%')
             }}>
                                 # of Items: {`${numOfItems}`}
                             </Text>
@@ -82,12 +82,12 @@ class OrderPage extends Component {
             }}>
                         <View>
                             <Text style={{
-                fontSize: hp('3%')
+                fontSize: wp('4%')
             }}>Date: {`${month} ${dateNum}, ${fullYear}`}</Text>
                         </View>
                         <View>
                             <Text style={{
-                fontSize: hp('3%')
+                fontSize: wp('4%')
             }}>Time: {`${hours}:${minutes}`}</Text>
                         </View>
                     </View>
