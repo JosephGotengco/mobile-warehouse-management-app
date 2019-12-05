@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, FlatList } from "react-native";
 import * as Constants from './../../../constants';
-import { ListItem } from 'react-native-elements'
+import { ListItem } from 'react-native-elements';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 class OrderPage extends Component {
 
@@ -16,9 +17,11 @@ class OrderPage extends Component {
     }
 
     componentWillMount() {
-        const { navigation } = this.props;
+        const {navigation} = this.props;
         let numOfItems = 0;
-        navigation.getParam('items').forEach(obj => { numOfItems += obj.quantity })
+        navigation.getParam('items').forEach(obj => {
+            numOfItems += obj.quantity
+        })
         this.setState({
             orderId: navigation.getParam('orderId'),
             date: navigation.getParam('date'),
@@ -29,7 +32,7 @@ class OrderPage extends Component {
     }
 
     render() {
-        let { orderId, date, time, items, numOfItems } = this.state;
+        let {orderId, date, time, items, numOfItems} = this.state;
         // date
         let dateArr = date.split('-');
         let fullYear = dateArr[0];
@@ -42,44 +45,84 @@ class OrderPage extends Component {
         let minutes = timeArr[1];
 
         return (
-            <View style={{ flex: 1 }}>
-                <View style={{ width: '100%', display: 'flex', flexDirection: 'row' }}>
-                    <View style={{ width: '50%' }}>
+            <View style={{
+                flex: 1,
+                backgroundColor: '##f1f1f1',
+                borderRadius: 20,
+            }}>
+            <View style={{
+                padding: '3%'
+            }}>
+                <View style={{
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'row',
+                margin: '5%'
+            }}>
+                    <View style={{
+                width: '50%'
+            }}>
                         <View>
-                            <Text style={{ fontSize: 18 }}>Order ID: {`${orderId}`}</Text>
+                            <Text style={{
+                fontSize: hp('3%')
+            }}>Order ID: {`${orderId}`}</Text>
                         </View>
                         <View>
-                            <Text style={{ fontSize: 18 }}>
+                            <Text style={{
+                fontSize: hp('3%')
+            }}>
                                 # of Items: {`${numOfItems}`}
                             </Text>
                         </View>
                     </View>
-                    <View style={{ width: '50%', display: 'flex', flexDirection: 'column' }}>
+                    <View style={{
+                width: '50%',
+                display: 'flex',
+                flexDirection: 'column'
+            }}>
                         <View>
-                            <Text style={{ fontSize: 18 }}>Date: {`${month} ${dateNum}, ${fullYear}`}</Text>
+                            <Text style={{
+                fontSize: hp('3%')
+            }}>Date: {`${month} ${dateNum}, ${fullYear}`}</Text>
                         </View>
                         <View>
-                            <Text style={{ fontSize: 18 }}>Time: {`${hours}:${minutes}`}</Text>
+                            <Text style={{
+                fontSize: hp('3%')
+            }}>Time: {`${hours}:${minutes}`}</Text>
                         </View>
                     </View>
                 </View>
-                <View style={{ width: '100%' }}>
-                    <Text>Items:</Text>
+                <View style={{
+                width: '100%'
+            }}>
+                    <Text style={{
+                fontSize: hp('4%'),
+                fontWeight: "bold",
+                color: "#46CDCD"
+            }}>
+
+            Items:</Text>
+                </View>
                 </View>
                 <FlatList
-                    data={items}
-                    keyExtractor={item => `${item.id}`}
-                    renderItem={({ item }) =>
-                        <ListItem
-                            containerStyle={{ backgroundColor: "#f1f1f1", borderBottomColor: "black", borderBottomWidth: 1 }}
-                            key={item.id}
-                            title={item.name}
-                            subtitle={"Quantity: " + item.quantity}
-                            subtitleStyle={{ fontSize: 13 }}
-                            bottomDivider={true}
-                        />
-                    }
+            data={items}
+            keyExtractor={item => `${item.id}`}
+            renderItem={({item}) => <ListItem
+                containerStyle={{
+                    backgroundColor: "#f1f1f1",
+                    borderBottomColor: "black",
+                    borderWidth: 1,
+                }}
+                key={item.id}
+                title={item.name}
+                subtitle={"Quantity: " + item.quantity}
+                subtitleStyle={{
+                    fontSize: hp('1.75%')
+                }}
+                bottomDivider={true}
                 />
+            }
+            />
             </View>
         );
     }

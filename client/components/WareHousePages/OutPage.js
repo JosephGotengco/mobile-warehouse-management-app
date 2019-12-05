@@ -5,6 +5,7 @@ import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux'
 import { getOutOrders } from '../../actions/orderActions';
 import * as Constants from './../../constants';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 class InPage extends Component {
 
@@ -24,7 +25,7 @@ class InPage extends Component {
 
     componentDidUpdate(prevProps) {
         if (this.props.outOrders.length !== prevProps.outOrders.length) {
-            let { outOrders } = this.props;
+            let {outOrders} = this.props;
             if (outOrders) {
                 this.groupOrdersByDate(outOrders);
             }
@@ -49,60 +50,119 @@ class InPage extends Component {
             obj[uniqueDates[j]] = ordersOnDate;
             ordersByDate.push(obj);
         }
-        this.setState({ ordersByDate });
+        this.setState({
+            ordersByDate
+        });
     };
 
     onOrderPress = order => {
-        let { id, date, time, items } = order;
-        this.props.navigation.navigate('OrderPage', { orderId: id, date, time, items })
+        let {id, date, time, items} = order;
+        this.props.navigation.navigate('OrderPage', {
+            orderId: id,
+            date,
+            time,
+            items
+        })
     }
 
     render() {
-        let { ordersByDate } = this.state;
+        let {ordersByDate} = this.state;
         return (
-            <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
+            <ScrollView style={{
+                flex: 1,
+                backgroundColor: "white"
+            }}>
                 {ordersByDate.length === 0 ? (
-                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={{ fontSize: 24 }}>There are no orders going out.</Text>
+                <View style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                        <Text style={{
+                    fontSize: 24
+                }}>There are no orders going out.</Text>
                     </View>
                 ) :
-                    ordersByDate.map(obj => {
-                        let key = Object.keys(obj)[0];
-                        // date
-                        let dateArr = key.split('-');
-                        let fullYear = dateArr[0];
-                        let monthNum = dateArr[1];
-                        let dateNum = dateArr[2];
-                        let month = Constants.MONTHS[monthNum - 1];
-                        return (
-                            <View key={key}>
-                                <Text>{`${month} ${dateNum}, ${fullYear}`}</Text>
-                                <FlatList
-                                    data={obj[key]}
-                                    keyExtractor={item => `${item.id}`}
-                                    renderItem={({ item }) => {
-                                        // time
-                                        let timeArr = item.time.split(':');
-                                        let hour = parseInt(timeArr[0]);
-                                        let minute = parseInt(timeArr[1]);
+                ordersByDate.map(obj => {
+                    let key = Object.keys(obj)[0];
+                    // date
+                    let dateArr = key.split('-');
+                    let fullYear = dateArr[0];
+                    let monthNum = dateArr[1];
+                    let dateNum = dateArr[2];
+                    let month = Constants.MONTHS[monthNum - 1];
+                    return (
+                        <View key={key} style= {{
+                            flexDirection: 'row',
+                            margin: 20,
+                            borderRadius: 20,
+                            alignItems: 'center',
+                            shadowColor: "#000",
+                            shadowOffset: {
+                                width: 0,
+                                height: 5,
+                            },
+                            shadowOpacity: 0.36,
+                            shadowRadius: 6.68,
 
-                                        return (
-                                            <ListItem
-                                                containerStyle={{ backgroundColor: "#f1f1f1", borderBottomColor: "black", borderBottomWidth: 1 }}
-                                                key={item.id}
-                                                onPress={() => this.onOrderPress(item)}
-                                                title={hour > 12 ? `${hour - 12}:${minute}PM` : `${item.time}AM`}
-                                                subtitle={"Number of Items: " + item.items.length}
-                                                subtitleStyle={{ fontSize: 13 }}
-                                                bottomDivider={true}
-                                            />
-                                        )
-                                    }
-                                    }
+                            elevation: 11,
+                        }}>
+                                <Text style={{
+                            fontSize: hp('4%'),
+                            fontWeight: "bold",
+                            textAlign: "center",
+                            borderRightColor: "black",
+                            borderRightWidth: 1,
+                            paddingRight: '10%',
+                            marginLeft: '10%',
+                            marginTop: '10%',
+                            marginBottom: '10%',
+                            color: "#46CDCD",
+
+                        }}>{`${month}
+ ${dateNum}, 
+${fullYear}`}</Text>
+                                <FlatList
+                        style={{
+                            marginBottom: '10%',
+                            marginTop: '10%',
+                        }}
+                        data={obj[key]}
+                        keyExtractor={item => `${item.id}`}
+                        renderItem={({item}) => {
+                            // time
+                            let timeArr = item.time.split(':');
+                            let hour = parseInt(timeArr[0]);
+                            let minute = parseInt(timeArr[1]);
+
+                            return (
+                                <ListItem
+                                containerStyle={{
+                                    backgroundColor: "#f1f1f1",
+                                    marginBottom: '5%',
+                                    marginLeft: '10%',
+                                    width: wp('40%'),
+                                    height: hp('10%'),
+                                    borderRadius: 10,
+                                    borderWidth: 1,
+                                    borderColor: '#dedede',
+                                    justifyContent: 'center'
+                                }}
+                                key={item.id}
+                                onPress={() => this.onOrderPress(item)}
+                                title={hour > 12 ? `${hour - 12}:${minute}PM` : `${item.time}AM`}
+                                subtitle={"Number of Items: " + item.items.length}
+                                subtitleStyle={{
+                                    fontSize: hp('1.75%')
+                                }}
                                 />
+                            )
+                        }
+                        }
+                        />
                             </View>)
-                    })
-                }
+                })
+            }
             </ScrollView>
         );
     }
@@ -113,4 +173,6 @@ const mapStateToProps = (state) => ({
 })
 
 
-export default withNavigation(connect(mapStateToProps, { getOutOrders })(InPage));
+export default withNavigation(connect(mapStateToProps, {
+    getOutOrders
+})(InPage));
