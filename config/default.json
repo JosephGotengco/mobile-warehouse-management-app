@@ -1,3 +1,3 @@
 {
-    "mongoURI": "mongodb+srv://admin:Password@cluster0-ztons.mongodb.net/database"
+    "mongoURI": "SET URI HERE"
 }
